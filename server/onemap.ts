@@ -73,6 +73,8 @@ export class OneMapClient {
     );
     const g = body.GeocodeInfo?.[0];
     if (!g) return null;
+    // OneMap's placeholder for land with no building nearby.
+    if (g.BUILDINGNAME === "SINGAPORE - MAIN ISLAND") return null;
     if (g.BUILDINGNAME && g.BUILDINGNAME !== "NIL") return g.BUILDINGNAME;
     return [g.BLOCK, g.ROAD].filter((s) => s && s !== "NIL").join(" ") || null;
   }

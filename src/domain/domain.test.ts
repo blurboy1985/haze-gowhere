@@ -71,7 +71,7 @@ describe("OneMap itinerary → Route", () => {
     legs: [
       { mode: "WALK", startTime: t0, endTime: t0 + 5 * min, legGeometry: { points: encodePolyline([[1.3, 103.8], [1.302, 103.8]]) } },
       { mode: "BUS", routeShortName: "7", startTime: t0 + 9 * min, endTime: t0 + 15 * min, legGeometry: { points: encodePolyline([[1.302, 103.8], [1.31, 103.81]]) } },
-      { mode: "SUBWAY", routeLongName: "North South Line", startTime: t0 + 17 * min, endTime: t0 + 25 * min, legGeometry: { points: encodePolyline([[1.31, 103.81], [1.33, 103.84]]) } },
+      { mode: "SUBWAY", routeLongName: "NORTH SOUTH LINE", startTime: t0 + 17 * min, endTime: t0 + 25 * min, legGeometry: { points: encodePolyline([[1.31, 103.81], [1.33, 103.84]]) } },
     ],
   };
 

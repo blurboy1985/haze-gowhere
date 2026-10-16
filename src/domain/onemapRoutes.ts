@@ -45,7 +45,9 @@ function walkLegs(path: Leg["path"], minutes: number, index: CoveredLinkwayIndex
 
 function lineName(leg: OneMapPtLeg): string {
   if (leg.mode === "BUS") return `Bus ${leg.routeShortName ?? leg.route ?? ""}`.trim();
-  return leg.routeLongName ?? leg.route ?? "Train";
+  // OneMap returns train line names in capitals, e.g. "NORTH SOUTH LINE".
+  const name = leg.routeLongName ?? leg.route ?? "Train";
+  return name.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
 }
 
 export function routeFromPtItinerary(it: OneMapPtItinerary, id: string, index: CoveredLinkwayIndex): Route {

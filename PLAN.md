@@ -25,8 +25,12 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 5. ✅ Dockerfile and README.
 6. ✅ Verified (2026-10-16): tests, typecheck and build pass. Ran it in the browser with live NEA haze and live OneMap search, and with mock routing. The production server serves `dist` plus the API.
 
+## Verified with real OneMap (2026-10-16)
+- Routing works for real trips: Bishan→Orchard, Tampines→Bedok, Jurong East→NUS UTown. Reverse geocoding and drive routing also work.
+- OneMap often returns only 1 public-transport itinerary for direct MRT trips.
+- Waits between legs only appear when OneMap's leg times leave a gap.
+
 ## Not yet verified
-- Real OneMap routing (needs credentials in `.env`).
 - The Docker build (Docker isn't installed here).
 - The Taxi Suggestion path in the UI (live haze was Band 2 everywhere).
 
