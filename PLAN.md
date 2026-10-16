@@ -37,7 +37,7 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 - ✅ [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) TRANSIT, BUS and RAIL itineraries are merged (about 5 candidates per Trip, up from 1–3)
 - ⏳ [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Harness and report in `docs/tuning/2026-10-16.md`. Proposal: keep the weights. Awaiting the user's decision
 - ✅ [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Waits on elevated platforms are Covered. Only applies where OneMap reports a wait gap
-- ⏳ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) OSM has 17 km of CBD indoor/underground ways. Trigger partly met; a connectivity spike is suggested
+- ⏳ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) Spike done (`docs/spikes/2026-10-cbd-indoor-graph.md`): OSM's CBD indoor network is too fragmented for whole-Trip routing, so keep ADR 0001. Station-to-mall walks are often fully Protected, so an "indoor last-mile" ADR 0002 is proposed. Awaiting the user's decision
 
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
