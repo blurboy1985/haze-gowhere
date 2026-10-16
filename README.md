@@ -49,15 +49,20 @@ npm test
 npm run build
 ```
 
-## Covered linkway data (optional)
+## Covered linkway data
 
-Without this file, every walking leg counts as Exposed. To add it:
+`server/data/covered-linkways.geojson` is committed: the LTA **Covered Linkway** dataset (Sep 2026 edition, about 7,200 polygons) converted to WGS84. A walk that passes inside a linkway, or within 12 m of its outline, counts as **Covered**.
 
-1. Download **Covered Linkway** from LTA DataMall → Static Data → Geospatial.
-2. Convert it to WGS84 GeoJSON, for example: `ogr2ogr -t_srs EPSG:4326 covered-linkways.geojson CoveredLinkWay.shp`.
-3. Save it as `server/data/covered-linkways.geojson`.
+LTA updates the dataset quarterly. To refresh it:
 
-The server logs how many linkway segments it loaded.
+1. Download the latest **Covered Linkway** zip from [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en/static-data.html) → Static Datasets → Geospatial → Whole Island, and unzip it.
+2. Run the converter (SVY21 → WGS84, no GDAL needed):
+
+```bash
+npm run convert:linkways -- path/to/CoveredLinkWay.shp Dec2026
+```
+
+> Contains information from Covered Linkway accessed from LTA DataMall, made available under the terms of the [Singapore Open Data Licence v1.0](https://data.gov.sg/open-data-licence).
 
 ## Container
 

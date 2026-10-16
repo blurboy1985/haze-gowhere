@@ -8,12 +8,25 @@ const CELL_DEG = 0.001;
 
 type Segment = [LatLng, LatLng];
 
-/** Spatial index over LTA covered-linkway line segments. */
+/** Spatial index over LTA covered-linkway outlines (segments) and areas (polygon rings). */
 export class CoveredLinkwayIndex {
   private cells = new Map<string, Segment[]>();
+  private areaCells = new Map<string, LatLng[][]>();
   readonly segmentCount: number;
 
-  constructor(lines: LatLng[][]) {
+  /** `lines`: outlines matched within tolerance. `areas`: closed rings a point can be inside. */
+  constructor(lines: LatLng[][], areas: LatLng[][] = []) {
+    for (const ring of areas) {
+      if (ring.length < 3) continue;
+      const lats = ring.map((p) => p[0]);
+      const lngs = ring.map((p) => p[1]);
+      const box: Segment = [[Math.min(...lats), Math.min(...lngs)], [Math.max(...lats), Math.max(...lngs)]];
+      for (const key of cellsForSegment(box)) {
+        const bucket = this.areaCells.get(key);
+        if (bucket) bucket.push(ring);
+        else this.areaCells.set(key, [ring]);
+      }
+    }
     let count = 0;
     for (const line of lines) {
       for (let i = 1; i < line.length; i++) {
@@ -36,6 +49,7 @@ export class CoveredLinkwayIndex {
   isCovered(p: LatLng): boolean {
     const cx = Math.floor(p[1] / CELL_DEG);
     const cy = Math.floor(p[0] / CELL_DEG);
+    for (const ring of this.areaCells.get(`${cx}:${cy}`) ?? []) if (insideRing(p, ring)) return true;
     for (let dx = -1; dx <= 1; dx++) {
       for (let dy = -1; dy <= 1; dy++) {
         for (const [a, b] of this.cells.get(`${cx + dx}:${cy + dy}`) ?? []) {
@@ -45,6 +59,17 @@ export class CoveredLinkwayIndex {
     }
     return false;
   }
+}
+
+/** Ray-casting point-in-polygon test. */
+function insideRing([lat, lng]: LatLng, ring: LatLng[]): boolean {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [yi, xi] = ring[i]!;
+    const [yj, xj] = ring[j]!;
+    if (yi > lat !== yj > lat && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside;
+  }
+  return inside;
 }
 
 function* cellsForSegment([a, b]: Segment): Generator<string> {
@@ -96,4 +121,17 @@ export function linesFromGeoJson(geojson: unknown): LatLng[][] {
     else if (g.type === "MultiPolygon") for (const p of g.coordinates as number[][][][]) lines.push(toLine(p[0] ?? []));
   }
   return lines;
+}
+
+/** Outer rings of Polygon / MultiPolygon features (WGS84), as [lat, lng]. */
+export function areasFromGeoJson(geojson: unknown): LatLng[][] {
+  const rings: LatLng[][] = [];
+  const features = (geojson as { features?: { geometry?: Geometry | null }[] }).features ?? [];
+  const toRing = (coords: number[][]) => coords.map(([lng, lat]) => [lat, lng] as LatLng);
+  for (const f of features) {
+    const g = f.geometry;
+    if (g?.type === "Polygon") rings.push(toRing((g.coordinates as number[][][])[0] ?? []));
+    else if (g?.type === "MultiPolygon") for (const p of g.coordinates as number[][][][]) rings.push(toRing(p[0] ?? []));
+  }
+  return rings;
 }

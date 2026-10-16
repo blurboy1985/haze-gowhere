@@ -54,6 +54,16 @@ describe("covered linkways", () => {
     expect(runs.map((r) => r.covered)).toEqual([true, false]);
   });
 
+  it("treats a point inside a wide covered area as covered even far from its edges", () => {
+    // ~110 m square canopy: its centre is ~55 m from every edge, beyond the outline tolerance.
+    const square: LatLng[] = [[1.3, 103.8], [1.3, 103.801], [1.301, 103.801], [1.301, 103.8], [1.3, 103.8]];
+    const outlineOnly = new CoveredLinkwayIndex([square]);
+    const withArea = new CoveredLinkwayIndex([square], [square]);
+    expect(outlineOnly.isCovered([1.3005, 103.8005])).toBe(false);
+    expect(withArea.isCovered([1.3005, 103.8005])).toBe(true);
+    expect(withArea.isCovered([1.3030, 103.8005])).toBe(false);
+  });
+
   it("reads GeoJSON lines as [lat, lng]", () => {
     const lines = linesFromGeoJson({
       type: "FeatureCollection",
