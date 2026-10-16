@@ -30,19 +30,19 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 - OneMap often returns only 1 public-transport itinerary for direct MRT trips.
 - Waits between legs only appear when OneMap's leg times leave a gap.
 
-## Open work (tracked on GitHub)
-- [#1](https://github.com/blurboy1985/haze-gowhere/issues/1) Verify the Docker image builds and runs (Docker isn't installed here)
-- [#2](https://github.com/blurboy1985/haze-gowhere/issues/2) Verify the Taxi Suggestion at Band 3+ (live haze was Band 2 everywhere)
-- [#3](https://github.com/blurboy1985/haze-gowhere/issues/3) Load LTA covered-linkway data. Without it, every walking Leg counts as Exposed
-- [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) Request bus-only and rail-only itineraries to widen route choice
-- [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Tune Avoidance Strength weights with real trips
-- [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Elevated MRT platforms are treated as Protected, though they are really Covered
-- [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) Revisit ADR 0001 if indoor-link data appears
+## Issue status (2026-10-16)
+- ✅ [#1](https://github.com/blurboy1985/haze-gowhere/issues/1) Docker image is built and smoke-tested in CI (`.github/workflows/ci.yml`)
+- ✅ [#2](https://github.com/blurboy1985/haze-gowhere/issues/2) Taxi Suggestion has tests and was seen in the UI at Band 3 (`HAZE_OVERRIDE_PM25`)
+- ✅ [#3](https://github.com/blurboy1985/haze-gowhere/issues/3) LTA covered linkways (Sep 2026, 7,222 areas) are committed; walks can be Covered
+- ✅ [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) TRANSIT, BUS and RAIL itineraries are merged (about 5 candidates per Trip, up from 1–3)
+- ⏳ [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Harness and report in `docs/tuning/2026-10-16.md`. Proposal: keep the weights. Awaiting the user's decision
+- ✅ [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Waits on elevated platforms are Covered. Only applies where OneMap reports a wait gap
+- ⏳ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) OSM has 17 km of CBD indoor/underground ways. Trigger partly met; a connectivity spike is suggested
 
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
 
-## Phase 2: fix issues #1–#7 (started 2026-10-16)
+## Phase 2: fix issues #1–#7 (2026-10-16, done except decisions on #5 and #7)
 Decisions: download and commit the LTA linkways; verify Docker by simulating the image steps locally plus a CI docker build; for weights, report findings and let the user decide; keep #7 open after an OSM check.
 
 1. #2 Add a `HAZE_OVERRIDE_PM25` dev override and `planTrip` tests on both sides of the Band 3 taxi threshold. Check the taxi card in the UI.
