@@ -42,7 +42,7 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
 
-## Phase 2: fix issues #1–#7 (2026-10-16, done; #7 stays open pending the CBD spike)
+## Phase 2: fix issues #1–#7 (2026-10-16, done; #7 open pending the ADR 0002 decision)
 Decisions: download and commit the LTA linkways; verify Docker by simulating the image steps locally plus a CI docker build; for weights, report findings and let the user decide; keep #7 open after an OSM check.
 
 1. #2 Add a `HAZE_OVERRIDE_PM25` dev override and `planTrip` tests on both sides of the Band 3 taxi threshold. Check the taxi card in the UI.
