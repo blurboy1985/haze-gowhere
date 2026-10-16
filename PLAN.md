@@ -35,14 +35,14 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 - ✅ [#2](https://github.com/blurboy1985/haze-gowhere/issues/2) Taxi Suggestion has tests and was seen in the UI at Band 3 (`HAZE_OVERRIDE_PM25`)
 - ✅ [#3](https://github.com/blurboy1985/haze-gowhere/issues/3) LTA covered linkways (Sep 2026, 7,222 areas) are committed; walks can be Covered
 - ✅ [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) TRANSIT, BUS and RAIL itineraries are merged (about 5 candidates per Trip, up from 1–3)
-- ⏳ [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Harness and report in `docs/tuning/2026-10-16.md`. Proposal: keep the weights. Awaiting the user's decision
+- ✅ [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Weights kept (K 0/1/3/6, ¼ Covered, 2× cap), decided 2026-10-17 from `docs/tuning/2026-10-16.md`
 - ✅ [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Waits on elevated platforms are Covered. Only applies where OneMap reports a wait gap
 - ⏳ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) OSM has 17 km of CBD indoor/underground ways. Trigger partly met; a connectivity spike is suggested
 
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
 
-## Phase 2: fix issues #1–#7 (2026-10-16, done except decisions on #5 and #7)
+## Phase 2: fix issues #1–#7 (2026-10-16, done; #7 stays open pending the CBD spike)
 Decisions: download and commit the LTA linkways; verify Docker by simulating the image steps locally plus a CI docker build; for weights, report findings and let the user decide; keep #7 open after an OSM check.
 
 1. #2 Add a `HAZE_OVERRIDE_PM25` dev override and `planTrip` tests on both sides of the Band 3 taxi threshold. Check the taxi card in the UI.
