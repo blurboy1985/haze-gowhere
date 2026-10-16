@@ -62,6 +62,8 @@ export interface RoutesResponse {
   tripBand: Pm25Band;
   avoidanceStrength: number;
   routes: RankedRoute[];
+  /** How many candidate Routes were scored before the slowdown cap and top-N cut. */
+  consideredCount: number;
   taxi: TaxiSuggestion | null;
   haze: HazeReading;
   mock: boolean;

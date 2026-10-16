@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CoveredLinkwayIndex, linesFromGeoJson, splitWalkByCover } from "./coveredLinkways";
 import { avoidanceStrength, nearestRegion, pm25Band } from "./haze";
-import { routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
+import { mergeItineraries, routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
 import { decodePolyline, encodePolyline } from "./polyline";
 import { rankRoutes, routeTotals, tripBand } from "./ranking";
 import type { LatLng, RegionReading, Route } from "./types";
@@ -85,6 +85,24 @@ describe("OneMap itinerary → Route", () => {
       ["train", "protected", 8],
     ]);
     expect(route.summary).toBe("Bus 7 → North South Line");
+  });
+
+  it("merges mode queries, dropping itineraries that ride the same services", () => {
+    const geom = { points: encodePolyline([[1.3, 103.8], [1.31, 103.81]]) };
+    const ride = (mode: string, route: string, walkMin: number): OneMapPtItinerary => ({
+      duration: 0,
+      legs: [
+        { mode: "WALK", startTime: 0, endTime: walkMin * min, legGeometry: geom },
+        { mode, route, startTime: walkMin * min, endTime: (walkMin + 10) * min, legGeometry: geom },
+      ],
+    });
+    const merged = mergeItineraries([
+      [ride("SUBWAY", "NS", 2)],
+      [ride("BUS", "52", 3), ride("BUS", "162", 4)],
+      [ride("SUBWAY", "NS", 5)], // same NS ride via a different walk: duplicate
+    ]);
+    expect(merged.map((it) => it.legs[1]!.route)).toEqual(["NS", "52", "162"]);
+    expect(merged[0]!.legs[0]!.endTime).toBe(2 * min); // first occurrence kept
   });
 
   it("builds a walk-only Route from the walk response", () => {

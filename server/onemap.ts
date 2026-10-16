@@ -1,4 +1,4 @@
-import type { OneMapDirectResponse, OneMapPtResponse } from "../src/domain/onemapRoutes";
+import type { OneMapDirectResponse, OneMapPtResponse, PtMode } from "../src/domain/onemapRoutes";
 import type { LatLng } from "../src/domain/types";
 
 const BASE = "https://www.onemap.gov.sg";
@@ -87,7 +87,7 @@ export class OneMapClient {
     return this.authedGet("/api/public/routingsvc/route", { start: start.join(","), end: end.join(","), routeType: "drive" });
   }
 
-  publicTransport(start: LatLng, end: LatLng, when: Date): Promise<OneMapPtResponse> {
+  publicTransport(start: LatLng, end: LatLng, when: Date, mode: PtMode = "TRANSIT"): Promise<OneMapPtResponse> {
     const { date, time } = singaporeDateTime(when);
     return this.authedGet("/api/public/routingsvc/route", {
       start: start.join(","),
@@ -95,7 +95,7 @@ export class OneMapClient {
       routeType: "pt",
       date,
       time,
-      mode: "TRANSIT",
+      mode,
       maxWalkDistance: "1000",
       numItineraries: "3",
     });

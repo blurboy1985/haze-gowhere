@@ -16,6 +16,9 @@ export interface OneMapPtItinerary {
   duration: number; // seconds
   legs: OneMapPtLeg[];
 }
+/** OneMap public-transport modes: mixed, bus-only, or rail-only. */
+export type PtMode = "TRANSIT" | "BUS" | "RAIL";
+
 export interface OneMapPtResponse {
   plan?: { itineraries?: OneMapPtItinerary[] };
 }
@@ -86,4 +89,20 @@ export function routeFromWalk(res: OneMapDirectResponse, id: string, index: Cove
   if (!res.route_geometry || !res.route_summary) return null;
   const path = decodePolyline(res.route_geometry);
   return { id, summary: "Walk", legs: walkLegs(path, res.route_summary.total_time / 60, index) };
+}
+
+/**
+ * Merge itineraries from several OneMap mode queries, keeping the first of any that ride the
+ * same sequence of services (walking differences alone don't make a distinct Route).
+ */
+export function mergeItineraries(groups: OneMapPtItinerary[][]): OneMapPtItinerary[] {
+  const seen = new Set<string>();
+  const out: OneMapPtItinerary[] = [];
+  for (const it of groups.flat()) {
+    const key = it.legs.filter((l) => l.mode !== "WALK").map((l) => `${l.mode}:${l.route ?? ""}`).join(">") || "WALK";
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(it);
+  }
+  return out;
 }
