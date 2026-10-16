@@ -11,7 +11,8 @@
     "start": "tsx server/index.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "convert:linkways": "tsx scripts/convert-linkways.ts"
+    "convert:linkways": "tsx scripts/convert-linkways.ts",
+    "build:indoor": "tsx scripts/build-indoor-graph.ts"
   },
   "dependencies": {
     "dotenv": "^16.6.1",

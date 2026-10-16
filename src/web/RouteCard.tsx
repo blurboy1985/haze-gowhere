@@ -14,11 +14,13 @@ function steps(legs: Leg[]): { mode: Leg["mode"]; label: string; minutes: number
   const out: { mode: Leg["mode"]; label: string; minutes: number; tiers: Set<Tier> }[] = [];
   for (const l of legs) {
     const last = out[out.length - 1];
+    const indoorLabel = l.mode === "walk" && l.label?.includes("(indoor)") ? l.label : null;
     if (last && last.mode === "walk" && l.mode === "walk") {
       last.minutes += l.minutes;
       last.tiers.add(l.tier);
+      if (indoorLabel && !last.label.includes("(indoor)")) last.label = indoorLabel;
     } else {
-      out.push({ mode: l.mode, label: l.mode === "walk" ? "Walk" : l.label ?? l.mode, minutes: l.minutes, tiers: new Set([l.tier]) });
+      out.push({ mode: l.mode, label: l.mode === "walk" ? indoorLabel ?? "Walk" : l.label ?? l.mode, minutes: l.minutes, tiers: new Set([l.tier]) });
     }
   }
   return out;
@@ -43,6 +45,9 @@ export function RouteCard({ route, selected, onSelect }: Props) {
         <div>
           {route.recommended && <span className="badge">Recommended</span>}
           <div className="route-summary">{route.summary}</div>
+          {route.indoorLinks && route.indoorLinks.length > 0 && (
+            <div className="indoor-note">Indoor link: {route.indoorLinks.filter((n) => !n.endsWith("(connector)")).slice(0, 3).join(", ") || "enclosed walkway"}</div>
+          )}
         </div>
         <div className="route-time">{fmtMin(route.totalMinutes)}</div>
       </div>

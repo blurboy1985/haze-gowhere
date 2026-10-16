@@ -13,9 +13,10 @@ import { fileURLToPath } from "node:url";
 import { avoidanceStrength } from "../src/domain/haze";
 import { rankRoutes, routeTotals } from "../src/domain/ranking";
 import type { LatLng, Pm25Band, Route } from "../src/domain/types";
+import { loadIndoorGraph } from "../server/indoor";
 import { loadCoveredLinkways } from "../server/linkways";
 import { OneMapClient } from "../server/onemap";
-import { fetchCandidates } from "../server/planTrip";
+import { fetchCandidates, type RouteSource } from "../server/planTrip";
 
 interface Trip { name: string; kind: string; from: LatLng; to: LatLng }
 interface CachedTrip extends Trip { fetchedAt: string; candidates: Route[] }
@@ -29,15 +30,41 @@ const fmt = (n: number) => n.toFixed(0).padStart(2);
 /** Ranking only needs tiers, minutes and Exposed leg endpoints; drop the rest of the geometry. */
 const slim = (r: Route): Route => ({ ...r, legs: r.legs.map((l) => ({ ...l, path: l.path.length > 1 ? [l.path[0]!, l.path[l.path.length - 1]!] : l.path })) });
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** OneMap rate-limits (HTTP 429); a silently dropped mode query would skew tuning, so retry with backoff instead. */
+function patient(source: RouteSource): RouteSource {
+  const retry = async <T>(call: () => Promise<T>): Promise<T> => {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await call();
+      } catch (err) {
+        if (!String(err).includes("HTTP 429") || attempt >= 6) throw err;
+        console.error(`  rate-limited; retrying in ${attempt * 10} s`);
+        await sleep(attempt * 10_000);
+      }
+    }
+  };
+  return {
+    walk: (a, b) => retry(() => source.walk(a, b)),
+    drive: (a, b) => retry(() => source.drive(a, b)),
+    publicTransport: (a, b, t, m) => retry(() => source.publicTransport(a, b, t, m)),
+  };
+}
+
 async function refresh(trips: Trip[]): Promise<CachedTrip[]> {
   const client = new OneMapClient(process.env.ONEMAP_EMAIL ?? "", process.env.ONEMAP_PASSWORD ?? "");
   if (!client.hasCredentials) throw new Error("--refresh needs ONEMAP_EMAIL and ONEMAP_PASSWORD in .env");
   const linkways = loadCoveredLinkways();
+  const indoor = loadIndoorGraph();
   const out: CachedTrip[] = [];
   for (const t of trips) {
-    const candidates = await fetchCandidates({ start: t.from, end: t.to, when: new Date() }, client, linkways);
+    // Plan for 12:00 SGT (always inside Indoor Link hours) so results don't depend on when the harness runs.
+    const noon = new Date(`${new Date().toISOString().slice(0, 10)}T12:00:00+08:00`);
+    const candidates = await fetchCandidates({ start: t.from, end: t.to, when: noon }, patient(client), linkways, indoor);
     console.error(`fetched ${t.name}: ${candidates.length} candidates`);
     out.push({ ...t, fetchedAt: new Date().toISOString(), candidates: candidates.map(slim) });
+    await sleep(3000); // pace requests: 4 OneMap calls per Trip
   }
   writeFileSync(CACHE, JSON.stringify(out, null, 1));
   return out;

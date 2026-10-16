@@ -19,6 +19,8 @@ export interface Route {
   /** Short human description, e.g. "Walk" or "Bus 7 → NS Line" */
   summary: string;
   legs: Leg[];
+  /** For an Indoor Variant: the named Indoor Links it uses, e.g. "CityLink Mall". */
+  indoorLinks?: string[];
 }
 
 export interface RouteTotals {

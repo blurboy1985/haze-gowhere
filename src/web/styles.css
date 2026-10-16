@@ -122,3 +122,4 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .brand { display: none; }
 }
 .haze-simulated { font-size: 0.75rem; font-weight: 700; background: rgb(0 0 0 / 0.25); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; }
+.indoor-note { font-size: 0.78rem; color: var(--protected); font-weight: 600; margin-top: 2px; }

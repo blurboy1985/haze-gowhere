@@ -1,0 +1,32 @@
+[
+  {
+    "name": "One Raffles Link to Marina Square",
+    "from": [1.29229, 103.856804],
+    "to": [1.292353, 103.856835],
+    "note": "8 m. Steps (OSM way 460428762) lack an indoor/level tag, which breaks the chain. Unverified; remove once fixed in OSM."
+  },
+  {
+    "name": "Bugis MRT to Bugis Junction",
+    "from": [1.299564, 103.855649],
+    "to": [1.299431, 103.855539],
+    "note": "19 m. The Bugis Street underpass and the travelator corridor beside Bugis Junction don't share a node. Unverified; remove once fixed in OSM."
+  },
+  {
+    "name": "The Shoppes to Marina Bay Sands hotel",
+    "from": [1.283705, 103.85996],
+    "to": [1.283291, 103.859658],
+    "note": "57 m. Separate indoor fragments; without this link the route crosses Bayfront Avenue in the open. Unverified; remove once fixed in OSM."
+  },
+  {
+    "name": "City Hall MRT to CityLink",
+    "from": [1.293083, 103.852323],
+    "to": [1.293079, 103.852932],
+    "note": "68 m. City Hall station's tunnels (OSM way 1013977879) don't reach the CityLink network. Unverified; remove once fixed in OSM."
+  },
+  {
+    "name": "Raffles City to CityLink",
+    "from": [1.293377, 103.853213],
+    "to": [1.293405, 103.853298],
+    "note": "10 m. The link is mapped only with layer=-1, which ADR 0002 does not count as Protected. Unverified; remove once tagged indoor/tunnel in OSM."
+  }
+]

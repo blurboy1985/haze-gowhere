@@ -4,6 +4,8 @@ import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { LatLng } from "../src/domain/types";
 import { latestHazeReading } from "./haze";
+import { indoorLinksOpen } from "../src/domain/indoorVariants";
+import { loadIndoorGraph } from "./indoor";
 import { loadCoveredLinkways } from "./linkways";
 import { mockDrive, mockPublicTransport, mockWalk } from "./mock";
 import { OneMapClient } from "./onemap";
@@ -15,6 +17,9 @@ const source: RouteSource = mock
   ? { walk: async (a, b) => mockWalk(a, b), drive: async (a, b) => mockDrive(a, b), publicTransport: async (a, b, t) => mockPublicTransport(a, b, t) }
   : onemap;
 const linkways = loadCoveredLinkways();
+const indoor = loadIndoorGraph();
+/** Dev/test only: INDOOR_ALWAYS_OPEN=1 ignores Indoor Link opening hours (06:00–23:00 SGT). */
+const indoorFor = (when: Date) => (indoor && (process.env.INDOOR_ALWAYS_OPEN === "1" || indoorLinksOpen(when)) ? indoor : null);
 
 /** Rough Singapore bounding box; rejects points OneMap cannot route. */
 function parsePoint(raw: unknown): LatLng | null {
@@ -65,7 +70,8 @@ app.get("/api/routes", async (req, res) => {
   if (!start || !end) return res.status(400).json({ error: "Starting Point and Destination must both be in Singapore." });
   try {
     const haze = await latestHazeReading();
-    res.json(await planTrip({ start, end, alwaysMinimise: req.query.minimise === "1", when: new Date() }, source, haze, linkways, mock));
+    const when = new Date();
+    res.json(await planTrip({ start, end, alwaysMinimise: req.query.minimise === "1", when }, source, haze, linkways, mock, indoorFor(when)));
   } catch (err) {
     console.error(err);
     res.status(502).json({ error: "Could not plan routes right now. Please try again." });

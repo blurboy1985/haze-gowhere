@@ -1,5 +1,7 @@
 import type { CoveredLinkwayIndex } from "../src/domain/coveredLinkways";
 import { avoidanceStrength } from "../src/domain/haze";
+import type { IndoorGraph } from "../src/domain/indoorGraph";
+import { indoorVariants } from "../src/domain/indoorVariants";
 import { decodePolyline } from "../src/domain/polyline";
 import {
   mergeItineraries,
@@ -30,11 +32,15 @@ export interface TripRequest {
   when: Date;
 }
 
-/** All candidate Routes for a Trip: the walk plus merged TRANSIT/BUS/RAIL itineraries, tiered. */
+/**
+ * All candidate Routes for a Trip: the walk plus merged TRANSIT/BUS/RAIL itineraries, tiered, plus Indoor Variants
+ * (ADR 0002) when an indoor graph is given. Callers pass null outside Indoor Link opening hours.
+ */
 export async function fetchCandidates(
   req: Pick<TripRequest, "start" | "end" | "when">,
   source: RouteSource,
   linkways: CoveredLinkwayIndex,
+  indoor: IndoorGraph | null = null,
 ): Promise<Route[]> {
   const [walkRes, ...ptResults] = await Promise.allSettled([
     source.walk(req.start, req.end),
@@ -50,7 +56,12 @@ export async function fetchCandidates(
   const itineraries = mergeItineraries(
     ptResults.map((r) => (r.status === "fulfilled" ? ((r.value as OneMapPtResponse).plan?.itineraries ?? []) : [])),
   );
-  itineraries.forEach((it, i) => candidates.push(routeFromPtItinerary(it, `pt-${i}`, linkways)));
+  // A walk-only "public transport" itinerary (e.g. when nothing is running) duplicates the walk Route.
+  const hasWalk = candidates.length > 0;
+  itineraries
+    .filter((it) => !hasWalk || it.legs.some((l) => l.mode !== "WALK"))
+    .forEach((it, i) => candidates.push(routeFromPtItinerary(it, `pt-${i}`, linkways)));
+  if (indoor) candidates.push(...indoorVariants(candidates, indoor, linkways));
   return candidates;
 }
 
@@ -60,8 +71,9 @@ export async function planTrip(
   haze: HazeReading,
   linkways: CoveredLinkwayIndex,
   mock: boolean,
+  indoor: IndoorGraph | null = null,
 ): Promise<RoutesResponse> {
-  const candidates = await fetchCandidates(req, source, linkways);
+  const candidates = await fetchCandidates(req, source, linkways, indoor);
   const band = tripBand(candidates, req.start, req.end, haze.regions);
   const routes = rankRoutes(candidates, band, req.alwaysMinimise);
 

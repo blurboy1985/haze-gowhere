@@ -65,3 +65,17 @@ describe("planTrip ranking strength", () => {
     expect((await plan(300)).avoidanceStrength).toBe(6);
   });
 });
+
+describe("planTrip candidates", () => {
+  it("drops a walk-only public-transport itinerary that duplicates the walk Route", async () => {
+    const source = stubSource();
+    source.publicTransport = async (a, b) => {
+      const walk = mockWalk(a, b);
+      const t = Date.UTC(2026, 9, 16, 20, 0);
+      return { plan: { itineraries: [{ duration: 600, legs: [{ mode: "WALK", startTime: t, endTime: t + 600_000, legGeometry: { points: walk.route_geometry! } }] }] } };
+    };
+    const res = await plan(40, source);
+    expect(res.consideredCount).toBe(1);
+    expect(res.routes.map((r) => r.summary)).toEqual(["Walk"]);
+  });
+});

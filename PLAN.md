@@ -37,12 +37,12 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 - ✅ [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) TRANSIT, BUS and RAIL itineraries are merged (about 5 candidates per Trip, up from 1–3)
 - ✅ [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Weights kept (K 0/1/3/6, ¼ Covered, 2× cap), decided 2026-10-17 from `docs/tuning/2026-10-16.md`
 - ✅ [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Waits on elevated platforms are Covered. Only applies where OneMap reports a wait gap
-- ⏳ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) Spike done (`docs/spikes/2026-10-cbd-indoor-graph.md`): OSM's CBD indoor network is too fragmented for whole-Trip routing, so keep ADR 0001. Station-to-mall walks are often fully Protected, so an "indoor last-mile" ADR 0002 is proposed. Awaiting the user's decision
+- ✅ [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) Implemented as ADR 0002 (CBD Indoor Variants). Results in `docs/tuning/2026-10-17-indoor.md`
 
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
 
-## Phase 2: fix issues #1–#7 (2026-10-16, done; #7 open pending the ADR 0002 decision)
+## Phase 2: fix issues #1–#7 (2026-10-16, done)
 Decisions: download and commit the LTA linkways; verify Docker by simulating the image steps locally plus a CI docker build; for weights, report findings and let the user decide; keep #7 open after an OSM check.
 
 1. #2 Add a `HAZE_OVERRIDE_PM25` dev override and `planTrip` tests on both sides of the Band 3 taxi threshold. Check the taxi card in the UI.
@@ -53,3 +53,23 @@ Decisions: download and commit the LTA linkways; verify Docker by simulating the
 6. #1 Simulate the image locally (clean `npm ci --omit=dev`, run from `dist`). Add a GitHub Actions workflow that builds and smoke-tests the image.
 7. #7 Check OSM indoor/tunnel footway coverage, post the findings as a comment, and leave the issue open.
 8. Verify everything (tests, build, browser), then commit per issue, push, and close the fixed issues.
+
+## Phase 3: #7 indoor last-mile in the CBD (ADR 0002, done 2026-10-17)
+Decisions: commit the derived ODbL graph as its own file; add local connectors for the OSM gaps; use indoor links 06:00–23:00 SGT only; show the indoor version as an extra ranked variant.
+
+1. `scripts/build-indoor-graph.ts`: fetch OSM for the CBD (mirror fallback, or a saved file), classify with the strict rules, apply the connectors from `scripts/fixtures/indoor-connectors.json`, and write `server/data/cbd-indoor-graph.json` (ODbL header).
+2. `src/domain/indoorGraph.ts`: load the graph, snap a point to it, and run tier-weighted Dijkstra. Unit-tested on a synthetic graph.
+3. `src/domain/indoorVariants.ts`: for each Route, re-route its first and last walks inside the bbox, snapping the station end to the nearest Protected node within 150 m. Emit a variant when it saves at least 1 Exposed min. Apply the LTA linkway index on top. Unit-tested.
+4. Server: load the graph, allow indoor variants 06:00–23:00 SGT, and wire them into `fetchCandidates`. Add OSM attribution to the map, mark "indoor link" in the UI, and add a README ODbL section.
+5. Verify: tests, typecheck, real CBD trips (Raffles Place→MBS, Bugis→Suntec, Esplanade→Suntec), the tuning harness before and after, and the browser. Then commit, push and update #7.
+
+Where reality differed from the plan:
+- **5 connectors, not 4.** The stricter rule (no layer-only Protected) splits Raffles City from CityLink by 10 m, which the spike predicted, so a fifth connector joins them.
+- **Albert and Princess Streets** (`tunnel=yes` by Bugis, unverified) are treated as Covered, like Read and Clarke Streets, so we never overclaim Protected.
+- **Bug fixed during verification:** the hop from a bus stop to the indoor network was counted as "inside the station" (Protected). Only train stations are enclosed, so a bus-stop hop is now Exposed (unit test added).
+- **Bayfront → MBS hotel** is still about 5 Exposed min. The hotel end lands on an indoor piece that the Shoppes connector doesn't reach. The real layout couldn't be verified from the data, so no extra link was invented.
+- **OneMap rate limit (HTTP 429)** hit during repeated harness runs. The harness now paces itself and retries 429s, so a tuning run can't silently lose candidates.
+- Opening hours are checked in the server (not in `fetchCandidates`), with a dev-only `INDOOR_ALWAYS_OPEN=1` override.
+- Also fixed: a walk-only "public transport" itinerary (e.g. at night) duplicated the Walk card; the hop paths were drawn in the wrong direction (caught by a continuity test).
+- **Verified:** 33 tests, typecheck, build; tuning harness on 19 real trips; UI checked with a real noon plan (it was 04:50 SGT, so no live transit).
+- **Follow-ups (not done):** fix the five connector gaps upstream in OSM (needs a mapper account and a survey), resolve the MBS hotel fragment, and consider extending the bbox to other hubs.

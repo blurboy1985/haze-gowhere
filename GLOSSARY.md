@@ -28,6 +28,14 @@ _Avoid_: Segment, step
 The Route with the lowest Exposure Cost for the current PM2.5 Band. The others are shown as alternatives.
 _Avoid_: Best route, optimal route, fastest route
 
+**Indoor Link**:
+An enclosed pedestrian connection between a station and nearby buildings, such as an underground passage or mall corridor (CityLink, Esplanade Xchange). Walking through one is Protected.
+_Avoid_: Underpass (it may be an above-ground mall corridor), shortcut
+
+**Indoor Variant**:
+A copy of a Route whose first or last walk goes through Indoor Links instead of the street. It is ranked alongside the original.
+_Avoid_: Indoor route (the train or bus part is unchanged)
+
 **Taxi Suggestion**:
 A prompt to consider a taxi or private-hire car, which is Protected door to door. It is offered at high PM2.5 Bands and is never ranked against the Routes.
 _Avoid_: Taxi route, car option
