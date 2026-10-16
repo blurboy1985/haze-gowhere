@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t haze-gowhere .
+      - name: Run container (mock routing, live haze)
+        run: docker run -d --name app -p 8080:8080 -e MOCK_ROUTING=1 haze-gowhere
+      - name: Smoke test
+        run: |
+          for i in $(seq 1 30); do curl -sf localhost:8080/api/haze >/dev/null && break; sleep 1; done
+          curl -sf localhost:8080/ | grep -q "<title>Haze GoWhere"
+          curl -sf localhost:8080/api/haze | grep -q '"regions"'
+          curl -sf "localhost:8080/api/routes?from=1.35092,103.84825&to=1.30398,103.83191" | grep -q '"tripBand"'
+          echo "Smoke test passed"
+      - name: Container logs
+        if: always()
+        run: docker logs app
