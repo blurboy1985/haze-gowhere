@@ -1,4 +1,5 @@
 import { splitWalkByCover, type CoveredLinkwayIndex } from "./coveredLinkways";
+import { isOpenAirStation } from "./openAirStations";
 import { decodePolyline } from "./polyline";
 import type { Leg, Route } from "./types";
 
@@ -10,6 +11,8 @@ export interface OneMapPtLeg {
   route?: string;
   routeShortName?: string;
   routeLongName?: string;
+  /** Boarding stop; stopCode is the station code for trains, e.g. "NS16" or "BP6". */
+  from?: { name?: string; stopCode?: string };
   legGeometry: { points: string };
 }
 export interface OneMapPtItinerary {
@@ -60,13 +63,15 @@ export function routeFromPtItinerary(it: OneMapPtItinerary, id: string, index: C
   for (const l of it.legs) {
     const path = decodePolyline(l.legGeometry.points);
     const ride = l.mode === "BUS" ? "bus" : TRAIN_MODES.has(l.mode) ? "train" : null;
-    // Waiting to board: bus stops are roofed but open-air (Covered); MRT/LRT stations are treated as enclosed (Protected).
+    // Waiting to board: bus stops and elevated/at-grade platforms are roofed but open-air (Covered);
+    // underground stations are enclosed (Protected).
     if (ride && prevEnd !== null && l.startTime > prevEnd) {
       const waitMin = minutesBetween(prevEnd, l.startTime);
       if (waitMin >= 0.5) {
+        const openAir = ride === "bus" || isOpenAirStation(l.from?.stopCode);
         legs.push({
           mode: "wait",
-          tier: ride === "bus" ? "covered" : "protected",
+          tier: openAir ? "covered" : "protected",
           minutes: waitMin,
           path: path.slice(0, 1),
           label: `Wait for ${lineName(l)}`,

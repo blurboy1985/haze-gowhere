@@ -42,7 +42,7 @@ Enclosed space where the commuter is not breathing outdoor air, such as a train,
 _Avoid_: Indoor, sheltered
 
 **Covered**:
-Open-air space with a roof, such as a covered linkway, void deck, or bus-stop shelter. It keeps out sun and rain but not haze.
+Open-air space with a roof, such as a covered linkway, void deck, bus-stop shelter, or elevated MRT/LRT platform. It keeps out sun and rain but not haze.
 _Avoid_: Sheltered, indoor, protected
 
 **Exposed**:

@@ -87,6 +87,23 @@ describe("OneMap itinerary → Route", () => {
     expect(route.summary).toBe("Bus 7 → North South Line");
   });
 
+  it("treats waiting on an open-air (elevated) platform as Covered, underground as Protected", () => {
+    const geom = { points: encodePolyline([[1.37, 103.85], [1.284, 103.85]]) };
+    const boardAt = (stopCode: string): OneMapPtItinerary => ({
+      duration: 0,
+      legs: [
+        { mode: "WALK", startTime: 0, endTime: 3 * min, legGeometry: geom },
+        { mode: "SUBWAY", route: "NS", from: { stopCode }, startTime: 6 * min, endTime: 26 * min, legGeometry: geom },
+      ],
+    });
+    const waitTier = (code: string) =>
+      routeFromPtItinerary(boardAt(code), "x", CoveredLinkwayIndex.empty()).legs.find((l) => l.mode === "wait")!.tier;
+    expect(waitTier("NS16")).toBe("covered"); // Ang Mo Kio, elevated
+    expect(waitTier("NS19")).toBe("protected"); // Toa Payoh, underground
+    expect(waitTier("BP6")).toBe("covered"); // Bukit Panjang LRT
+    expect(waitTier("DT1")).toBe("protected"); // Bukit Panjang DTL, underground
+  });
+
   it("merges mode queries, dropping itineraries that ride the same services", () => {
     const geom = { points: encodePolyline([[1.3, 103.8], [1.31, 103.81]]) };
     const ride = (mode: string, route: string, walkMin: number): OneMapPtItinerary => ({
