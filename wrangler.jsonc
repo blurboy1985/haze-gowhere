@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "haze-gowhere",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Built web app plus data files (npm run deploy copies server/data into dist/data).
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "routes": [{ "pattern": "haze.danielquek.com", "custom_domain": true }],
+  "observability": { "enabled": true }
+  // Secrets (set with `npx wrangler secret put <NAME>`): ONEMAP_EMAIL, ONEMAP_PASSWORD
+}

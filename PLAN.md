@@ -73,3 +73,13 @@ Where reality differed from the plan:
 - Also fixed: a walk-only "public transport" itinerary (e.g. at night) duplicated the Walk card; the hop paths were drawn in the wrong direction (caught by a continuity test).
 - **Verified:** 33 tests, typecheck, build; tuning harness on 19 real trips; UI checked with a real noon plan (it was 04:50 SGT, so no live transit).
 - **Follow-ups (not done):** fix the five connector gaps upstream in OSM (needs a mapper account and a survey), resolve the MBS hotel fragment, and consider extending the bbox to other hubs.
+
+## Phase 4: deploy to Cloudflare at haze.danielquek.com (done 2026-10-17)
+Decisions: a Cloudflare Worker plus static assets (no containers) on the Workers Paid plan. The Docker and Express setup stays for local and other hosts.
+
+1. Move the API handlers (haze, search, reverse, routes) into framework-free `server/api.ts`. Express (`server/index.ts`) and the Worker both wrap it, so the logic exists once.
+2. `worker/index.ts`: `/api/*` goes to the shared handlers, and everything else is served as static assets (SPA fallback). The linkway and indoor data load lazily from assets (`/data/*`) and are cached per isolate.
+3. `wrangler.jsonc`: assets from `dist`, `nodejs_compat`, custom domain `haze.danielquek.com`. Add an `npm run deploy` script (build, copy `server/data`, `wrangler deploy`).
+4. The user sets the `ONEMAP_EMAIL` and `ONEMAP_PASSWORD` Worker secrets themselves (Claude does not enter credentials).
+5. Verify with `wrangler dev` locally, then deploy. Check `https://haze.danielquek.com`: page, `/api/haze`, real `/api/routes` with no mock flag, and an indoor variant during the day. Then commit and push.
+- **Verified (2026-10-17 05:20 SGT):** https://haze.danielquek.com serves the page, haze, search and reverse geocoding. Live routes come back `mock=false` with both secrets set. Not yet seen live: public-transport and indoor variants (it was before 06:00 SGT, so OneMap offered only walking). `wrangler dev` checks passed in workerd.

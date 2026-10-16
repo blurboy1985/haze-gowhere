@@ -28,16 +28,16 @@ async function fetchJson(url: string): Promise<DataGovResponse> {
  * Dev/test only: HAZE_OVERRIDE_PM25=<µg/m³> replaces every region's 1-hr PM2.5 so any band can be exercised.
  * The reading is flagged `simulated` and the UI says so.
  */
-function applyOverride(reading: HazeReading): HazeReading {
-  const raw = process.env.HAZE_OVERRIDE_PM25;
+function applyOverride(reading: HazeReading, raw: string | undefined): HazeReading {
   if (!raw) return reading;
   const pm = Number(raw);
   if (!Number.isFinite(pm) || pm < 0) return reading;
   return { ...reading, simulated: true, regions: reading.regions.map((r) => ({ ...r, pm25: pm, band: pm25Band(pm) })) };
 }
 
-export async function latestHazeReading(): Promise<HazeReading> {
-  return applyOverride(await liveHazeReading());
+/** `overridePm25`: the HAZE_OVERRIDE_PM25 setting, if any (dev/test only). */
+export async function latestHazeReading(overridePm25?: string): Promise<HazeReading> {
+  return applyOverride(await liveHazeReading(), overridePm25);
 }
 
 async function liveHazeReading(): Promise<HazeReading> {

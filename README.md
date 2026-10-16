@@ -79,6 +79,32 @@ Keep the raw download outside the repo. The build applies the tagging rules in [
 
 Dev/test only: `INDOOR_ALWAYS_OPEN=1` uses indoor links outside 06:00–23:00 SGT.
 
+## Deploy to Cloudflare (production: https://haze.danielquek.com)
+
+Production runs as a Cloudflare Worker (`worker/index.ts`, config in `wrangler.jsonc`). The Worker answers `/api/*` with the same handlers as the Express server (`server/api.ts`). Everything else, including the data files under `/data/*`, is served as static assets from `dist`.
+
+```bash
+npm run deploy
+```
+
+This builds the app, copies `server/data` into `dist/data`, and runs `wrangler deploy` (custom domain `haze.danielquek.com`). Set the OneMap credentials once as Worker secrets:
+
+```bash
+npx wrangler secret put ONEMAP_EMAIL
+```
+
+```bash
+npx wrangler secret put ONEMAP_PASSWORD
+```
+
+To run the Worker locally in Cloudflare's runtime (it reads credentials from `.env`):
+
+```bash
+npm run dev:cf
+```
+
+Needs the Workers Paid plan: building the linkway and indoor indexes on a cold start exceeds the Free plan's 10 ms CPU limit.
+
 ## Container
 
 ```bash
