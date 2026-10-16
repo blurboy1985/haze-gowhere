@@ -30,12 +30,14 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 - OneMap often returns only 1 public-transport itinerary for direct MRT trips.
 - Waits between legs only appear when OneMap's leg times leave a gap.
 
-## Not yet verified
-- The Docker build (Docker isn't installed here).
-- The Taxi Suggestion path in the UI (live haze was Band 2 everywhere).
+## Open work (tracked on GitHub)
+- [#1](https://github.com/blurboy1985/haze-gowhere/issues/1) Verify the Docker image builds and runs (Docker isn't installed here)
+- [#2](https://github.com/blurboy1985/haze-gowhere/issues/2) Verify the Taxi Suggestion at Band 3+ (live haze was Band 2 everywhere)
+- [#3](https://github.com/blurboy1985/haze-gowhere/issues/3) Load LTA covered-linkway data. Without it, every walking Leg counts as Exposed
+- [#4](https://github.com/blurboy1985/haze-gowhere/issues/4) Request bus-only and rail-only itineraries to widen route choice
+- [#5](https://github.com/blurboy1985/haze-gowhere/issues/5) Tune Avoidance Strength weights with real trips
+- [#6](https://github.com/blurboy1985/haze-gowhere/issues/6) Elevated MRT platforms are treated as Protected, though they are really Covered
+- [#7](https://github.com/blurboy1985/haze-gowhere/issues/7) Revisit ADR 0001 if indoor-link data appears
 
 ## Risks / known limitations
-- OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, live routing can't be verified, so a fixture-backed mock mode is used for development.
-- The LTA covered-linkway file comes from a manual DataMall download. Without it, every walking Leg counts as Exposed (the conservative choice).
-- Elevated MRT platforms are treated as Protected. There is no data on which platforms are enclosed.
-- Docker isn't installed on this machine, so the Dockerfile won't be build-tested here.
+- OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
