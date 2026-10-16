@@ -30,13 +30,12 @@ export interface TripRequest {
   when: Date;
 }
 
-export async function planTrip(
-  req: TripRequest,
+/** All candidate Routes for a Trip: the walk plus merged TRANSIT/BUS/RAIL itineraries, tiered. */
+export async function fetchCandidates(
+  req: Pick<TripRequest, "start" | "end" | "when">,
   source: RouteSource,
-  haze: HazeReading,
   linkways: CoveredLinkwayIndex,
-  mock: boolean,
-): Promise<RoutesResponse> {
+): Promise<Route[]> {
   const [walkRes, ...ptResults] = await Promise.allSettled([
     source.walk(req.start, req.end),
     ...PT_MODES.map((mode) => source.publicTransport(req.start, req.end, req.when, mode)),
@@ -52,7 +51,17 @@ export async function planTrip(
     ptResults.map((r) => (r.status === "fulfilled" ? ((r.value as OneMapPtResponse).plan?.itineraries ?? []) : [])),
   );
   itineraries.forEach((it, i) => candidates.push(routeFromPtItinerary(it, `pt-${i}`, linkways)));
+  return candidates;
+}
 
+export async function planTrip(
+  req: TripRequest,
+  source: RouteSource,
+  haze: HazeReading,
+  linkways: CoveredLinkwayIndex,
+  mock: boolean,
+): Promise<RoutesResponse> {
+  const candidates = await fetchCandidates(req, source, linkways);
   const band = tripBand(candidates, req.start, req.end, haze.regions);
   const routes = rankRoutes(candidates, band, req.alwaysMinimise);
 

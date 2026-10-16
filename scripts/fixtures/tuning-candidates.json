@@ -1,0 +1,8820 @@
+[
+ {
+  "name": "Bishan MRT → ION Orchard",
+  "kind": "direct MRT",
+  "from": [
+   1.35092,
+   103.84825
+  ],
+  "to": [
+   1.30398,
+   103.83191
+  ],
+  "fetchedAt": "2026-10-16T14:33:27.261Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.620806053908684,
+      "path": [
+       [
+        1.35092,
+        103.84825
+       ],
+       [
+        1.34728,
+        103.84719
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.320652861146349,
+      "path": [
+       [
+        1.34728,
+        103.84719
+       ],
+       [
+        1.34633,
+        103.84695
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 12.242784248257593,
+      "path": [
+       [
+        1.34633,
+        103.84695
+       ],
+       [
+        1.33873,
+        103.84636
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7278228325267667,
+      "path": [
+       [
+        1.33873,
+        103.84636
+       ],
+       [
+        1.33833,
+        103.84649
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 13.443104159283362,
+      "path": [
+       [
+        1.33833,
+        103.84649
+       ],
+       [
+        1.32997,
+        103.84453
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.9570714029876114,
+      "path": [
+       [
+        1.32997,
+        103.84453
+       ],
+       [
+        1.32994,
+        103.84443
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.223884529205348,
+      "path": [
+       [
+        1.32994,
+        103.84443
+       ],
+       [
+        1.32478,
+        103.84209
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2915295627094563,
+      "path": [
+       [
+        1.32478,
+        103.84209
+       ],
+       [
+        1.32457,
+        103.84203
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 17.01182600236887,
+      "path": [
+       [
+        1.32457,
+        103.84203
+       ],
+       [
+        1.31497,
+        103.83814
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.3704704877129648,
+      "path": [
+       [
+        1.31497,
+        103.83814
+       ],
+       [
+        1.31417,
+        103.83856
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6964369604378631,
+      "path": [
+       [
+        1.31417,
+        103.83856
+       ],
+       [
+        1.31377,
+        103.83822
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5905230723125119,
+      "path": [
+       [
+        1.31377,
+        103.83822
+       ],
+       [
+        1.31351,
+        103.83815
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.165913293660019,
+      "path": [
+       [
+        1.31351,
+        103.83815
+       ],
+       [
+        1.31268,
+        103.83827
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3642468615641637,
+      "path": [
+       [
+        1.31268,
+        103.83827
+       ],
+       [
+        1.31253,
+        103.83804
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 17.40626100525178,
+      "path": [
+       [
+        1.31253,
+        103.83804
+       ],
+       [
+        1.30367,
+        103.83201
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "North South Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.45,
+      "path": [
+       [
+        1.35092,
+        103.84825
+       ],
+       [
+        1.35082,
+        103.84818
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 9.833333333333334,
+      "path": [
+       [
+        1.35082,
+        103.84816
+       ],
+       [
+        1.30381,
+        103.83224
+       ]
+      ],
+      "label": "North South Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.36666666666666664,
+      "path": [
+       [
+        1.30381,
+        103.83227
+       ],
+       [
+        1.30367,
+        103.83201
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 54",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.8946345766216575,
+      "path": [
+       [
+        1.35092,
+        103.84825
+       ],
+       [
+        1.35112,
+        103.84801
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.1720320900450094,
+      "path": [
+       [
+        1.35112,
+        103.84801
+       ],
+       [
+        1.351,
+        103.84765
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 34.05,
+      "path": [
+       [
+        1.35096,
+        103.84781
+       ],
+       [
+        1.30218,
+        103.82978
+       ]
+      ],
+      "label": "Bus 54"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 6.45,
+      "path": [
+       [
+        1.30213,
+        103.82987
+       ],
+       [
+        1.30367,
+        103.83201
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 88 → Bus 105",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.8443716092659512,
+      "path": [
+       [
+        1.35092,
+        103.84825
+       ],
+       [
+        1.35112,
+        103.84801
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.38841667443994055,
+      "path": [
+       [
+        1.35112,
+        103.84801
+       ],
+       [
+        1.3509,
+        103.84796
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.017211716294108108,
+      "path": [
+       [
+        1.3509,
+        103.84796
+       ],
+       [
+        1.3509,
+        103.84797
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 6.3,
+      "path": [
+       [
+        1.35093,
+        103.8478
+       ],
+       [
+        1.33982,
+        103.85284
+       ]
+      ],
+      "label": "Bus 88"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 6.366666666666666,
+      "path": [
+       [
+        1.33982,
+        103.85284
+       ]
+      ],
+      "label": "Wait for Bus 105"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 24.966666666666665,
+      "path": [
+       [
+        1.33982,
+        103.85284
+       ],
+       [
+        1.3046,
+        103.82915
+       ]
+      ],
+      "label": "Bus 105"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.2,
+      "path": [
+       [
+        1.30453,
+        103.82914
+       ],
+       [
+        1.30367,
+        103.83201
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 156 → Bus 972",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.8443716092659512,
+      "path": [
+       [
+        1.35092,
+        103.84825
+       ],
+       [
+        1.35112,
+        103.84801
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.38841667443994055,
+      "path": [
+       [
+        1.35112,
+        103.84801
+       ],
+       [
+        1.3509,
+        103.84796
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.017211716294108108,
+      "path": [
+       [
+        1.3509,
+        103.84796
+       ],
+       [
+        1.3509,
+        103.84797
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 19.666666666666668,
+      "path": [
+       [
+        1.35093,
+        103.8478
+       ],
+       [
+        1.32262,
+        103.82606
+       ]
+      ],
+      "label": "Bus 156"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 4.216666666666667,
+      "path": [
+       [
+        1.32262,
+        103.82606
+       ]
+      ],
+      "label": "Wait for Bus 972"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 25.533333333333335,
+      "path": [
+       [
+        1.32262,
+        103.82606
+       ],
+       [
+        1.30331,
+        103.83245
+       ]
+      ],
+      "label": "Bus 972"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.9368925184103756,
+      "path": [
+       [
+        1.30323,
+        103.83254
+       ],
+       [
+        1.30298,
+        103.83222
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.273844940369947,
+      "path": [
+       [
+        1.30298,
+        103.83222
+       ],
+       [
+        1.30344,
+        103.83181
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6225958745530111,
+      "path": [
+       [
+        1.30344,
+        103.83181
+       ],
+       [
+        1.30367,
+        103.83201
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Toa Payoh Hub → Novena Square",
+  "kind": "1-stop MRT",
+  "from": [
+   1.33266,
+   103.84776
+  ],
+  "to": [
+   1.3203,
+   103.8438
+  ],
+  "fetchedAt": "2026-10-16T14:33:27.586Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.6886321115945957,
+      "path": [
+       [
+        1.33265,
+        103.84776
+       ],
+       [
+        1.33315,
+        103.8469
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.40139514185528014,
+      "path": [
+       [
+        1.33315,
+        103.8469
+       ],
+       [
+        1.33297,
+        103.84675
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.20581764971834596,
+      "path": [
+       [
+        1.33297,
+        103.84675
+       ],
+       [
+        1.33282,
+        103.84671
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.4315253492132656,
+      "path": [
+       [
+        1.33282,
+        103.84671
+       ],
+       [
+        1.33178,
+        103.84658
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.473015503550441,
+      "path": [
+       [
+        1.33178,
+        103.84658
+       ],
+       [
+        1.32997,
+        103.84453
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.9563924292609626,
+      "path": [
+       [
+        1.32997,
+        103.84453
+       ],
+       [
+        1.32994,
+        103.84443
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.4796828021343735,
+      "path": [
+       [
+        1.32994,
+        103.84443
+       ],
+       [
+        1.32691,
+        103.84472
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2183863503273723,
+      "path": [
+       [
+        1.32691,
+        103.84472
+       ],
+       [
+        1.32675,
+        103.8447
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 11.178485995678699,
+      "path": [
+       [
+        1.32675,
+        103.8447
+       ],
+       [
+        1.32033,
+        103.84376
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "North South Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.8166666666666667,
+      "path": [
+       [
+        1.33264,
+        103.84776
+       ],
+       [
+        1.33246,
+        103.84758
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1.95,
+      "path": [
+       [
+        1.33248,
+        103.84768
+       ],
+       [
+        1.32041,
+        103.84389
+       ]
+      ],
+      "label": "North South Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.23333333333333334,
+      "path": [
+       [
+        1.32045,
+        103.84384
+       ],
+       [
+        1.32033,
+        103.84375
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 143 → Bus 57",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.7999999999999998,
+      "path": [
+       [
+        1.33264,
+        103.84776
+       ],
+       [
+        1.33202,
+        103.84692
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.6333333333333333,
+      "path": [
+       [
+        1.33214,
+        103.84641
+       ],
+       [
+        1.32944,
+        103.84382
+       ]
+      ],
+      "label": "Bus 143"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.8333333333333335,
+      "path": [
+       [
+        1.32944,
+        103.84382
+       ]
+      ],
+      "label": "Wait for Bus 57"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.833333333333333,
+      "path": [
+       [
+        1.32944,
+        103.84382
+       ],
+       [
+        1.32007,
+        103.84285
+       ]
+      ],
+      "label": "Bus 57"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.05,
+      "path": [
+       [
+        1.32017,
+        103.84298
+       ],
+       [
+        1.32033,
+        103.84375
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 129 → Bus 21",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.2282600212050756,
+      "path": [
+       [
+        1.33264,
+        103.84776
+       ],
+       [
+        1.33314,
+        103.8469
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5217399787949244,
+      "path": [
+       [
+        1.33314,
+        103.8469
+       ],
+       [
+        1.3332,
+        103.84671
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.35,
+      "path": [
+       [
+        1.33321,
+        103.84668
+       ],
+       [
+        1.32655,
+        103.84366
+       ]
+      ],
+      "label": "Bus 129"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.65,
+      "path": [
+       [
+        1.32665,
+        103.84366
+       ],
+       [
+        1.32647,
+        103.8442
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 5.666666666666667,
+      "path": [
+       [
+        1.32659,
+        103.8442
+       ]
+      ],
+      "label": "Wait for Bus 21"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.6333333333333333,
+      "path": [
+       [
+        1.32659,
+        103.8442
+       ],
+       [
+        1.32007,
+        103.84285
+       ]
+      ],
+      "label": "Bus 21"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.05,
+      "path": [
+       [
+        1.32017,
+        103.84298
+       ],
+       [
+        1.32033,
+        103.84375
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 105 → Bus 5",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.2282600212050756,
+      "path": [
+       [
+        1.33264,
+        103.84776
+       ],
+       [
+        1.33314,
+        103.8469
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5217399787949244,
+      "path": [
+       [
+        1.33314,
+        103.8469
+       ],
+       [
+        1.3332,
+        103.84671
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.6333333333333333,
+      "path": [
+       [
+        1.33321,
+        103.84668
+       ],
+       [
+        1.32944,
+        103.84382
+       ]
+      ],
+      "label": "Bus 105"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 6.666666666666667,
+      "path": [
+       [
+        1.32944,
+        103.84382
+       ]
+      ],
+      "label": "Wait for Bus 5"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.366666666666666,
+      "path": [
+       [
+        1.32944,
+        103.84382
+       ],
+       [
+        1.32101,
+        103.84211
+       ]
+      ],
+      "label": "Bus 5"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.033333333333333,
+      "path": [
+       [
+        1.32109,
+        103.84224
+       ],
+       [
+        1.32033,
+        103.84375
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Tampines Mall → Bedok Mall",
+  "kind": "bus vs MRT",
+  "from": [
+   1.35252,
+   103.9444
+  ],
+  "to": [
+   1.3248,
+   103.929
+  ],
+  "fetchedAt": "2026-10-16T14:33:28.196Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.930478196715645,
+      "path": [
+       [
+        1.35262,
+        103.94444
+       ],
+       [
+        1.34874,
+        103.94234
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.8672131562169574,
+      "path": [
+       [
+        1.34874,
+        103.94234
+       ],
+       [
+        1.34848,
+        103.94214
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3986543692796261,
+      "path": [
+       [
+        1.34848,
+        103.94214
+       ],
+       [
+        1.3484,
+        103.94185
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7108446562544078,
+      "path": [
+       [
+        1.3484,
+        103.94185
+       ],
+       [
+        1.34814,
+        103.94169
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.201304337511863,
+      "path": [
+       [
+        1.34814,
+        103.94169
+       ],
+       [
+        1.34653,
+        103.93949
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.4638014639542194,
+      "path": [
+       [
+        1.34653,
+        103.93949
+       ],
+       [
+        1.34653,
+        103.93914
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 14.411319191482125,
+      "path": [
+       [
+        1.34653,
+        103.93914
+       ],
+       [
+        1.33831,
+        103.93386
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.3366104097420786,
+      "path": [
+       [
+        1.33831,
+        103.93386
+       ],
+       [
+        1.33791,
+        103.93311
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.029371283992479,
+      "path": [
+       [
+        1.33791,
+        103.93311
+       ],
+       [
+        1.33658,
+        103.93311
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 4.7274861783747175,
+      "path": [
+       [
+        1.33658,
+        103.93311
+       ],
+       [
+        1.33335,
+        103.93376
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.2192838230754124,
+      "path": [
+       [
+        1.33335,
+        103.93376
+       ],
+       [
+        1.33248,
+        103.93394
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.38709971389789544,
+      "path": [
+       [
+        1.33248,
+        103.93394
+       ],
+       [
+        1.33219,
+        103.93394
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.269272353605986,
+      "path": [
+       [
+        1.33219,
+        103.93394
+       ],
+       [
+        1.32757,
+        103.93076
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5778871254872023,
+      "path": [
+       [
+        1.32757,
+        103.93076
+       ],
+       [
+        1.32724,
+        103.93059
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.323216617680593,
+      "path": [
+       [
+        1.32724,
+        103.93059
+       ],
+       [
+        1.32681,
+        103.92969
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3702229889223559,
+      "path": [
+       [
+        1.32681,
+        103.92969
+       ],
+       [
+        1.32657,
+        103.92975
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.292600800473098,
+      "path": [
+       [
+        1.32657,
+        103.92975
+       ],
+       [
+        1.32454,
+        103.92904
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "East West Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.916666666666667,
+      "path": [
+       [
+        1.35262,
+        103.94443
+       ],
+       [
+        1.35328,
+        103.94516
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 8.716666666666667,
+      "path": [
+       [
+        1.35333,
+        103.94521
+       ],
+       [
+        1.32394,
+        103.93018
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.1,
+      "path": [
+       [
+        1.32403,
+        103.93017
+       ],
+       [
+        1.32453,
+        103.92903
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 168",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.466666666666667,
+      "path": [
+       [
+        1.35262,
+        103.94443
+       ],
+       [
+        1.35162,
+        103.94385
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 15.8,
+      "path": [
+       [
+        1.35173,
+        103.94384
+       ],
+       [
+        1.3247,
+        103.92979
+       ]
+      ],
+      "label": "Bus 168"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 67 → Bus 222",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5,
+      "path": [
+       [
+        1.35262,
+        103.94443
+       ],
+       [
+        1.35407,
+        103.94339
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 13.833333333333334,
+      "path": [
+       [
+        1.35353,
+        103.9431
+       ],
+       [
+        1.32938,
+        103.9347
+       ]
+      ],
+      "label": "Bus 67"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.8833333333333333,
+      "path": [
+       [
+        1.32938,
+        103.9347
+       ]
+      ],
+      "label": "Wait for Bus 222"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.4,
+      "path": [
+       [
+        1.32938,
+        103.9347
+       ],
+       [
+        1.3245,
+        103.92904
+       ]
+      ],
+      "label": "Bus 222"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 67 → Bus 14",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5,
+      "path": [
+       [
+        1.35262,
+        103.94443
+       ],
+       [
+        1.35407,
+        103.94339
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 13.833333333333334,
+      "path": [
+       [
+        1.35353,
+        103.9431
+       ],
+       [
+        1.32938,
+        103.9347
+       ]
+      ],
+      "label": "Bus 67"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 3.4,
+      "path": [
+       [
+        1.32938,
+        103.9347
+       ]
+      ],
+      "label": "Wait for Bus 14"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.4,
+      "path": [
+       [
+        1.32938,
+        103.9347
+       ],
+       [
+        1.3245,
+        103.92904
+       ]
+      ],
+      "label": "Bus 14"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Ang Mo Kio Hub → NEX Serangoon",
+  "kind": "bus vs MRT",
+  "from": [
+   1.3693,
+   103.8487
+  ],
+  "to": [
+   1.3506,
+   103.8721
+  ],
+  "fetchedAt": "2026-10-16T14:33:28.696Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.257668327756919,
+      "path": [
+       [
+        1.36927,
+        103.8487
+       ],
+       [
+        1.36943,
+        103.84962
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.24882306434093002,
+      "path": [
+       [
+        1.36943,
+        103.84962
+       ],
+       [
+        1.36956,
+        103.84973
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3861403924737321,
+      "path": [
+       [
+        1.36956,
+        103.84973
+       ],
+       [
+        1.3693,
+        103.84986
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2322859144716621,
+      "path": [
+       [
+        1.3693,
+        103.84986
+       ],
+       [
+        1.36919,
+        103.84982
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3872739930316156,
+      "path": [
+       [
+        1.36919,
+        103.84982
+       ],
+       [
+        1.36894,
+        103.84997
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.9320289428239823,
+      "path": [
+       [
+        1.36894,
+        103.84997
+       ],
+       [
+        1.36775,
+        103.85072
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 15.756674949646632,
+      "path": [
+       [
+        1.36775,
+        103.85072
+       ],
+       [
+        1.35733,
+        103.85466
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.44227902813286235,
+      "path": [
+       [
+        1.35733,
+        103.85466
+       ],
+       [
+        1.35703,
+        103.8548
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 9.016523687941255,
+      "path": [
+       [
+        1.35703,
+        103.8548
+       ],
+       [
+        1.35473,
+        103.8607
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0855478127843081,
+      "path": [
+       [
+        1.35473,
+        103.8607
+       ],
+       [
+        1.35455,
+        103.86146
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 12.003692632019723,
+      "path": [
+       [
+        1.35455,
+        103.86146
+       ],
+       [
+        1.35211,
+        103.86856
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.0135064022201195,
+      "path": [
+       [
+        1.35211,
+        103.86856
+       ],
+       [
+        1.35137,
+        103.86988
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.07513742016984373,
+      "path": [
+       [
+        1.35137,
+        103.86988
+       ],
+       [
+        1.35137,
+        103.86992
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.2834556397414847,
+      "path": [
+       [
+        1.35137,
+        103.86992
+       ],
+       [
+        1.35075,
+        103.87123
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.4122951257782643,
+      "path": [
+       [
+        1.35075,
+        103.87123
+       ],
+       [
+        1.35056,
+        103.8721
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 135",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.9326222477731813,
+      "path": [
+       [
+        1.36926,
+        103.8487
+       ],
+       [
+        1.36907,
+        103.84836
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2689773496214971,
+      "path": [
+       [
+        1.36907,
+        103.84836
+       ],
+       [
+        1.36906,
+        103.84851
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.1484004026053216,
+      "path": [
+       [
+        1.36906,
+        103.84851
+       ],
+       [
+        1.36968,
+        103.84856
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 13.333333333333334,
+      "path": [
+       [
+        1.36986,
+        103.84854
+       ],
+       [
+        1.35084,
+        103.871
+       ]
+      ],
+      "label": "Bus 135"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.429651208376592,
+      "path": [
+       [
+        1.35092,
+        103.87106
+       ],
+       [
+        1.35075,
+        103.87123
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.7870154582900746,
+      "path": [
+       [
+        1.35075,
+        103.87123
+       ],
+       [
+        1.35056,
+        103.8721
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "North South Line → Circle Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.4156335141262144,
+      "path": [
+       [
+        1.36926,
+        103.8487
+       ],
+       [
+        1.36943,
+        103.84962
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7676998192071186,
+      "path": [
+       [
+        1.36943,
+        103.84962
+       ],
+       [
+        1.36985,
+        103.84958
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 3.1666666666666665,
+      "path": [
+       [
+        1.36994,
+        103.84974
+       ],
+       [
+        1.35082,
+        103.84816
+       ]
+      ],
+      "label": "North South Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.183333333333334,
+      "path": [
+       [
+        1.35082,
+        103.84818
+       ],
+       [
+        1.3513,
+        103.84945
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "protected",
+      "minutes": 4.966666666666667,
+      "path": [
+       [
+        1.35137,
+        103.84947
+       ]
+      ],
+      "label": "Wait for Circle Line"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 4.083333333333333,
+      "path": [
+       [
+        1.35137,
+        103.84947
+       ],
+       [
+        1.35057,
+        103.87295
+       ]
+      ],
+      "label": "Circle Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.283333333333333,
+      "path": [
+       [
+        1.35067,
+        103.87299
+       ],
+       [
+        1.35056,
+        103.8721
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 133",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.9326222477731813,
+      "path": [
+       [
+        1.36926,
+        103.8487
+       ],
+       [
+        1.36907,
+        103.84836
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2689773496214971,
+      "path": [
+       [
+        1.36907,
+        103.84836
+       ],
+       [
+        1.36906,
+        103.84851
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.1484004026053216,
+      "path": [
+       [
+        1.36906,
+        103.84851
+       ],
+       [
+        1.36968,
+        103.84856
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 16.983333333333334,
+      "path": [
+       [
+        1.37006,
+        103.84913
+       ],
+       [
+        1.35084,
+        103.871
+       ]
+      ],
+      "label": "Bus 133"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.429651208376592,
+      "path": [
+       [
+        1.35092,
+        103.87106
+       ],
+       [
+        1.35075,
+        103.87123
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.7870154582900746,
+      "path": [
+       [
+        1.35075,
+        103.87123
+       ],
+       [
+        1.35056,
+        103.8721
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 853 → Bus 158",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.5757744921881354,
+      "path": [
+       [
+        1.36926,
+        103.8487
+       ],
+       [
+        1.36943,
+        103.84962
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.30247089184364934,
+      "path": [
+       [
+        1.36943,
+        103.84962
+       ],
+       [
+        1.36955,
+        103.84973
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.45960942390655957,
+      "path": [
+       [
+        1.36955,
+        103.84973
+       ],
+       [
+        1.3693,
+        103.84985
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.28184304463331916,
+      "path": [
+       [
+        1.3693,
+        103.84985
+       ],
+       [
+        1.36918,
+        103.84982
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.4604963129764866,
+      "path": [
+       [
+        1.36918,
+        103.84982
+       ],
+       [
+        1.36894,
+        103.84996
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.1198058344518502,
+      "path": [
+       [
+        1.36894,
+        103.84996
+       ],
+       [
+        1.36784,
+        103.85057
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 14.566666666666666,
+      "path": [
+       [
+        1.36776,
+        103.85044
+       ],
+       [
+        1.3491,
+        103.87334
+       ]
+      ],
+      "label": "Bus 853"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 6.35,
+      "path": [
+       [
+        1.3491,
+        103.87334
+       ]
+      ],
+      "label": "Wait for Bus 158"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.3491,
+        103.87334
+       ],
+       [
+        1.35034,
+        103.87129
+       ]
+      ],
+      "label": "Bus 158"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6,
+      "path": [
+       [
+        1.35046,
+        103.87168
+       ],
+       [
+        1.35056,
+        103.8721
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Jurong East MRT → NUS UTown",
+  "kind": "MRT + bus",
+  "from": [
+   1.33315,
+   103.74222
+  ],
+  "to": [
+   1.3053,
+   103.7732
+  ],
+  "fetchedAt": "2026-10-16T14:33:29.413Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.5427218719195779,
+      "path": [
+       [
+        1.33317,
+        103.74226
+       ],
+       [
+        1.33228,
+        103.74278
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.322226552749994,
+      "path": [
+       [
+        1.33228,
+        103.74278
+       ],
+       [
+        1.33207,
+        103.7429
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.49614785016611357,
+      "path": [
+       [
+        1.33207,
+        103.7429
+       ],
+       [
+        1.33175,
+        103.74309
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.6443902670750155,
+      "path": [
+       [
+        1.33175,
+        103.74309
+       ],
+       [
+        1.33063,
+        103.74462
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 36.975836706451474,
+      "path": [
+       [
+        1.33063,
+        103.74462
+       ],
+       [
+        1.31578,
+        103.76464
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0777609094846268,
+      "path": [
+       [
+        1.31578,
+        103.76464
+       ],
+       [
+        1.31505,
+        103.76497
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.288220099725125,
+      "path": [
+       [
+        1.31505,
+        103.76497
+       ],
+       [
+        1.31294,
+        103.76617
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.29611677048274165,
+      "path": [
+       [
+        1.31294,
+        103.76617
+       ],
+       [
+        1.31283,
+        103.76632
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.22602998603021607,
+      "path": [
+       [
+        1.31283,
+        103.76632
+       ],
+       [
+        1.31271,
+        103.76644
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.8411495795592838,
+      "path": [
+       [
+        1.31271,
+        103.76644
+       ],
+       [
+        1.31235,
+        103.76685
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 17.90606607302249,
+      "path": [
+       [
+        1.31235,
+        103.76685
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "East West Line → Bus 189",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.85,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33307,
+        103.74226
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 4.666666666666667,
+      "path": [
+       [
+        1.33313,
+        103.74237
+       ],
+       [
+        1.31521,
+        103.76524
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6412014245294549,
+      "path": [
+       [
+        1.31519,
+        103.76521
+       ],
+       [
+        1.31546,
+        103.76516
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.2421319088038782,
+      "path": [
+       [
+        1.31546,
+        103.76516
+       ],
+       [
+        1.31528,
+        103.76536
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 4.05,
+      "path": [
+       [
+        1.3152,
+        103.76517
+       ]
+      ],
+      "label": "Wait for Bus 189"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.6,
+      "path": [
+       [
+        1.3152,
+        103.76517
+       ],
+       [
+        1.30556,
+        103.76993
+       ]
+      ],
+      "label": "Bus 189"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.32938082356123133,
+      "path": [
+       [
+        1.30566,
+        103.76989
+       ],
+       [
+        1.30568,
+        103.77004
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.537285843105434,
+      "path": [
+       [
+        1.30568,
+        103.77004
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 97",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.81354526488408,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33373,
+        103.74088
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5791824578261179,
+      "path": [
+       [
+        1.33373,
+        103.74088
+       ],
+       [
+        1.33405,
+        103.74083
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5406056106231355,
+      "path": [
+       [
+        1.33405,
+        103.74083
+       ],
+       [
+        1.33418,
+        103.7407
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 15.75,
+      "path": [
+       [
+        1.33417,
+        103.74064
+       ],
+       [
+        1.30499,
+        103.76977
+       ]
+      ],
+      "label": "Bus 97"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7070356615777824,
+      "path": [
+       [
+        1.30514,
+        103.76985
+       ],
+       [
+        1.30535,
+        103.76957
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.018395731691511662,
+      "path": [
+       [
+        1.30535,
+        103.76957
+       ],
+       [
+        1.30536,
+        103.76957
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5017410435560574,
+      "path": [
+       [
+        1.30536,
+        103.76957
+       ],
+       [
+        1.30568,
+        103.77004
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.706160896507982,
+      "path": [
+       [
+        1.30568,
+        103.77004
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 198",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.8219771525929271,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33235,
+        103.74274
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.15005053890300885,
+      "path": [
+       [
+        1.33235,
+        103.74274
+       ],
+       [
+        1.33227,
+        103.74278
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.285772137963978,
+      "path": [
+       [
+        1.33227,
+        103.74278
+       ],
+       [
+        1.33169,
+        103.74194
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2955118577450166,
+      "path": [
+       [
+        1.33169,
+        103.74194
+       ],
+       [
+        1.33156,
+        103.74201
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.712283957626248,
+      "path": [
+       [
+        1.33156,
+        103.74201
+       ],
+       [
+        1.33036,
+        103.7423
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.1545906955039968,
+      "path": [
+       [
+        1.33036,
+        103.7423
+       ],
+       [
+        1.33001,
+        103.74289
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.7464803263314906,
+      "path": [
+       [
+        1.33001,
+        103.74289
+       ],
+       [
+        1.32972,
+        103.74314
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 13.816666666666666,
+      "path": [
+       [
+        1.32959,
+        103.74305
+       ],
+       [
+        1.30499,
+        103.76977
+       ]
+      ],
+      "label": "Bus 198"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7070356615777824,
+      "path": [
+       [
+        1.30514,
+        103.76985
+       ],
+       [
+        1.30535,
+        103.76957
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.018395731691511662,
+      "path": [
+       [
+        1.30535,
+        103.76957
+       ],
+       [
+        1.30536,
+        103.76957
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5017410435560574,
+      "path": [
+       [
+        1.30536,
+        103.76957
+       ],
+       [
+        1.30568,
+        103.77004
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.706160896507982,
+      "path": [
+       [
+        1.30568,
+        103.77004
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 143 → Bus 197",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.81354526488408,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33373,
+        103.74088
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5791824578261179,
+      "path": [
+       [
+        1.33373,
+        103.74088
+       ],
+       [
+        1.33405,
+        103.74083
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5406056106231355,
+      "path": [
+       [
+        1.33405,
+        103.74083
+       ],
+       [
+        1.33418,
+        103.7407
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 0.48333333333333334,
+      "path": [
+       [
+        1.33417,
+        103.74064
+       ],
+       [
+        1.33246,
+        103.7408
+       ]
+      ],
+      "label": "Bus 143"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.4,
+      "path": [
+       [
+        1.3326,
+        103.7409
+       ]
+      ],
+      "label": "Wait for Bus 197"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 15.766666666666667,
+      "path": [
+       [
+        1.3326,
+        103.7409
+       ],
+       [
+        1.30499,
+        103.76977
+       ]
+      ],
+      "label": "Bus 197"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7070356615777824,
+      "path": [
+       [
+        1.30514,
+        103.76985
+       ],
+       [
+        1.30535,
+        103.76957
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.018395731691511662,
+      "path": [
+       [
+        1.30535,
+        103.76957
+       ],
+       [
+        1.30536,
+        103.76957
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5017410435560574,
+      "path": [
+       [
+        1.30536,
+        103.76957
+       ],
+       [
+        1.30568,
+        103.77004
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.706160896507982,
+      "path": [
+       [
+        1.30568,
+        103.77004
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-4",
+    "summary": "Bus 78 → Bus 198",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.81354526488408,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33373,
+        103.74088
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5791824578261179,
+      "path": [
+       [
+        1.33373,
+        103.74088
+       ],
+       [
+        1.33405,
+        103.74083
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5406056106231355,
+      "path": [
+       [
+        1.33405,
+        103.74083
+       ],
+       [
+        1.33418,
+        103.7407
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.9166666666666667,
+      "path": [
+       [
+        1.33417,
+        103.74064
+       ],
+       [
+        1.33011,
+        103.74322
+       ]
+      ],
+      "label": "Bus 78"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.25,
+      "path": [
+       [
+        1.33021,
+        103.74329
+       ],
+       [
+        1.32972,
+        103.74314
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 3.933333333333333,
+      "path": [
+       [
+        1.32959,
+        103.74305
+       ]
+      ],
+      "label": "Wait for Bus 198"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 13.816666666666666,
+      "path": [
+       [
+        1.32959,
+        103.74305
+       ],
+       [
+        1.30499,
+        103.76977
+       ]
+      ],
+      "label": "Bus 198"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7070356615777824,
+      "path": [
+       [
+        1.30514,
+        103.76985
+       ],
+       [
+        1.30535,
+        103.76957
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.018395731691511662,
+      "path": [
+       [
+        1.30535,
+        103.76957
+       ],
+       [
+        1.30536,
+        103.76957
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5017410435560574,
+      "path": [
+       [
+        1.30536,
+        103.76957
+       ],
+       [
+        1.30568,
+        103.77004
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.706160896507982,
+      "path": [
+       [
+        1.30568,
+        103.77004
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-5",
+    "summary": "East West Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.85,
+      "path": [
+       [
+        1.33317,
+        103.74225
+       ],
+       [
+        1.33307,
+        103.74226
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 7.416666666666667,
+      "path": [
+       [
+        1.33313,
+        103.74237
+       ],
+       [
+        1.31145,
+        103.77858
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.3522369680176993,
+      "path": [
+       [
+        1.31145,
+        103.77858
+       ],
+       [
+        1.31208,
+        103.77701
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.9917933110779416,
+      "path": [
+       [
+        1.31208,
+        103.77701
+       ],
+       [
+        1.31231,
+        103.77523
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 17.889303054237693,
+      "path": [
+       [
+        1.31231,
+        103.77523
+       ],
+       [
+        1.30529,
+        103.7732
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Blk 506 AMK → AMK MRT",
+  "kind": "short estate walk",
+  "from": [
+   1.3731,
+   103.8539
+  ],
+  "to": [
+   1.3699,
+   103.8496
+  ],
+  "fetchedAt": "2026-10-16T14:33:29.780Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.11591384200087,
+      "path": [
+       [
+        1.3731,
+        103.85391
+       ],
+       [
+        1.36999,
+        103.85386
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7622168596468033,
+      "path": [
+       [
+        1.36999,
+        103.85386
+       ],
+       [
+        1.37001,
+        103.85329
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.0632915803390226,
+      "path": [
+       [
+        1.37001,
+        103.85329
+       ],
+       [
+        1.36991,
+        103.8525
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.2873104810769442,
+      "path": [
+       [
+        1.36991,
+        103.8525
+       ],
+       [
+        1.3693,
+        103.85011
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.20674990319434633,
+      "path": [
+       [
+        1.3693,
+        103.85011
+       ],
+       [
+        1.36926,
+        103.84996
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.21518776067861028,
+      "path": [
+       [
+        1.36926,
+        103.84996
+       ],
+       [
+        1.3693,
+        103.84986
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3872185349419273,
+      "path": [
+       [
+        1.3693,
+        103.84986
+       ],
+       [
+        1.36956,
+        103.84973
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5787777047881432,
+      "path": [
+       [
+        1.36956,
+        103.84973
+       ],
+       [
+        1.36981,
+        103.84949
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 159",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.133333333333333,
+      "path": [
+       [
+        1.37309,
+        103.8539
+       ],
+       [
+        1.37579,
+        103.8532
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.6333333333333333,
+      "path": [
+       [
+        1.37598,
+        103.85322
+       ],
+       [
+        1.37131,
+        103.84851
+       ]
+      ],
+      "label": "Bus 159"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.06411883580802462,
+      "path": [
+       [
+        1.37137,
+        103.84866
+       ],
+       [
+        1.37133,
+        103.84867
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7181373958373861,
+      "path": [
+       [
+        1.37133,
+        103.84867
+       ],
+       [
+        1.3709,
+        103.84883
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5289780086649148,
+      "path": [
+       [
+        1.3709,
+        103.84883
+       ],
+       [
+        1.3706,
+        103.84899
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5054324263563414,
+      "path": [
+       [
+        1.3706,
+        103.84899
+       ],
+       [
+        1.3698,
+        103.84949
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 50",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.133333333333333,
+      "path": [
+       [
+        1.37309,
+        103.8539
+       ],
+       [
+        1.37579,
+        103.8532
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.65,
+      "path": [
+       [
+        1.37598,
+        103.85322
+       ],
+       [
+        1.37131,
+        103.84851
+       ]
+      ],
+      "label": "Bus 50"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.06411883580802462,
+      "path": [
+       [
+        1.37137,
+        103.84866
+       ],
+       [
+        1.37133,
+        103.84867
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7181373958373861,
+      "path": [
+       [
+        1.37133,
+        103.84867
+       ],
+       [
+        1.3709,
+        103.84883
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5289780086649148,
+      "path": [
+       [
+        1.3709,
+        103.84883
+       ],
+       [
+        1.3706,
+        103.84899
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5054324263563414,
+      "path": [
+       [
+        1.3706,
+        103.84899
+       ],
+       [
+        1.3698,
+        103.84949
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 45 → Bus 159",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.2000000000000006,
+      "path": [
+       [
+        1.37309,
+        103.8539
+       ],
+       [
+        1.37425,
+        103.85491
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 0.7166666666666667,
+      "path": [
+       [
+        1.3743,
+        103.85501
+       ],
+       [
+        1.37598,
+        103.85322
+       ]
+      ],
+      "label": "Bus 45"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.433333333333333,
+      "path": [
+       [
+        1.37598,
+        103.85322
+       ]
+      ],
+      "label": "Wait for Bus 159"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.6333333333333333,
+      "path": [
+       [
+        1.37598,
+        103.85322
+       ],
+       [
+        1.37131,
+        103.84851
+       ]
+      ],
+      "label": "Bus 159"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.06411883580802462,
+      "path": [
+       [
+        1.37137,
+        103.84866
+       ],
+       [
+        1.37133,
+        103.84867
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7181373958373861,
+      "path": [
+       [
+        1.37133,
+        103.84867
+       ],
+       [
+        1.3709,
+        103.84883
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5289780086649148,
+      "path": [
+       [
+        1.3709,
+        103.84883
+       ],
+       [
+        1.3706,
+        103.84899
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5054324263563414,
+      "path": [
+       [
+        1.3706,
+        103.84899
+       ],
+       [
+        1.3698,
+        103.84949
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Punggol Blk 271 → Punggol MRT",
+  "kind": "short estate walk",
+  "from": [
+   1.402,
+   103.901
+  ],
+  "to": [
+   1.4052,
+   103.9024
+  ],
+  "fetchedAt": "2026-10-16T14:33:30.067Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.880684287446984,
+      "path": [
+       [
+        1.402,
+        103.90101
+       ],
+       [
+        1.40483,
+        103.90241
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6693157125530158,
+      "path": [
+       [
+        1.40483,
+        103.90241
+       ],
+       [
+        1.4052,
+        103.9024
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 119",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.7333333333333332,
+      "path": [
+       [
+        1.40199,
+        103.901
+       ],
+       [
+        1.40222,
+        103.90077
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.40209,
+        103.90072
+       ],
+       [
+        1.40371,
+        103.90228
+       ]
+      ],
+      "label": "Bus 119"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.6308809437448204,
+      "path": [
+       [
+        1.4037,
+        103.90224
+       ],
+       [
+        1.40495,
+        103.90247
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5691190562551798,
+      "path": [
+       [
+        1.40495,
+        103.90247
+       ],
+       [
+        1.4052,
+        103.90239
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 117",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.7333333333333332,
+      "path": [
+       [
+        1.40199,
+        103.901
+       ],
+       [
+        1.40222,
+        103.90077
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.1666666666666665,
+      "path": [
+       [
+        1.40209,
+        103.90072
+       ],
+       [
+        1.40546,
+        103.90445
+       ]
+      ],
+      "label": "Bus 117"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.2849241887436267,
+      "path": [
+       [
+        1.40552,
+        103.90435
+       ],
+       [
+        1.40536,
+        103.9027
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7817424779230394,
+      "path": [
+       [
+        1.40536,
+        103.9027
+       ],
+       [
+        1.4052,
+        103.90239
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Raffles Place → Marina Bay Sands",
+  "kind": "CBD short hop",
+  "from": [
+   1.284,
+   103.8515
+  ],
+  "to": [
+   1.2834,
+   103.8607
+  ],
+  "fetchedAt": "2026-10-16T14:33:30.420Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 18.774150932678417,
+      "path": [
+       [
+        1.28401,
+        103.85148
+       ],
+       [
+        1.28314,
+        103.86018
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.10081766558509254,
+      "path": [
+       [
+        1.28314,
+        103.86018
+       ],
+       [
+        1.28311,
+        103.86025
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.941698068403159,
+      "path": [
+       [
+        1.28311,
+        103.86025
+       ],
+       [
+        1.2835,
+        103.86091
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 97",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.3,
+      "path": [
+       [
+        1.284,
+        103.85147
+       ],
+       [
+        1.28162,
+        103.85306
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.65,
+      "path": [
+       [
+        1.28153,
+        103.853
+       ],
+       [
+        1.28188,
+        103.85907
+       ]
+      ],
+      "label": "Bus 97"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.832296320788874,
+      "path": [
+       [
+        1.28194,
+        103.85897
+       ],
+       [
+        1.28314,
+        103.86018
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.14659830975315002,
+      "path": [
+       [
+        1.28314,
+        103.86018
+       ],
+       [
+        1.2831,
+        103.86025
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.6377720361246424,
+      "path": [
+       [
+        1.2831,
+        103.86025
+       ],
+       [
+        1.28349,
+        103.8609
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Downtown Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.933333333333334,
+      "path": [
+       [
+        1.284,
+        103.85147
+       ],
+       [
+        1.28213,
+        103.84848
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 2.5166666666666666,
+      "path": [
+       [
+        1.28227,
+        103.84856
+       ],
+       [
+        1.28196,
+        103.85901
+       ]
+      ],
+      "label": "Downtown Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.8974366784258252,
+      "path": [
+       [
+        1.28191,
+        103.85909
+       ],
+       [
+        1.28261,
+        103.85973
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5533653138598953,
+      "path": [
+       [
+        1.28261,
+        103.85973
+       ],
+       [
+        1.2831,
+        103.86025
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.715864674380947,
+      "path": [
+       [
+        1.2831,
+        103.86025
+       ],
+       [
+        1.28349,
+        103.8609
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 106",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.3,
+      "path": [
+       [
+        1.284,
+        103.85147
+       ],
+       [
+        1.28162,
+        103.85306
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.65,
+      "path": [
+       [
+        1.28153,
+        103.853
+       ],
+       [
+        1.28188,
+        103.85906
+       ]
+      ],
+      "label": "Bus 106"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.832296320788874,
+      "path": [
+       [
+        1.28194,
+        103.85897
+       ],
+       [
+        1.28314,
+        103.86018
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.14659830975315002,
+      "path": [
+       [
+        1.28314,
+        103.86018
+       ],
+       [
+        1.2831,
+        103.86025
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.6377720361246424,
+      "path": [
+       [
+        1.2831,
+        103.86025
+       ],
+       [
+        1.28349,
+        103.8609
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "North South Line → Circle Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.15,
+      "path": [
+       [
+        1.284,
+        103.85147
+       ],
+       [
+        1.28393,
+        103.85146
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1.2666666666666666,
+      "path": [
+       [
+        1.28392,
+        103.85157
+       ],
+       [
+        1.27633,
+        103.85461
+       ]
+      ],
+      "label": "North South Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.0666666666666667,
+      "path": [
+       [
+        1.27632,
+        103.85455
+       ],
+       [
+        1.27622,
+        103.85527
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "protected",
+      "minutes": 3.2,
+      "path": [
+       [
+        1.27628,
+        103.85519
+       ]
+      ],
+      "label": "Wait for Circle Line"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1.0666666666666667,
+      "path": [
+       [
+        1.27628,
+        103.85519
+       ],
+       [
+        1.28188,
+        103.85912
+       ]
+      ],
+      "label": "Circle Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.8974366784258252,
+      "path": [
+       [
+        1.28191,
+        103.85909
+       ],
+       [
+        1.28261,
+        103.85973
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5533653138598953,
+      "path": [
+       [
+        1.28261,
+        103.85973
+       ],
+       [
+        1.2831,
+        103.86025
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.715864674380947,
+      "path": [
+       [
+        1.2831,
+        103.86025
+       ],
+       [
+        1.28349,
+        103.8609
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Bugis Junction → Suntec City",
+  "kind": "CBD short hop",
+  "from": [
+   1.2995,
+   103.8555
+  ],
+  "to": [
+   1.295,
+   103.858
+  ],
+  "fetchedAt": "2026-10-16T14:33:30.733Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.4603404467704206,
+      "path": [
+       [
+        1.29955,
+        103.85555
+       ],
+       [
+        1.29853,
+        103.85538
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.3840615897837476,
+      "path": [
+       [
+        1.29853,
+        103.85538
+       ],
+       [
+        1.29775,
+        103.85518
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.03764727045725952,
+      "path": [
+       [
+        1.29775,
+        103.85518
+       ],
+       [
+        1.29775,
+        103.8552
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.0798516763607684,
+      "path": [
+       [
+        1.29775,
+        103.8552
+       ],
+       [
+        1.29775,
+        103.85526
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.4152334393037265,
+      "path": [
+       [
+        1.29775,
+        103.85526
+       ],
+       [
+        1.29707,
+        103.85606
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6656464324557911,
+      "path": [
+       [
+        1.29707,
+        103.85606
+       ],
+       [
+        1.29673,
+        103.85631
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.173162144225732,
+      "path": [
+       [
+        1.29673,
+        103.85631
+       ],
+       [
+        1.29528,
+        103.85722
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.24449950324214237,
+      "path": [
+       [
+        1.29528,
+        103.85722
+       ],
+       [
+        1.29519,
+        103.85738
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.122890830733745,
+      "path": [
+       [
+        1.29519,
+        103.85738
+       ],
+       [
+        1.29496,
+        103.85804
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 133",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9833333333333334,
+      "path": [
+       [
+        1.29954,
+        103.85554
+       ],
+       [
+        1.2996,
+        103.85512
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.366666666666666,
+      "path": [
+       [
+        1.29967,
+        103.85504
+       ],
+       [
+        1.29313,
+        103.85791
+       ]
+      ],
+      "label": "Bus 133"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.7333333333333334,
+      "path": [
+       [
+        1.29317,
+        103.85784
+       ],
+       [
+        1.29496,
+        103.85804
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 130",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9833333333333334,
+      "path": [
+       [
+        1.29954,
+        103.85554
+       ],
+       [
+        1.2996,
+        103.85512
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.4166666666666665,
+      "path": [
+       [
+        1.29967,
+        103.85504
+       ],
+       [
+        1.29446,
+        103.85398
+       ]
+      ],
+      "label": "Bus 130"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 9.7,
+      "path": [
+       [
+        1.29452,
+        103.85402
+       ],
+       [
+        1.29496,
+        103.85804
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 130 → Bus 857B",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9833333333333334,
+      "path": [
+       [
+        1.29954,
+        103.85554
+       ],
+       [
+        1.2996,
+        103.85512
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.4166666666666665,
+      "path": [
+       [
+        1.29967,
+        103.85504
+       ],
+       [
+        1.29446,
+        103.85398
+       ]
+      ],
+      "label": "Bus 130"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.3333333333333335,
+      "path": [
+       [
+        1.29446,
+        103.85398
+       ]
+      ],
+      "label": "Wait for Bus 857B"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.45,
+      "path": [
+       [
+        1.29446,
+        103.85398
+       ],
+       [
+        1.29313,
+        103.85791
+       ]
+      ],
+      "label": "Bus 857B"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.7333333333333334,
+      "path": [
+       [
+        1.29317,
+        103.85784
+       ],
+       [
+        1.29496,
+        103.85804
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "East West Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.35,
+      "path": [
+       [
+        1.29954,
+        103.85554
+       ],
+       [
+        1.30024,
+        103.85555
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1.3166666666666667,
+      "path": [
+       [
+        1.30021,
+        103.85559
+       ],
+       [
+        1.29295,
+        103.85267
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 12.233333333333333,
+      "path": [
+       [
+        1.2929,
+        103.85259
+       ],
+       [
+        1.29496,
+        103.85804
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Clementi Mall → Jurong Point",
+  "kind": "west MRT",
+  "from": [
+   1.315,
+   103.7643
+  ],
+  "to": [
+   1.3397,
+   103.7066
+  ],
+  "fetchedAt": "2026-10-16T14:33:31.475Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.9004146539803413,
+      "path": [
+       [
+        1.31481,
+        103.76439
+       ],
+       [
+        1.31505,
+        103.76497
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0773512272339174,
+      "path": [
+       [
+        1.31505,
+        103.76497
+       ],
+       [
+        1.31578,
+        103.76464
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 30.8791970837835,
+      "path": [
+       [
+        1.31578,
+        103.76464
+       ],
+       [
+        1.33005,
+        103.74825
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.35848390119489165,
+      "path": [
+       [
+        1.33005,
+        103.74825
+       ],
+       [
+        1.33023,
+        103.74805
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 9.80020763476572,
+      "path": [
+       [
+        1.33023,
+        103.74805
+       ],
+       [
+        1.33502,
+        103.74302
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2725235587280944,
+      "path": [
+       [
+        1.33502,
+        103.74302
+       ],
+       [
+        1.33522,
+        103.743
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.25278519565178104,
+      "path": [
+       [
+        1.33522,
+        103.743
+       ],
+       [
+        1.33535,
+        103.74287
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.0310903786966787,
+      "path": [
+       [
+        1.33535,
+        103.74287
+       ],
+       [
+        1.33651,
+        103.74198
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.382880534594303,
+      "path": [
+       [
+        1.33651,
+        103.74198
+       ],
+       [
+        1.33761,
+        103.73909
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6628514948987758,
+      "path": [
+       [
+        1.33761,
+        103.73909
+       ],
+       [
+        1.33793,
+        103.73871
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.379172764223824,
+      "path": [
+       [
+        1.33793,
+        103.73871
+       ],
+       [
+        1.33947,
+        103.7367
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.9027465720775734,
+      "path": [
+       [
+        1.33947,
+        103.7367
+       ],
+       [
+        1.34074,
+        103.73499
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.730488914800573,
+      "path": [
+       [
+        1.34074,
+        103.73499
+       ],
+       [
+        1.34102,
+        103.73457
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 5.91472424913999,
+      "path": [
+       [
+        1.34102,
+        103.73457
+       ],
+       [
+        1.34359,
+        103.73104
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 14.069895220263183,
+      "path": [
+       [
+        1.34359,
+        103.73104
+       ],
+       [
+        1.34452,
+        103.72085
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6280181939784657,
+      "path": [
+       [
+        1.34452,
+        103.72085
+       ],
+       [
+        1.34442,
+        103.7204
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3401963690502119,
+      "path": [
+       [
+        1.34442,
+        103.7204
+       ],
+       [
+        1.34429,
+        103.72018
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7230674433793591,
+      "path": [
+       [
+        1.34429,
+        103.72018
+       ],
+       [
+        1.34412,
+        103.71968
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.8757133196182738,
+      "path": [
+       [
+        1.34412,
+        103.71968
+       ],
+       [
+        1.34392,
+        103.71906
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.4794167807057934,
+      "path": [
+       [
+        1.34392,
+        103.71906
+       ],
+       [
+        1.34295,
+        103.71665
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 13.501217552941318,
+      "path": [
+       [
+        1.34295,
+        103.71665
+       ],
+       [
+        1.34029,
+        103.70778
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.23961575061212415,
+      "path": [
+       [
+        1.34029,
+        103.70778
+       ],
+       [
+        1.34029,
+        103.7076
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.247941205681322,
+      "path": [
+       [
+        1.34029,
+        103.7076
+       ],
+       [
+        1.33967,
+        103.70655
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "East West Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.306428524998103,
+      "path": [
+       [
+        1.31481,
+        103.76439
+       ],
+       [
+        1.31526,
+        103.76472
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.49521692394730066,
+      "path": [
+       [
+        1.31526,
+        103.76472
+       ],
+       [
+        1.31539,
+        103.765
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5816878843879295,
+      "path": [
+       [
+        1.31539,
+        103.765
+       ],
+       [
+        1.31519,
+        103.76521
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 12.35,
+      "path": [
+       [
+        1.31516,
+        103.76512
+       ],
+       [
+        1.33861,
+        103.70617
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.0021885782718092,
+      "path": [
+       [
+        1.33864,
+        103.70616
+       ],
+       [
+        1.33883,
+        103.70672
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6502241134658724,
+      "path": [
+       [
+        1.33883,
+        103.70672
+       ],
+       [
+        1.33892,
+        103.70692
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.5642539749289845,
+      "path": [
+       [
+        1.33892,
+        103.70692
+       ],
+       [
+        1.33967,
+        103.70655
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 185 → Bus 180",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.35,
+      "path": [
+       [
+        1.31481,
+        103.76439
+       ],
+       [
+        1.31497,
+        103.76502
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 15.2,
+      "path": [
+       [
+        1.31507,
+        103.76523
+       ],
+       [
+        1.34445,
+        103.73653
+       ]
+      ],
+      "label": "Bus 185"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 4.583333333333333,
+      "path": [
+       [
+        1.34444,
+        103.73653
+       ]
+      ],
+      "label": "Wait for Bus 180"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 16.016666666666666,
+      "path": [
+       [
+        1.34444,
+        103.73653
+       ],
+       [
+        1.34012,
+        103.70554
+       ]
+      ],
+      "label": "Bus 180"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.133333333333333,
+      "path": [
+       [
+        1.33932,
+        103.70545
+       ],
+       [
+        1.33967,
+        103.70655
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 154",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.35,
+      "path": [
+       [
+        1.31481,
+        103.76439
+       ],
+       [
+        1.31497,
+        103.76502
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 38.333333333333336,
+      "path": [
+       [
+        1.31506,
+        103.76523
+       ],
+       [
+        1.34012,
+        103.70554
+       ]
+      ],
+      "label": "Bus 154"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 8.133333333333333,
+      "path": [
+       [
+        1.33932,
+        103.70545
+       ],
+       [
+        1.33967,
+        103.70655
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 99 → Bus 502",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.16666666666666666,
+      "path": [
+       [
+        1.31481,
+        103.76439
+       ],
+       [
+        1.31491,
+        103.76412
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 19.433333333333334,
+      "path": [
+       [
+        1.31521,
+        103.76373
+       ],
+       [
+        1.34542,
+        103.73215
+       ]
+      ],
+      "label": "Bus 99"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 9.05,
+      "path": [
+       [
+        1.34542,
+        103.73215
+       ]
+      ],
+      "label": "Wait for Bus 502"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 14.1,
+      "path": [
+       [
+        1.34542,
+        103.73215
+       ],
+       [
+        1.34249,
+        103.70545
+       ]
+      ],
+      "label": "Bus 502"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.22420900246598,
+      "path": [
+       [
+        1.34246,
+        103.70554
+       ],
+       [
+        1.34067,
+        103.70589
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.1313433381556588,
+      "path": [
+       [
+        1.34067,
+        103.70589
+       ],
+       [
+        1.34052,
+        103.70632
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.4444476593783606,
+      "path": [
+       [
+        1.34052,
+        103.70632
+       ],
+       [
+        1.33967,
+        103.70655
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Woodlands MRT → Republic Polytechnic",
+  "kind": "short bus",
+  "from": [
+   1.437,
+   103.7865
+  ],
+  "to": [
+   1.443,
+   103.785
+  ],
+  "fetchedAt": "2026-10-16T14:33:31.882Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9073493052820116,
+      "path": [
+       [
+        1.4369,
+        103.78648
+       ],
+       [
+        1.43742,
+        103.78717
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7932415967920061,
+      "path": [
+       [
+        1.43742,
+        103.78717
+       ],
+       [
+        1.43787,
+        103.78722
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 9.31607576459265,
+      "path": [
+       [
+        1.43787,
+        103.78722
+       ],
+       [
+        1.44322,
+        103.78498
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 903",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.6075800251841823,
+      "path": [
+       [
+        1.43689,
+        103.78648
+       ],
+       [
+        1.43719,
+        103.78703
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.30908664148248444,
+      "path": [
+       [
+        1.43719,
+        103.78703
+       ],
+       [
+        1.43723,
+        103.78689
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.6833333333333333,
+      "path": [
+       [
+        1.43685,
+        103.78703
+       ],
+       [
+        1.44055,
+        103.78597
+       ]
+      ],
+      "label": "Bus 903"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.044908975352113745,
+      "path": [
+       [
+        1.4404,
+        103.78588
+       ],
+       [
+        1.4404,
+        103.78587
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.4217576913145535,
+      "path": [
+       [
+        1.4404,
+        103.78587
+       ],
+       [
+        1.44321,
+        103.78497
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 169",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.6075800251841823,
+      "path": [
+       [
+        1.43689,
+        103.78648
+       ],
+       [
+        1.43719,
+        103.78703
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.30908664148248444,
+      "path": [
+       [
+        1.43719,
+        103.78703
+       ],
+       [
+        1.43723,
+        103.78689
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.9,
+      "path": [
+       [
+        1.43685,
+        103.78703
+       ],
+       [
+        1.44209,
+        103.78593
+       ]
+      ],
+      "label": "Bus 169"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 6.566666666666666,
+      "path": [
+       [
+        1.44217,
+        103.78588
+       ],
+       [
+        1.44321,
+        103.78497
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Yishun MRT → Khoo Teck Puat Hospital",
+  "kind": "hospital trip",
+  "from": [
+   1.4295,
+   103.835
+  ],
+  "to": [
+   1.4245,
+   103.8385
+  ],
+  "fetchedAt": "2026-10-16T14:33:32.172Z",
+  "candidates": [
+   {
+    "id": "pt-0",
+    "summary": "Bus 805",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.2,
+      "path": [
+       [
+        1.42949,
+        103.83498
+       ],
+       [
+        1.42831,
+        103.83614
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 3.1666666666666665,
+      "path": [
+       [
+        1.42803,
+        103.83559
+       ],
+       [
+        1.42369,
+        103.83889
+       ]
+      ],
+      "label": "Bus 805"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9,
+      "path": [
+       [
+        1.42377,
+        103.83882
+       ],
+       [
+        1.42455,
+        103.83865
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 858",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.516666666666667,
+      "path": [
+       [
+        1.42949,
+        103.83498
+       ],
+       [
+        1.42868,
+        103.83546
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.183333333333333,
+      "path": [
+       [
+        1.42869,
+        103.83529
+       ],
+       [
+        1.42335,
+        103.83677
+       ]
+      ],
+      "label": "Bus 858"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.750000000000001,
+      "path": [
+       [
+        1.42335,
+        103.83687
+       ],
+       [
+        1.42455,
+        103.83865
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Hougang Mall → Sengkang General Hospital",
+  "kind": "hospital trip",
+  "from": [
+   1.3725,
+   103.8935
+  ],
+  "to": [
+   1.395,
+   103.8935
+  ],
+  "fetchedAt": "2026-10-16T14:33:32.515Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.95037366773732,
+      "path": [
+       [
+        1.37236,
+        103.89343
+       ],
+       [
+        1.37811,
+        103.89295
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3219847750056977,
+      "path": [
+       [
+        1.37811,
+        103.89295
+       ],
+       [
+        1.37835,
+        103.89296
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.089735832367185,
+      "path": [
+       [
+        1.37835,
+        103.89296
+       ],
+       [
+        1.37917,
+        103.89298
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0445728824364888,
+      "path": [
+       [
+        1.37917,
+        103.89298
+       ],
+       [
+        1.37991,
+        103.89294
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.343424724312608,
+      "path": [
+       [
+        1.37991,
+        103.89294
+       ],
+       [
+        1.38016,
+        103.89295
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.872336863249896,
+      "path": [
+       [
+        1.38016,
+        103.89295
+       ],
+       [
+        1.38143,
+        103.89306
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.13351649720508718,
+      "path": [
+       [
+        1.38143,
+        103.89306
+       ],
+       [
+        1.38153,
+        103.89307
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.819596465234226,
+      "path": [
+       [
+        1.38153,
+        103.89307
+       ],
+       [
+        1.38361,
+        103.8933
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 15.314233338518424,
+      "path": [
+       [
+        1.38361,
+        103.8933
+       ],
+       [
+        1.39355,
+        103.89351
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3249640679641983,
+      "path": [
+       [
+        1.39355,
+        103.89351
+       ],
+       [
+        1.39373,
+        103.89359
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.9234332135441026,
+      "path": [
+       [
+        1.39373,
+        103.89359
+       ],
+       [
+        1.39438,
+        103.89383
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5784943390914362,
+      "path": [
+       [
+        1.39438,
+        103.89383
+       ],
+       [
+        1.39478,
+        103.89396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 27 → Bus 43",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.329234648565031,
+      "path": [
+       [
+        1.37235,
+        103.89343
+       ],
+       [
+        1.37291,
+        103.89285
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.2796929769869817,
+      "path": [
+       [
+        1.37291,
+        103.89285
+       ],
+       [
+        1.37307,
+        103.89284
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.974954027538312,
+      "path": [
+       [
+        1.37307,
+        103.89284
+       ],
+       [
+        1.37312,
+        103.89176
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.36611834690967715,
+      "path": [
+       [
+        1.37312,
+        103.89176
+       ],
+       [
+        1.37313,
+        103.89156
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.116666666666666,
+      "path": [
+       [
+        1.37301,
+        103.89156
+       ],
+       [
+        1.38392,
+        103.89315
+       ]
+      ],
+      "label": "Bus 27"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 3.683333333333333,
+      "path": [
+       [
+        1.38392,
+        103.89315
+       ]
+      ],
+      "label": "Wait for Bus 43"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 4.116666666666666,
+      "path": [
+       [
+        1.38392,
+        103.89315
+       ],
+       [
+        1.39439,
+        103.894
+       ]
+      ],
+      "label": "Bus 43"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6,
+      "path": [
+       [
+        1.39445,
+        103.89381
+       ],
+       [
+        1.39477,
+        103.89396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "North East Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.04957769653175,
+      "path": [
+       [
+        1.37235,
+        103.89343
+       ],
+       [
+        1.37291,
+        103.89285
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.333558347436248,
+      "path": [
+       [
+        1.37291,
+        103.89285
+       ],
+       [
+        1.37292,
+        103.89144
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.9835306226986704,
+      "path": [
+       [
+        1.37292,
+        103.89144
+       ],
+       [
+        1.37115,
+        103.89247
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 3.566666666666667,
+      "path": [
+       [
+        1.37115,
+        103.89231
+       ],
+       [
+        1.39172,
+        103.8954
+       ]
+      ],
+      "label": "North East Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.265161387653033,
+      "path": [
+       [
+        1.39169,
+        103.89548
+       ],
+       [
+        1.3924,
+        103.89571
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.07580884058851627,
+      "path": [
+       [
+        1.3924,
+        103.89571
+       ],
+       [
+        1.39244,
+        103.89573
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5521741945006817,
+      "path": [
+       [
+        1.39244,
+        103.89573
+       ],
+       [
+        1.39275,
+        103.89583
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.7793001901962575,
+      "path": [
+       [
+        1.39275,
+        103.89583
+       ],
+       [
+        1.39342,
+        103.89379
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.42071196021959967,
+      "path": [
+       [
+        1.39342,
+        103.89379
+       ],
+       [
+        1.39351,
+        103.89358
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.5569546815953044,
+      "path": [
+       [
+        1.39351,
+        103.89358
+       ],
+       [
+        1.39372,
+        103.89359
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.176762316053519,
+      "path": [
+       [
+        1.39372,
+        103.89359
+       ],
+       [
+        1.39437,
+        103.89383
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7397930958597554,
+      "path": [
+       [
+        1.39437,
+        103.89383
+       ],
+       [
+        1.39477,
+        103.89396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 80",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.766666666666667,
+      "path": [
+       [
+        1.37235,
+        103.89343
+       ],
+       [
+        1.37505,
+        103.89511
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 8.75,
+      "path": [
+       [
+        1.37496,
+        103.89521
+       ],
+       [
+        1.39131,
+        103.89714
+       ]
+      ],
+      "label": "Bus 80"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5318883767186763,
+      "path": [
+       [
+        1.39121,
+        103.89711
+       ],
+       [
+        1.39133,
+        103.89698
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3583250092058133,
+      "path": [
+       [
+        1.39133,
+        103.89698
+       ],
+       [
+        1.39141,
+        103.89679
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.0410761387177192,
+      "path": [
+       [
+        1.39141,
+        103.89679
+       ],
+       [
+        1.39185,
+        103.89671
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5851664877792033,
+      "path": [
+       [
+        1.39185,
+        103.89671
+       ],
+       [
+        1.39233,
+        103.89606
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.3121080956525976,
+      "path": [
+       [
+        1.39233,
+        103.89606
+       ],
+       [
+        1.39239,
+        103.89589
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.290242194067656,
+      "path": [
+       [
+        1.39239,
+        103.89589
+       ],
+       [
+        1.39244,
+        103.89573
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.5640570039580513,
+      "path": [
+       [
+        1.39244,
+        103.89573
+       ],
+       [
+        1.39275,
+        103.89583
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.860630872596061,
+      "path": [
+       [
+        1.39275,
+        103.89583
+       ],
+       [
+        1.39342,
+        103.89379
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.42976569744512616,
+      "path": [
+       [
+        1.39342,
+        103.89379
+       ],
+       [
+        1.39351,
+        103.89358
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.568940367314956,
+      "path": [
+       [
+        1.39351,
+        103.89358
+       ],
+       [
+        1.39372,
+        103.89359
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.202086285405114,
+      "path": [
+       [
+        1.39372,
+        103.89359
+       ],
+       [
+        1.39437,
+        103.89383
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7557134711390245,
+      "path": [
+       [
+        1.39437,
+        103.89383
+       ],
+       [
+        1.39477,
+        103.89396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "North East Line → Sengkang Lrt System",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.04957769653175,
+      "path": [
+       [
+        1.37235,
+        103.89343
+       ],
+       [
+        1.37291,
+        103.89285
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 2.333558347436248,
+      "path": [
+       [
+        1.37291,
+        103.89285
+       ],
+       [
+        1.37292,
+        103.89144
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.9835306226986704,
+      "path": [
+       [
+        1.37292,
+        103.89144
+       ],
+       [
+        1.37115,
+        103.89247
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 3.566666666666667,
+      "path": [
+       [
+        1.37115,
+        103.89231
+       ],
+       [
+        1.39172,
+        103.8954
+       ]
+      ],
+      "label": "North East Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.15,
+      "path": [
+       [
+        1.39169,
+        103.89548
+       ],
+       [
+        1.39161,
+        103.89544
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 5.55,
+      "path": [
+       [
+        1.39163,
+        103.89538
+       ]
+      ],
+      "label": "Wait for Sengkang Lrt System"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1,
+      "path": [
+       [
+        1.39163,
+        103.89538
+       ],
+       [
+        1.39623,
+        103.89378
+       ]
+      ],
+      "label": "Sengkang Lrt System"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.10911852422805857,
+      "path": [
+       [
+        1.39627,
+        103.89379
+       ],
+       [
+        1.39621,
+        103.89377
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.590881475771942,
+      "path": [
+       [
+        1.39621,
+        103.89377
+       ],
+       [
+        1.39477,
+        103.89396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Changi Airport T3 → Tampines Hub",
+  "kind": "east cross-town",
+  "from": [
+   1.3555,
+   103.9865
+  ],
+  "to": [
+   1.353,
+   103.9405
+  ],
+  "fetchedAt": "2026-10-16T14:33:32.973Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 146.0258115875992,
+      "path": [
+       [
+        1.3557,
+        103.98607
+       ],
+       [
+        1.33331,
+        103.95367
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6982058605155089,
+      "path": [
+       [
+        1.33331,
+        103.95367
+       ],
+       [
+        1.33371,
+        103.95333
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.329167421133063,
+      "path": [
+       [
+        1.33371,
+        103.95333
+       ],
+       [
+        1.3394,
+        103.94849
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.38479430038989804,
+      "path": [
+       [
+        1.3394,
+        103.94849
+       ],
+       [
+        1.33964,
+        103.94834
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 9.907898304374884,
+      "path": [
+       [
+        1.33964,
+        103.94834
+       ],
+       [
+        1.34518,
+        103.94361
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.5079604764492827,
+      "path": [
+       [
+        1.34518,
+        103.94361
+       ],
+       [
+        1.34595,
+        103.94289
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.532955890657556,
+      "path": [
+       [
+        1.34595,
+        103.94289
+       ],
+       [
+        1.34817,
+        103.94186
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.6625606103419075,
+      "path": [
+       [
+        1.34817,
+        103.94186
+       ],
+       [
+        1.34857,
+        103.94176
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.667312215205372,
+      "path": [
+       [
+        1.34857,
+        103.94176
+       ],
+       [
+        1.35316,
+        103.94045
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Bus 27 → Bus 20",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.25,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.3565,
+        103.98635
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 26.483333333333334,
+      "path": [
+       [
+        1.35645,
+        103.98646
+       ],
+       [
+        1.34823,
+        103.94202
+       ]
+      ],
+      "label": "Bus 27"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.2,
+      "path": [
+       [
+        1.34823,
+        103.94202
+       ]
+      ],
+      "label": "Wait for Bus 20"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.34823,
+        103.94202
+       ],
+       [
+        1.35313,
+        103.9415
+       ]
+      ],
+      "label": "Bus 20"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.35,
+      "path": [
+       [
+        1.35313,
+        103.94126
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 27 → Bus 31",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.25,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.3565,
+        103.98635
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 26.483333333333334,
+      "path": [
+       [
+        1.35645,
+        103.98646
+       ],
+       [
+        1.34823,
+        103.94202
+       ]
+      ],
+      "label": "Bus 27"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 3.9166666666666665,
+      "path": [
+       [
+        1.34823,
+        103.94202
+       ]
+      ],
+      "label": "Wait for Bus 31"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.34823,
+        103.94202
+       ],
+       [
+        1.35313,
+        103.9415
+       ]
+      ],
+      "label": "Bus 31"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.35,
+      "path": [
+       [
+        1.35313,
+        103.94126
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Changi Airport Extension Line → Bus 2 → Bus 10",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.683333333333334,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.35734,
+        103.9884
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 9.366666666666667,
+      "path": [
+       [
+        1.35722,
+        103.98835
+       ],
+       [
+        1.32713,
+        103.94656
+       ]
+      ],
+      "label": "Changi Airport Extension Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.126645245647764,
+      "path": [
+       [
+        1.3272,
+        103.94638
+       ],
+       [
+        1.32749,
+        103.94624
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.0566880876855693,
+      "path": [
+       [
+        1.32749,
+        103.94624
+       ],
+       [
+        1.32754,
+        103.94636
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 4.166666666666667,
+      "path": [
+       [
+        1.32744,
+        103.9464
+       ]
+      ],
+      "label": "Wait for Bus 2"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.32744,
+        103.9464
+       ],
+       [
+        1.32961,
+        103.94886
+       ]
+      ],
+      "label": "Bus 2"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.8,
+      "path": [
+       [
+        1.32961,
+        103.94886
+       ]
+      ],
+      "label": "Wait for Bus 10"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 11.15,
+      "path": [
+       [
+        1.32961,
+        103.94886
+       ],
+       [
+        1.35313,
+        103.9415
+       ]
+      ],
+      "label": "Bus 10"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.35,
+      "path": [
+       [
+        1.35313,
+        103.94126
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 34",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.25,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.3565,
+        103.98635
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 38.68333333333333,
+      "path": [
+       [
+        1.35645,
+        103.98646
+       ],
+       [
+        1.35313,
+        103.9415
+       ]
+      ],
+      "label": "Bus 34"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.35,
+      "path": [
+       [
+        1.35313,
+        103.94126
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-4",
+    "summary": "Changi Airport Extension Line → Downtown Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.683333333333334,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.35734,
+        103.9884
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 2.55,
+      "path": [
+       [
+        1.35722,
+        103.98835
+       ],
+       [
+        1.33434,
+        103.9615
+       ]
+      ],
+      "label": "Changi Airport Extension Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.9255347024624148,
+      "path": [
+       [
+        1.33438,
+        103.96144
+       ],
+       [
+        1.33475,
+        103.96184
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.4393048419977708,
+      "path": [
+       [
+        1.33475,
+        103.96184
+       ],
+       [
+        1.33454,
+        103.96193
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.8018271222064817,
+      "path": [
+       [
+        1.33454,
+        103.96193
+       ],
+       [
+        1.33515,
+        103.9626
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "wait",
+      "tier": "protected",
+      "minutes": 3.533333333333333,
+      "path": [
+       [
+        1.33533,
+        103.96237
+       ]
+      ],
+      "label": "Wait for Downtown Line"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 4.95,
+      "path": [
+       [
+        1.33533,
+        103.96237
+       ],
+       [
+        1.35521,
+        103.94307
+       ]
+      ],
+      "label": "Downtown Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.035608370453083,
+      "path": [
+       [
+        1.35526,
+        103.94302
+       ],
+       [
+        1.35436,
+        103.9426
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0376981226237372,
+      "path": [
+       [
+        1.35436,
+        103.9426
+       ],
+       [
+        1.354,
+        103.94241
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.82669350692318,
+      "path": [
+       [
+        1.354,
+        103.94241
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-5",
+    "summary": "Changi Airport Extension Line → East West Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 5.683333333333334,
+      "path": [
+       [
+        1.35569,
+        103.98607
+       ],
+       [
+        1.35734,
+        103.9884
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 9.366666666666667,
+      "path": [
+       [
+        1.35722,
+        103.98835
+       ],
+       [
+        1.32713,
+        103.94656
+       ]
+      ],
+      "label": "Changi Airport Extension Line"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 4.2,
+      "path": [
+       [
+        1.32732,
+        103.94634
+       ]
+      ],
+      "label": "Wait for East West Line"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 5.716666666666667,
+      "path": [
+       [
+        1.32732,
+        103.94634
+       ],
+       [
+        1.35324,
+        103.9451
+       ]
+      ],
+      "label": "East West Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 11.283333333333333,
+      "path": [
+       [
+        1.35328,
+        103.94516
+       ],
+       [
+        1.35315,
+        103.94044
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Holland Village → Buona Vista MRT",
+  "kind": "short walk vs bus",
+  "from": [
+   1.311,
+   103.796
+  ],
+  "to": [
+   1.307,
+   103.79
+  ],
+  "fetchedAt": "2026-10-16T14:33:33.316Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.495936750040385,
+      "path": [
+       [
+        1.311,
+        103.79599
+       ],
+       [
+        1.31063,
+        103.79595
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 4.334865751899218,
+      "path": [
+       [
+        1.31063,
+        103.79595
+       ],
+       [
+        1.30781,
+        103.79443
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.3954818315090822,
+      "path": [
+       [
+        1.30781,
+        103.79443
+       ],
+       [
+        1.30748,
+        103.79373
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6133231122009773,
+      "path": [
+       [
+        1.30748,
+        103.79373
+       ],
+       [
+        1.30777,
+        103.79337
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.49217068950589066,
+      "path": [
+       [
+        1.30777,
+        103.79337
+       ],
+       [
+        1.30801,
+        103.79314
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.1360866801332734,
+      "path": [
+       [
+        1.30801,
+        103.79314
+       ],
+       [
+        1.30772,
+        103.79132
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7971643083598664,
+      "path": [
+       [
+        1.30772,
+        103.79132
+       ],
+       [
+        1.30717,
+        103.79116
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.6516375430179713,
+      "path": [
+       [
+        1.30717,
+        103.79116
+       ],
+       [
+        1.30707,
+        103.79001
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Circle Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.9087121641818912,
+      "path": [
+       [
+        1.311,
+        103.79599
+       ],
+       [
+        1.31149,
+        103.79606
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.5912878358181086,
+      "path": [
+       [
+        1.31149,
+        103.79606
+       ],
+       [
+        1.31224,
+        103.79639
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 1.2333333333333334,
+      "path": [
+       [
+        1.31217,
+        103.79643
+       ],
+       [
+        1.30659,
+        103.79078
+       ]
+      ],
+      "label": "Circle Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.44628413756644947,
+      "path": [
+       [
+        1.30663,
+        103.7907
+       ],
+       [
+        1.3068,
+        103.79053
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.7203825291002168,
+      "path": [
+       [
+        1.3068,
+        103.79053
+       ],
+       [
+        1.30706,
+        103.79
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 106",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7,
+      "path": [
+       [
+        1.311,
+        103.79599
+       ],
+       [
+        1.31102,
+        103.79604
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.4166666666666665,
+      "path": [
+       [
+        1.31104,
+        103.79588
+       ],
+       [
+        1.30734,
+        103.79236
+       ]
+      ],
+      "label": "Bus 106"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.4161051452312559,
+      "path": [
+       [
+        1.30722,
+        103.79227
+       ],
+       [
+        1.30752,
+        103.79169
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.1831352442726761,
+      "path": [
+       [
+        1.30752,
+        103.79169
+       ],
+       [
+        1.30755,
+        103.79161
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.6356952885756308,
+      "path": [
+       [
+        1.30755,
+        103.79161
+       ],
+       [
+        1.30716,
+        103.79116
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 2.5817309885871036,
+      "path": [
+       [
+        1.30716,
+        103.79116
+       ],
+       [
+        1.30706,
+        103.79
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 970 → Bus 200",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.7,
+      "path": [
+       [
+        1.311,
+        103.79599
+       ],
+       [
+        1.31102,
+        103.79604
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 1.2,
+      "path": [
+       [
+        1.31104,
+        103.79588
+       ],
+       [
+        1.30772,
+        103.79422
+       ]
+      ],
+      "label": "Bus 970"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.0240433813308871,
+      "path": [
+       [
+        1.30764,
+        103.79432
+       ],
+       [
+        1.3076,
+        103.79396
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.0443073141296806,
+      "path": [
+       [
+        1.3076,
+        103.79396
+       ],
+       [
+        1.30794,
+        103.79355
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.1316493045394325,
+      "path": [
+       [
+        1.30794,
+        103.79355
+       ],
+       [
+        1.30841,
+        103.79328
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.783333333333333,
+      "path": [
+       [
+        1.30839,
+        103.79322
+       ]
+      ],
+      "label": "Wait for Bus 200"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.183333333333333,
+      "path": [
+       [
+        1.30839,
+        103.79322
+       ],
+       [
+        1.30642,
+        103.79064
+       ]
+      ],
+      "label": "Bus 200"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.3532658673557592,
+      "path": [
+       [
+        1.30632,
+        103.79084
+       ],
+       [
+        1.3065,
+        103.79093
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.46321579897700466,
+      "path": [
+       [
+        1.3065,
+        103.79093
+       ],
+       [
+        1.30663,
+        103.7907
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.4566211081477361,
+      "path": [
+       [
+        1.30663,
+        103.7907
+       ],
+       [
+        1.3068,
+        103.79053
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.7602305588528329,
+      "path": [
+       [
+        1.3068,
+        103.79053
+       ],
+       [
+        1.30706,
+        103.79
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "Kallang Wave Mall → Paya Lebar Quarter",
+  "kind": "walk vs MRT",
+  "from": [
+   1.303,
+   103.875
+  ],
+  "to": [
+   1.3175,
+   103.893
+  ],
+  "fetchedAt": "2026-10-16T14:33:33.669Z",
+  "candidates": [
+   {
+    "id": "walk",
+    "summary": "Walk",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 15.203683293409533,
+      "path": [
+       [
+        1.30292,
+        103.87504
+       ],
+       [
+        1.30985,
+        103.8797
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.45079186200981713,
+      "path": [
+       [
+        1.30985,
+        103.8797
+       ],
+       [
+        1.30992,
+        103.88001
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 7.5271684931467915,
+      "path": [
+       [
+        1.30992,
+        103.88001
+       ],
+       [
+        1.31106,
+        103.88552
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 3.4729846986847344,
+      "path": [
+       [
+        1.31106,
+        103.88552
+       ],
+       [
+        1.31156,
+        103.88808
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 12.328704986082457,
+      "path": [
+       [
+        1.31156,
+        103.88808
+       ],
+       [
+        1.31712,
+        103.89304
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-0",
+    "summary": "Circle Line",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.1666666666666665,
+      "path": [
+       [
+        1.30291,
+        103.87504
+       ],
+       [
+        1.30287,
+        103.87542
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "train",
+      "tier": "protected",
+      "minutes": 4.783333333333333,
+      "path": [
+       [
+        1.30295,
+        103.87539
+       ],
+       [
+        1.31745,
+        103.89211
+       ]
+      ],
+      "label": "Circle Line"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 1.9666666666666666,
+      "path": [
+       [
+        1.31746,
+        103.89226
+       ],
+       [
+        1.31711,
+        103.89303
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-1",
+    "summary": "Bus 70M",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.242557573675683,
+      "path": [
+       [
+        1.30291,
+        103.87504
+       ],
+       [
+        1.30657,
+        103.87482
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.31365501607486584,
+      "path": [
+       [
+        1.30657,
+        103.87482
+       ],
+       [
+        1.30672,
+        103.87481
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6706369941929521,
+      "path": [
+       [
+        1.30672,
+        103.87481
+       ],
+       [
+        1.30704,
+        103.87477
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.8064837493898318,
+      "path": [
+       [
+        1.30704,
+        103.87477
+       ],
+       [
+        1.30712,
+        103.87548
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 8.733333333333333,
+      "path": [
+       [
+        1.30685,
+        103.87549
+       ],
+       [
+        1.31632,
+        103.89235
+       ]
+      ],
+      "label": "Bus 70M"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.3833333333333337,
+      "path": [
+       [
+        1.31631,
+        103.89217
+       ],
+       [
+        1.31711,
+        103.89303
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-2",
+    "summary": "Bus 70",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 10.242557573675683,
+      "path": [
+       [
+        1.30291,
+        103.87504
+       ],
+       [
+        1.30657,
+        103.87482
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 0.31365501607486584,
+      "path": [
+       [
+        1.30657,
+        103.87482
+       ],
+       [
+        1.30672,
+        103.87481
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 0.6706369941929521,
+      "path": [
+       [
+        1.30672,
+        103.87481
+       ],
+       [
+        1.30704,
+        103.87477
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "walk",
+      "tier": "covered",
+      "minutes": 1.8064837493898318,
+      "path": [
+       [
+        1.30704,
+        103.87477
+       ],
+       [
+        1.30712,
+        103.87548
+       ]
+      ],
+      "label": "Walk (covered linkway)"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 8.75,
+      "path": [
+       [
+        1.30688,
+        103.87549
+       ],
+       [
+        1.31633,
+        103.89239
+       ]
+      ],
+      "label": "Bus 70"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.3833333333333337,
+      "path": [
+       [
+        1.31631,
+        103.89217
+       ],
+       [
+        1.31711,
+        103.89303
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   },
+   {
+    "id": "pt-3",
+    "summary": "Bus 11 → Bus 62 → Bus 21",
+    "legs": [
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.466666666666667,
+      "path": [
+       [
+        1.30291,
+        103.87504
+       ],
+       [
+        1.30155,
+        103.87513
+       ]
+      ],
+      "label": "Walk"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 8.5,
+      "path": [
+       [
+        1.30159,
+        103.87521
+       ],
+       [
+        1.31086,
+        103.87359
+       ]
+      ],
+      "label": "Bus 11"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 9.533333333333333,
+      "path": [
+       [
+        1.31086,
+        103.87359
+       ]
+      ],
+      "label": "Wait for Bus 62"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 2.4166666666666665,
+      "path": [
+       [
+        1.31086,
+        103.87359
+       ],
+       [
+        1.3137,
+        103.87658
+       ]
+      ],
+      "label": "Bus 62"
+     },
+     {
+      "mode": "wait",
+      "tier": "covered",
+      "minutes": 2.25,
+      "path": [
+       [
+        1.3137,
+        103.87658
+       ]
+      ],
+      "label": "Wait for Bus 21"
+     },
+     {
+      "mode": "bus",
+      "tier": "protected",
+      "minutes": 7.266666666666667,
+      "path": [
+       [
+        1.3137,
+        103.87658
+       ],
+       [
+        1.31728,
+        103.89481
+       ]
+      ],
+      "label": "Bus 21"
+     },
+     {
+      "mode": "walk",
+      "tier": "exposed",
+      "minutes": 3.4166666666666665,
+      "path": [
+       [
+        1.31736,
+        103.8948
+       ],
+       [
+        1.31711,
+        103.89303
+       ]
+      ],
+      "label": "Walk"
+     }
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,18 @@
+[
+  { "name": "Bishan MRT → ION Orchard", "kind": "direct MRT", "from": [1.35092, 103.84825], "to": [1.30398, 103.83191] },
+  { "name": "Toa Payoh Hub → Novena Square", "kind": "1-stop MRT", "from": [1.33266, 103.84776], "to": [1.3203, 103.8438] },
+  { "name": "Tampines Mall → Bedok Mall", "kind": "bus vs MRT", "from": [1.35252, 103.9444], "to": [1.3248, 103.929] },
+  { "name": "Ang Mo Kio Hub → NEX Serangoon", "kind": "bus vs MRT", "from": [1.3693, 103.8487], "to": [1.3506, 103.8721] },
+  { "name": "Jurong East MRT → NUS UTown", "kind": "MRT + bus", "from": [1.33315, 103.74222], "to": [1.3053, 103.7732] },
+  { "name": "Blk 506 AMK → AMK MRT", "kind": "short estate walk", "from": [1.3731, 103.8539], "to": [1.3699, 103.8496] },
+  { "name": "Punggol Blk 271 → Punggol MRT", "kind": "short estate walk", "from": [1.402, 103.901], "to": [1.4052, 103.9024] },
+  { "name": "Raffles Place → Marina Bay Sands", "kind": "CBD short hop", "from": [1.284, 103.8515], "to": [1.2834, 103.8607] },
+  { "name": "Bugis Junction → Suntec City", "kind": "CBD short hop", "from": [1.2995, 103.8555], "to": [1.295, 103.858] },
+  { "name": "Clementi Mall → Jurong Point", "kind": "west MRT", "from": [1.315, 103.7643], "to": [1.3397, 103.7066] },
+  { "name": "Woodlands MRT → Republic Polytechnic", "kind": "short bus", "from": [1.437, 103.7865], "to": [1.443, 103.785] },
+  { "name": "Yishun MRT → Khoo Teck Puat Hospital", "kind": "hospital trip", "from": [1.4295, 103.835], "to": [1.4245, 103.8385] },
+  { "name": "Hougang Mall → Sengkang General Hospital", "kind": "hospital trip", "from": [1.3725, 103.8935], "to": [1.395, 103.8935] },
+  { "name": "Changi Airport T3 → Tampines Hub", "kind": "east cross-town", "from": [1.3555, 103.9865], "to": [1.353, 103.9405] },
+  { "name": "Holland Village → Buona Vista MRT", "kind": "short walk vs bus", "from": [1.311, 103.796], "to": [1.307, 103.79] },
+  { "name": "Kallang Wave Mall → Paya Lebar Quarter", "kind": "walk vs MRT", "from": [1.303, 103.875], "to": [1.3175, 103.893] }
+]
