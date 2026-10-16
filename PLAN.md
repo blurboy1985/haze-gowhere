@@ -41,3 +41,15 @@ Goal: a mobile-first web app where a commuter picks a **Starting Point** and **D
 
 ## Risks / known limitations
 - OneMap routing needs a OneMap account (`ONEMAP_EMAIL` and `ONEMAP_PASSWORD` in `.env`). Without one, the server falls back to mock routing.
+
+## Phase 2: fix issues #1–#7 (started 2026-10-16)
+Decisions: download and commit the LTA linkways; verify Docker by simulating the image steps locally plus a CI docker build; for weights, report findings and let the user decide; keep #7 open after an OSM check.
+
+1. #2 Add a `HAZE_OVERRIDE_PM25` dev override and `planTrip` tests on both sides of the Band 3 taxi threshold. Check the taxi card in the UI.
+2. #4 Request `TRANSIT`, `BUS` and `RAIL` itineraries in parallel, merge them, and dedupe by the ordered `(mode, route)` list. Check with Bishan→Orchard.
+3. #6 Curate a list of elevated/open-air MRT and LRT stations. A train wait at those stations becomes Covered. Unit test it.
+4. #3 Download `CoveredLinkWay_Sep2026.zip` and add `scripts/convert-linkways.ts` (shapefile + proj4, SVY21→WGS84). Match walks inside the polygons (point-in-polygon plus tolerance). Commit the GeoJSON with LTA attribution.
+5. #5 Add `scripts/tune-trips.ts` with a fixture of about 15 trips. Run it at bands 1–4 and report proposed weight changes; the user decides.
+6. #1 Simulate the image locally (clean `npm ci --omit=dev`, run from `dist`). Add a GitHub Actions workflow that builds and smoke-tests the image.
+7. #7 Check OSM indoor/tunnel footway coverage, post the findings as a comment, and leave the issue open.
+8. Verify everything (tests, build, browser), then commit per issue, push, and close the fixed issues.

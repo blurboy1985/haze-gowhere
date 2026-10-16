@@ -121,3 +121,4 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .panel { grid-row: 2; border-right: 0; border-top: 1px solid var(--line); border-radius: 16px 16px 0 0; margin-top: -16px; box-shadow: 0 -4px 16px rgb(0 0 0 / 0.08); }
   .brand { display: none; }
 }
+.haze-simulated { font-size: 0.75rem; font-weight: 700; background: rgb(0 0 0 / 0.25); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; }

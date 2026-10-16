@@ -49,6 +49,8 @@ export interface RegionReading {
 export interface HazeReading {
   timestamp: string;
   regions: RegionReading[];
+  /** True when PM2.5 was overridden for development; never set in production. */
+  simulated?: boolean;
 }
 
 export interface TaxiSuggestion {

@@ -23,6 +23,7 @@ export function HazeBanner({ haze, tripBand, error }: Props) {
 
   return (
     <section className={`haze band-${worstBand}`} aria-label="Haze reading">
+      {haze.simulated && <div className="haze-simulated">Simulated PM2.5 (HAZE_OVERRIDE_PM25). Not a live reading.</div>}
       <div className="haze-head">
         <div>
           <div className="haze-title">
