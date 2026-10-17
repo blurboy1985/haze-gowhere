@@ -3,6 +3,7 @@ import { CoveredLinkwayIndex, linesFromGeoJson, splitWalkByCover } from "./cover
 import {
   activeStepEndpoints,
   collapseSteps,
+  describeRouteTradeoff,
   fmtDistance,
   fmtEtaRange,
   lineBadge,
@@ -372,6 +373,39 @@ describe("directions", () => {
       startLabel: "Wait for Bus 190 · Bishan Int",
       endLabel: "Wait for Bus 190 · Bishan Int",
     });
+  });
+
+  it("describes route trade-offs between travel time and Exposed/Covered minutes", () => {
+    const walkRoute: Route = {
+      id: "walk",
+      summary: "Walk",
+      legs: [{ mode: "walk", tier: "exposed", minutes: 14, path: [[1.3, 103.8]] }],
+    };
+    const mrtRoute: Route = {
+      id: "mrt",
+      summary: "MRT",
+      legs: [
+        { mode: "walk", tier: "exposed", minutes: 3, path: [[1.3, 103.8]] },
+        { mode: "train", tier: "protected", minutes: 15, path: [[1.3, 103.8]] },
+      ],
+    };
+    const band3Ranked = rankRoutes([walkRoute, mrtRoute], 3, false);
+    expect(describeRouteTradeoff(band3Ranked[0]!, band3Ranked)).toBe("−11 min Exposed vs fastest");
+    expect(describeRouteTradeoff(band3Ranked[1]!, band3Ranked)).toBe("Fastest (+11 min Exposed)");
+
+    const band1Ranked = rankRoutes([walkRoute, mrtRoute], 1, false);
+    expect(describeRouteTradeoff(band1Ranked[0]!, band1Ranked)).toBe("Fastest");
+
+    const fastAndProtected: Route = {
+      id: "fast-mrt",
+      summary: "Direct MRT",
+      legs: [
+        { mode: "walk", tier: "exposed", minutes: 2, path: [[1.3, 103.8]] },
+        { mode: "train", tier: "protected", minutes: 10, path: [[1.3, 103.8]] },
+      ],
+    };
+    const winBoth = rankRoutes([fastAndProtected, walkRoute], 3, false);
+    expect(describeRouteTradeoff(winBoth[0]!, winBoth)).toBe("Fastest & lowest exposure");
   });
 });
 

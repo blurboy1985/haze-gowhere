@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import {
   collapseSteps,
+  describeRouteTradeoff,
   fmtDistance,
   fmtEtaRange,
   fmtMin,
@@ -27,6 +28,7 @@ export function LinePill({ badge }: { badge: TransitBadge }) {
 
 interface Props {
   route: RankedRoute;
+  allRoutes?: RankedRoute[];
   selected: boolean;
   onSelect: () => void;
   activeStepIndex?: number | null;
@@ -34,22 +36,45 @@ interface Props {
   onStartNavigation?: () => void;
 }
 
-export function RouteCard({ route, selected, onSelect, activeStepIndex = null, onSelectStep, onStartNavigation }: Props) {
+export function RouteCard({
+  route,
+  allRoutes = [],
+  selected,
+  onSelect,
+  activeStepIndex = null,
+  onSelectStep,
+  onStartNavigation,
+}: Props) {
   const total = route.totalMinutes || 1;
   const badges = routeBadges(route.legs);
   const eta = fmtEtaRange(route.departureTime, route.arrivalTime);
   const walkMetres = routeWalkMetres(route.legs);
+  const tradeoff = describeRouteTradeoff(route, allRoutes);
   const segments: [Tier, number][] = [
-    ["exposed", route.exposedMinutes],
-    ["covered", route.coveredMinutes],
     ["protected", route.protectedMinutes],
+    ["covered", route.coveredMinutes],
+    ["exposed", route.exposedMinutes],
   ];
+  const indoorNames =
+    route.indoorLinks && route.indoorLinks.length > 0
+      ? route.indoorLinks.filter((n) => !n.endsWith("(connector)")).slice(0, 3).join(", ") || "enclosed walkway"
+      : null;
+
   return (
-    <div className={`route-card ${selected ? "selected" : ""}`}>
+    <div className={`route-card ${selected ? "selected" : ""} ${route.recommended ? "is-recommended" : ""}`}>
       <button type="button" className="route-card-trigger" onClick={onSelect} aria-pressed={selected}>
         <div className="route-head">
-          <div>
-            {route.recommended && <span className="badge">Recommended</span>}
+          <div className="route-head-main">
+            {(route.recommended || tradeoff) && (
+              <div className="route-chip-row">
+                {route.recommended && <span className="badge badge-recommended">★ Recommended</span>}
+                {tradeoff && (
+                  <span className={`badge ${route.recommended ? "badge-tradeoff" : "badge-alt"}`}>
+                    {route.recommended && tradeoff.startsWith("−") ? `🛡️ ${tradeoff}` : tradeoff}
+                  </span>
+                )}
+              </div>
+            )}
             <div className="route-summary">
               {badges.length > 0 && (
                 <span className="route-badges" aria-hidden>
@@ -58,32 +83,60 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
                   ))}
                 </span>
               )}
-              <span>{route.summary}</span>
+              <span className="route-summary-text">{route.summary}</span>
             </div>
             {(eta || walkMetres > 0) && (
               <div className="route-meta">
-                {eta && <span>{eta}</span>}
+                {eta && <span className="num">{eta}</span>}
                 {eta && walkMetres > 0 && <span aria-hidden>·</span>}
                 {walkMetres > 0 && <span>🚶 {fmtDistance(walkMetres)} walk</span>}
               </div>
             )}
-            {route.indoorLinks && route.indoorLinks.length > 0 && (
-              <div className="indoor-note">Indoor link: {route.indoorLinks.filter((n) => !n.endsWith("(connector)")).slice(0, 3).join(", ") || "enclosed walkway"}</div>
+            {indoorNames && (
+              <div className="indoor-note">
+                <span aria-hidden>🏢</span>
+                <span>Indoor Link · {indoorNames}</span>
+              </div>
             )}
           </div>
-          <div className="route-time">{fmtMin(route.totalMinutes)}</div>
+          <div className="route-time-box">
+            <div className="route-time num">{fmtMin(route.totalMinutes)}</div>
+            <div className="route-exp-sub num">
+              {Math.round(route.exposedMinutes) === 0
+                ? "0m Exposed"
+                : `${Math.round(route.exposedMinutes)}m Exposed`}
+            </div>
+          </div>
         </div>
-        <div className="exposure-bar" role="img" aria-label={segments.map(([t, m]) => `${TIER_LABEL[t]} ${fmtMin(m)}`).join(", ")}>
-          {segments.map(([t, m]) => m > 0 && <span key={t} style={{ width: `${(m / total) * 100}%`, background: TIER_COLOUR[t] }} />)}
+
+        <div
+          className="exposure-bar"
+          role="img"
+          aria-label={segments.map(([t, m]) => `${TIER_LABEL[t]} ${fmtMin(m)}`).join(", ")}
+        >
+          {segments.map(
+            ([t, m]) =>
+              m > 0 && (
+                <span
+                  key={t}
+                  className={`exp-seg tier-${t}`}
+                  style={{ width: `${(m / total) * 100}%`, background: TIER_COLOUR[t] }}
+                />
+              ),
+          )}
         </div>
         <div className="exposure-legend">
-          {segments.map(([t, m]) => (
-            <span key={t}>
-              <i style={{ background: TIER_COLOUR[t] }} /> {TIER_LABEL[t]} {Math.round(m)} min
-            </span>
-          ))}
+          {segments.map(([t, m]) => {
+            const mins = Math.round(m);
+            return (
+              <span key={t} className={`legend-item ${mins === 0 ? "zero" : ""}`}>
+                <i style={{ background: TIER_COLOUR[t] }} /> {TIER_LABEL[t]} <strong className="num">{mins}m</strong>
+              </span>
+            );
+          })}
         </div>
       </button>
+
       {selected && (
         <>
           <ol className="steps" aria-label="Route steps">
@@ -101,7 +154,9 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
                     aria-pressed={isStepActive}
                     title={isStepActive ? "Show full route on map" : "Focus this leg on map"}
                   >
-                    <span className="step-icon" aria-hidden>{MODE_ICON[s.mode]}</span>
+                    <span className="step-icon" aria-hidden>
+                      {MODE_ICON[s.mode]}
+                    </span>
                     <div className="step-body">
                       <div className="step-title">
                         {s.badge && <LinePill badge={s.badge} />}
@@ -116,7 +171,7 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
                         </span>
                       ))}
                     </span>
-                    <span className="step-min">{fmtMin(s.minutes)}</span>
+                    <span className="step-min num">{fmtMin(s.minutes)}</span>
                   </button>
                 </li>
               );
@@ -124,6 +179,7 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
           </ol>
           {onStartNavigation && (
             <div className="route-actions">
+              <span className="route-actions-hint">Tap any step to inspect its Leg on the map</span>
               <button type="button" className="start-nav-btn" onClick={onStartNavigation}>
                 ▶ Start navigation
               </button>
@@ -138,11 +194,21 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
 export function TaxiCard({ taxi, shown, onToggle }: { taxi: TaxiSuggestion; shown: boolean; onToggle: () => void }) {
   return (
     <div className="taxi-card">
-      <div>
-        <strong>🚕 Consider a taxi or private-hire car</strong>
-        <p>Enclosed door to door, about {fmtMin(taxi.minutes)} by road. Fares and booking aren't shown here.</p>
+      <div className="taxi-card-body">
+        <div className="taxi-card-title">
+          <span aria-hidden>🚕</span>
+          <strong>Consider a taxi or private-hire car</strong>
+          <span className="step-tier-pill" style={{ background: TIER_COLOUR.protected }}>
+            Protected
+          </span>
+        </div>
+        <p>
+          Enclosed door to door, about <strong className="num">{fmtMin(taxi.minutes)}</strong> by road. Fares and booking aren't shown here.
+        </p>
       </div>
-      <button type="button" className="link-btn" onClick={onToggle}>{shown ? "Hide" : "Show"} on map</button>
+      <button type="button" className="link-btn" onClick={onToggle}>
+        {shown ? "Hide on map" : "Show on map"}
+      </button>
     </div>
   );
 }

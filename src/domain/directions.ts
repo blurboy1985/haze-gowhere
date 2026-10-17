@@ -1,5 +1,5 @@
 import { distanceMetres } from "./geo";
-import type { LatLng, Leg, LegMode, Tier } from "./types";
+import type { LatLng, Leg, LegMode, RankedRoute, Tier } from "./types";
 
 export interface TransitBadge {
   code: string;
@@ -340,4 +340,33 @@ export function activeStepEndpoints(legs: Leg[], activeStepIndex: number | null)
   };
 }
 
+/**
+ * Summarise why a Recommended Route wins (or how the fastest alternative compares)
+ * so the commuter immediately sees the travel-time vs Exposed/Covered trade-off.
+ */
+export function describeRouteTradeoff(route: RankedRoute, allRoutes: RankedRoute[]): string | null {
+  if (allRoutes.length === 0) return null;
+  const minTotal = Math.min(...allRoutes.map((r) => Math.round(r.totalMinutes)));
+  const fastest = allRoutes.reduce((a, b) => (a.totalMinutes <= b.totalMinutes ? a : b));
 
+  if (route.recommended) {
+    if (Math.round(route.totalMinutes) <= minTotal) {
+      const beatsExposure = allRoutes.some(
+        (r) => r.id !== route.id && Math.round(r.exposedMinutes) > Math.round(route.exposedMinutes),
+      );
+      return beatsExposure ? "Fastest & lowest exposure" : "Fastest";
+    }
+    const savedExposed = Math.round(fastest.exposedMinutes) - Math.round(route.exposedMinutes);
+    if (savedExposed >= 1) return `−${savedExposed} min Exposed vs fastest`;
+    const savedCovered = Math.round(fastest.coveredMinutes) - Math.round(route.coveredMinutes);
+    if (savedCovered >= 1) return `−${savedCovered} min Covered vs fastest`;
+    return "Lowest exposure";
+  }
+
+  const rec = allRoutes.find((r) => r.recommended);
+  if (Math.round(route.totalMinutes) === minTotal && rec && Math.round(rec.totalMinutes) > minTotal) {
+    const extraExposed = Math.round(route.exposedMinutes) - Math.round(rec.exposedMinutes);
+    return extraExposed >= 1 ? `Fastest (+${extraExposed} min Exposed)` : "Fastest";
+  }
+  return null;
+}

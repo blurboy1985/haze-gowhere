@@ -51,17 +51,28 @@ export function PointPicker({ kind, value, onChange, picking, onPickOnMap, onUse
     inputRef.current?.blur();
   };
 
+  const clearInput = () => {
+    setQuery("");
+    setResults([]);
+    onChange(null);
+    inputRef.current?.focus();
+  };
+
   return (
-    <div className={`picker picker-${kind}`}>
-      <span className="picker-dot" aria-hidden>{kind === "start" ? "A" : "B"}</span>
+    <div className={`picker picker-${kind} ${picking ? "is-picking-row" : ""}`}>
+      <span className="picker-dot" aria-hidden>
+        {kind === "start" ? "A" : "B"}
+      </span>
       <div className="picker-field">
-        <label htmlFor={`pick-${kind}`} className="sr-only">{label}</label>
+        <label htmlFor={`pick-${kind}`} className="sr-only">
+          {label}
+        </label>
         <input
           id={`pick-${kind}`}
           ref={inputRef}
           type="search"
           autoComplete="off"
-          placeholder={kind === "start" ? "Starting point: address, postal code, building" : "Destination: address, postal code, building"}
+          placeholder={kind === "start" ? "Starting point: address, postal code, MRT" : "Destination: address, postal code, building"}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -72,6 +83,18 @@ export function PointPicker({ kind, value, onChange, picking, onPickOnMap, onUse
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={(e) => e.key === "Enter" && results[0] && choose(results[0])}
         />
+        {query && (
+          <button
+            type="button"
+            className="picker-clear-btn"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={clearInput}
+            title={`Clear ${label.toLowerCase()}`}
+            aria-label={`Clear ${label.toLowerCase()}`}
+          >
+            ✕
+          </button>
+        )}
         {open && (results.length > 0 || error) && (
           <ul className="suggestions" role="listbox">
             {error && <li className="suggestion-error">{error}</li>}
@@ -88,7 +111,14 @@ export function PointPicker({ kind, value, onChange, picking, onPickOnMap, onUse
       </div>
       <div className="picker-actions">
         {onUseMyLocation && (
-          <button type="button" className="icon-btn" onClick={onUseMyLocation} disabled={locating} title="Use my current location" aria-label="Use my current location">
+          <button
+            type="button"
+            className="icon-btn"
+            onClick={onUseMyLocation}
+            disabled={locating}
+            title="Use my current location"
+            aria-label="Use my current location"
+          >
             {locating ? "…" : "◎"}
           </button>
         )}
@@ -108,5 +138,8 @@ export function PointPicker({ kind, value, onChange, picking, onPickOnMap, onUse
 }
 
 export function titleCase(s: string): string {
-  return s.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(Mrt|Lrt|Cc|Ns|Ew|Ne|Dt|Te)\b/g, (m) => m.toUpperCase());
+  return s
+    .toLowerCase()
+    .replace(/\b([a-z])/g, (m) => m.toUpperCase())
+    .replace(/\b(Mrt|Lrt|Cc|Ns|Ew|Ne|Dt|Te)\b/g, (m) => m.toUpperCase());
 }

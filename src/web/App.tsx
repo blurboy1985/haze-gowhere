@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { nearestStepIndex } from "../domain/navigation";
 import { defaultSgtDateTimeLocal, formatTripUrl, parseTripUrl } from "../domain/tripUrl";
-import type { HazeReading, LatLng, RoutesResponse } from "../domain/types";
+import type { HazeReading, LatLng, Pm25Band, RoutesResponse } from "../domain/types";
 import { fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api";
 import { HazeBanner } from "./HazeBanner";
+import { LogoMark } from "./Logo";
 import { MapView } from "./MapView";
 import { NavigationBanner } from "./NavigationBanner";
 import { PointPicker } from "./PointPicker";
@@ -11,6 +12,34 @@ import { RouteCard, TaxiCard } from "./RouteCard";
 
 type Which = "start" | "destination";
 type SheetSnap = "peek" | "half" | "full";
+
+interface SampleTrip {
+  label: string;
+  tag: string;
+  start: ChosenPoint;
+  end: ChosenPoint;
+}
+
+const SAMPLE_TRIPS: SampleTrip[] = [
+  {
+    label: "Raffles Place → Marina Bay Sands",
+    tag: "CBD Indoor Links",
+    start: { name: "Raffles Place MRT", location: [1.2839, 103.8515] },
+    end: { name: "Marina Bay Sands", location: [1.2834, 103.8607] },
+  },
+  {
+    label: "Bishan MRT → ION Orchard",
+    tag: "North–South corridor",
+    start: { name: "Bishan MRT", location: [1.35092, 103.84825] },
+    end: { name: "ION Orchard", location: [1.30398, 103.83191] },
+  },
+  {
+    label: "Tampines MRT → Bedok Mall",
+    tag: "East Heartlands",
+    start: { name: "Tampines MRT", location: [1.3533, 103.9452] },
+    end: { name: "Bedok Mall", location: [1.3248, 103.9293] },
+  },
+];
 
 const MINIMISE_KEY = "haze-gowhere:always-minimise";
 const readMinimise = () => {
@@ -69,7 +98,11 @@ export function App() {
       },
       (err) => {
         setLocating(false);
-        setLocateError(err.code === err.PERMISSION_DENIED ? "Location permission was denied. Search or tap the map instead." : "Couldn't get your location. Search or tap the map instead.");
+        setLocateError(
+          err.code === err.PERMISSION_DENIED
+            ? "Location permission was denied. Search, tap the map, or try a sample trip below."
+            : "Couldn't get your location. Search, tap the map, or try a sample trip below.",
+        );
       },
       { enableHighAccuracy: true, timeout: 10_000 },
     );
@@ -162,6 +195,8 @@ export function App() {
 
   const routes = result?.routes ?? [];
   const selectedRoute = routes.find((r) => r.id === selectedId) ?? null;
+  const activeBand: Pm25Band =
+    result?.tripBand ?? (haze ? (Math.max(...haze.regions.map((r) => r.band)) as Pm25Band) : 1);
 
   useEffect(() => {
     if (!navigating || !selectedRoute || !("geolocation" in navigator)) return;
@@ -185,7 +220,9 @@ export function App() {
   }, [navigating, selectedRoute, followGps]);
 
   return (
-    <div className={`app sheet-${sheetSnap} ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}>
+    <div
+      className={`app ambient-band-${activeBand} sheet-${sheetSnap} ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}
+    >
       <aside className="panel">
         <div className="sheet-grab-bar">
           <button
@@ -212,93 +249,173 @@ export function App() {
         </div>
 
         <header className="brand">
-          <div>
-            <h1>Haze GoWhere</h1>
-            <p>Routes that keep you out of the haze</p>
+          <div className="brand-identity">
+            <LogoMark band={activeBand} size={40} />
+            <div className="brand-text">
+              <h1>Haze GoWhere</h1>
+              <p>Routes that keep you out of the haze</p>
+            </div>
           </div>
           {(start || end) && (
-            <button type="button" className="share-btn" onClick={() => void shareTrip()} title="Copy shareable link to this trip">
+            <button
+              type="button"
+              className="share-btn"
+              onClick={() => void shareTrip()}
+              title="Copy shareable link to this trip"
+            >
               {copied ? "✓ Link copied" : "🔗 Share"}
             </button>
           )}
         </header>
 
-        <div className="pickers">
-          <PointPicker
-            kind="start"
-            value={start}
-            onChange={setStart}
-            picking={picking === "start"}
-            onPickOnMap={() => setPicking(picking === "start" ? null : "start")}
-            onUseMyLocation={useMyLocation}
-            locating={locating}
-          />
-          <PointPicker
-            kind="destination"
-            value={end}
-            onChange={setEnd}
-            picking={picking === "destination"}
-            onPickOnMap={() => setPicking(picking === "destination" ? null : "destination")}
-          />
-          <button type="button" className="swap-btn" onClick={swap} aria-label="Swap starting point and destination" title="Swap">⇅</button>
-        </div>
-        {locateError && <p className="note">{locateError}</p>}
-        {picking && <p className="note pick-note">Tap the map to set the {picking === "start" ? "starting point" : "destination"}.</p>}
-
-        <div className="trip-toolbar">
-          <div className="depart-picker">
-            <label htmlFor="depart-mode" className="sr-only">Departure time</label>
-            <select
-              id="depart-mode"
-              value={departAt ? "scheduled" : "now"}
-              onChange={(e) => setDepartAt(e.target.value === "scheduled" ? defaultSgtDateTimeLocal() : null)}
+        <section className="planner-card" aria-label="Trip planner">
+          <div className="pickers">
+            <span className="picker-connector" aria-hidden />
+            <PointPicker
+              kind="start"
+              value={start}
+              onChange={setStart}
+              picking={picking === "start"}
+              onPickOnMap={() => setPicking(picking === "start" ? null : "start")}
+              onUseMyLocation={useMyLocation}
+              locating={locating}
+            />
+            <PointPicker
+              kind="destination"
+              value={end}
+              onChange={setEnd}
+              picking={picking === "destination"}
+              onPickOnMap={() => setPicking(picking === "destination" ? null : "destination")}
+            />
+            <button
+              type="button"
+              className="swap-btn"
+              onClick={swap}
+              aria-label="Swap starting point and destination"
+              title="Swap starting point and destination"
             >
-              <option value="now">🕒 Leave now</option>
-              <option value="scheduled">📅 Depart at…</option>
-            </select>
-            {departAt && (
-              <input
-                type="datetime-local"
-                aria-label="Departure date and time (Singapore time)"
-                value={departAt}
-                onChange={(e) => setDepartAt(e.target.value || null)}
-              />
-            )}
-          </div>
-          {(start || end) && (
-            <button type="button" className="share-btn mobile-share" onClick={() => void shareTrip()}>
-              {copied ? "✓ Copied" : "🔗 Share"}
+              ⇅
             </button>
+          </div>
+
+          {locateError && <p className="note locate-note">{locateError}</p>}
+          {picking && (
+            <p className="note pick-note">
+              ⌖ Tap anywhere on the map to set the {picking === "start" ? "Starting Point" : "Destination"}.
+            </p>
           )}
-        </div>
 
-        <label className="toggle">
-          <input type="checkbox" checked={minimise} onChange={(e) => setMinimise(e.target.checked)} />
-          <span>
-            <strong>Always minimise exposure</strong>
-            <small>For asthma, heart or lung conditions, the elderly, or young children</small>
-          </span>
-        </label>
+          <div className="planner-divider" />
 
-        <HazeBanner haze={haze} tripBand={result?.tripBand ?? null} error={hazeError} />
+          <div className="trip-toolbar">
+            <div className="depart-picker">
+              <label htmlFor="depart-mode" className="sr-only">
+                Departure time
+              </label>
+              <select
+                id="depart-mode"
+                value={departAt ? "scheduled" : "now"}
+                onChange={(e) => setDepartAt(e.target.value === "scheduled" ? defaultSgtDateTimeLocal() : null)}
+              >
+                <option value="now">🕒 Leave now</option>
+                <option value="scheduled">📅 Depart at…</option>
+              </select>
+              {departAt && (
+                <input
+                  type="datetime-local"
+                  aria-label="Departure date and time (Singapore time)"
+                  value={departAt}
+                  onChange={(e) => setDepartAt(e.target.value || null)}
+                />
+              )}
+            </div>
+          </div>
+
+          <label className={`toggle ${minimise ? "is-active" : ""}`}>
+            <input type="checkbox" checked={minimise} onChange={(e) => setMinimise(e.target.checked)} />
+            <span className="toggle-body">
+              <span className="toggle-title-row">
+                <strong>Always minimise exposure</strong>
+                {minimise && <span className="toggle-badge">Max protection</span>}
+              </span>
+              <small>For asthma, heart or lung conditions, the elderly, or young children</small>
+            </span>
+          </label>
+        </section>
+
+        <HazeBanner haze={haze} tripBand={result?.tripBand ?? null} minimise={minimise} error={hazeError} />
 
         <section className="results" aria-live="polite">
           {!start || !end ? (
-            <p className="empty">Set a starting point and destination to see routes.</p>
+            <div className="empty-state">
+              <div className="empty-state-head">
+                <strong>Breathe less outdoor air on your commute</strong>
+                <p className="empty">
+                  Set a <strong>Starting Point</strong> and <strong>Destination</strong> above, or try a sample Singapore trip:
+                </p>
+              </div>
+              <div className="sample-trips">
+                {SAMPLE_TRIPS.map((sample) => (
+                  <button
+                    key={sample.label}
+                    type="button"
+                    className="sample-trip-btn"
+                    onClick={() => {
+                      setStart(sample.start);
+                      setEnd(sample.end);
+                    }}
+                  >
+                    <span className="sample-trip-main">{sample.label}</span>
+                    <span className="sample-trip-tag">{sample.tag}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="tier-explainer">
+                <div className="tier-explainer-row">
+                  <span className="tier-dot protected" />
+                  <span>
+                    <strong>Protected</strong> · Air-conditioned trains, buses &amp; enclosed underground/mall links
+                  </span>
+                </div>
+                <div className="tier-explainer-row">
+                  <span className="tier-dot covered" />
+                  <span>
+                    <strong>Covered</strong> · LTA linkways, bus stops &amp; elevated platforms (roofed, open-air)
+                  </span>
+                </div>
+                <div className="tier-explainer-row">
+                  <span className="tier-dot exposed" />
+                  <span>
+                    <strong>Exposed</strong> · Uncovered outdoor streets &amp; crossings
+                  </span>
+                </div>
+              </div>
+            </div>
           ) : loading ? (
-            <p className="empty">Finding routes…</p>
+            <div className="loading-state" role="status">
+              <p className="loading-caption">Scoring routes against live PM2.5 &amp; sheltered walkways…</p>
+              <div className="skeleton-card" />
+              <div className="skeleton-card" />
+            </div>
           ) : routeError ? (
             <p className="error">{routeError}</p>
           ) : routes.length === 0 ? (
             <p className="empty">No routes found between these points.</p>
           ) : (
             <>
-              {result?.mock && <p className="mock-note">Demo routes: OneMap routing isn't configured, so these routes are simulated. Haze readings and search are live.</p>}
-              {result?.taxi && <TaxiCard taxi={result.taxi} shown={showTaxi} onToggle={() => setShowTaxi((s) => !s)} />}
+              {result?.mock && (
+                <p className="mock-note">
+                  Demo routes: OneMap routing isn't configured, so these routes are simulated. Haze readings and search are live.
+                </p>
+              )}
+              {result?.taxi && (
+                <TaxiCard taxi={result.taxi} shown={showTaxi} onToggle={() => setShowTaxi((s) => !s)} />
+              )}
               {routes.map((r) => (
                 <RouteCard
                   key={r.id}
                   route={r}
+                  allRoutes={routes}
                   selected={r.id === selectedId}
                   onSelect={() => {
                     setSelectedId(r.id);
@@ -317,7 +434,9 @@ export function App() {
                 />
               ))}
               <p className="fineprint">
-                Protected: inside trains, buses and MRT stations. Covered: roofed but open-air (bus stops, covered linkways), so you still breathe the haze. Exposed: open-air walking.
+                <strong>Protected:</strong> inside trains, buses, MRT stations &amp; CBD indoor links.{" "}
+                <strong>Covered:</strong> roofed but open-air (bus stops, LTA linkways, elevated platforms).{" "}
+                <strong>Exposed:</strong> open-air walking.
               </p>
             </>
           )}
@@ -325,6 +444,7 @@ export function App() {
       </aside>
 
       <main className="map-wrap">
+        <div className="map-atmosphere" aria-hidden />
         {navigating && selectedRoute && (
           <NavigationBanner
             route={selectedRoute}
