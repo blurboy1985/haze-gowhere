@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
+import { nearestStepIndex } from "../domain/navigation";
 import type { HazeReading, LatLng, RoutesResponse } from "../domain/types";
 import { fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api";
 import { HazeBanner } from "./HazeBanner";
 import { MapView } from "./MapView";
+import { NavigationBanner } from "./NavigationBanner";
 import { PointPicker } from "./PointPicker";
 import { RouteCard, TaxiCard } from "./RouteCard";
 
@@ -32,6 +34,8 @@ export function App() {
   const [result, setResult] = useState<RoutesResponse | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
+  const [navigating, setNavigating] = useState(false);
+  const [followGps, setFollowGps] = useState(true);
   const [userLocation, setUserLocation] = useState<LatLng | null>(null);
   const [loading, setLoading] = useState(false);
   const [routeError, setRouteError] = useState<string | null>(null);
@@ -80,6 +84,7 @@ export function App() {
     if (!start || !end) {
       setResult(null);
       setActiveStepIndex(null);
+      setNavigating(false);
       return;
     }
     const ctrl = new AbortController();
@@ -91,6 +96,7 @@ export function App() {
         setHaze(r.haze);
         setSelectedId(r.routes.find((x) => x.recommended)?.id ?? null);
         setActiveStepIndex(null);
+        setNavigating(false);
         setShowTaxi(false);
       })
       .catch((e: Error) => e.name !== "AbortError" && setRouteError(e.message))
@@ -116,9 +122,31 @@ export function App() {
   };
 
   const routes = result?.routes ?? [];
+  const selectedRoute = routes.find((r) => r.id === selectedId) ?? null;
+
+  useEffect(() => {
+    if (!navigating || !selectedRoute || !("geolocation" in navigator)) return;
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        const p: LatLng = [pos.coords.latitude, pos.coords.longitude];
+        setUserLocation(p);
+        if (followGps) {
+          const match = nearestStepIndex(selectedRoute.legs, p);
+          if (match && match.distanceMetres <= 150) {
+            setActiveStepIndex(match.stepIndex);
+          }
+        }
+      },
+      () => {
+        /* keep manual navigation if live GPS fails */
+      },
+      { enableHighAccuracy: true, maximumAge: 5_000 },
+    );
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [navigating, selectedRoute, followGps]);
 
   return (
-    <div className={`app ${picking ? "is-picking" : ""}`}>
+    <div className={`app ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}>
       <aside className="panel">
         <header className="brand">
           <h1>Haze GoWhere</h1>
@@ -178,9 +206,17 @@ export function App() {
                   onSelect={() => {
                     setSelectedId(r.id);
                     setActiveStepIndex(null);
+                    setNavigating(false);
                   }}
                   activeStepIndex={r.id === selectedId ? activeStepIndex : null}
-                  onSelectStep={setActiveStepIndex}
+                  onSelectStep={(idx) => {
+                    setActiveStepIndex(idx);
+                    if (idx === null) setNavigating(false);
+                  }}
+                  onStartNavigation={() => {
+                    setNavigating(true);
+                    setActiveStepIndex(activeStepIndex ?? 0);
+                  }}
                 />
               ))}
               <p className="fineprint">
@@ -192,6 +228,22 @@ export function App() {
       </aside>
 
       <main className="map-wrap">
+        {navigating && selectedRoute && (
+          <NavigationBanner
+            route={selectedRoute}
+            stepIndex={activeStepIndex ?? 0}
+            followGps={followGps}
+            onChangeStep={(idx) => {
+              setFollowGps(false);
+              setActiveStepIndex(idx);
+            }}
+            onToggleFollowGps={() => setFollowGps((f) => !f)}
+            onExit={() => {
+              setNavigating(false);
+              setActiveStepIndex(null);
+            }}
+          />
+        )}
         <MapView
           start={start?.location ?? null}
           end={end?.location ?? null}
@@ -207,6 +259,7 @@ export function App() {
           onSelectRoute={(id) => {
             setSelectedId(id);
             setActiveStepIndex(null);
+            setNavigating(false);
           }}
           onSelectStep={setActiveStepIndex}
           onLocateMe={useMyLocation}

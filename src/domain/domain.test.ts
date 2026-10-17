@@ -12,6 +12,7 @@ import {
   stepBoundsPoints,
 } from "./directions";
 import { avoidanceStrength, nearestRegion, pm25Band } from "./haze";
+import { describeNavState, nearestStepIndex } from "./navigation";
 import { mergeItineraries, routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
 import { decodePolyline, encodePolyline } from "./polyline";
 import { rankRoutes, routeTotals, tripBand } from "./ranking";
@@ -320,5 +321,61 @@ describe("directions", () => {
     expect(stepBoundsPoints(legs, null)).toHaveLength(6);
   });
 });
+
+describe("navigation", () => {
+  const route: Route = {
+    id: "pt-0",
+    summary: "North South Line",
+    legs: [
+      { mode: "walk", tier: "exposed", minutes: 3, distanceMetres: 240, path: [[1.350, 103.848], [1.351, 103.849]] },
+      { mode: "walk", tier: "covered", minutes: 1, distanceMetres: 80, path: [[1.351, 103.849], [1.3515, 103.8495]], toStop: "Bishan (NS17)" },
+      { mode: "train", tier: "protected", minutes: 12, label: "North South Line", lineCode: "NS", fromStop: "Bishan (NS17)", toStop: "Orchard (NS22)", stopCount: 5, path: [[1.3515, 103.8495], [1.304, 103.832]] },
+      { mode: "walk", tier: "exposed", minutes: 4, distanceMetres: 300, path: [[1.304, 103.832], [1.303, 103.831]] },
+    ],
+  };
+
+  it("computes current and next step instructions, worst Exposure Tier, and remaining totals", () => {
+    const step0 = describeNavState(route, 0)!;
+    expect(step0).toMatchObject({
+      stepIndex: 0,
+      totalSteps: 3,
+      dominantTier: "exposed",
+      remainingMinutes: 20,
+      remainingExposedMinutes: 7,
+      remainingCoveredMinutes: 1,
+      progressPercent: 0,
+    });
+    expect(step0.current.detail).toBe("320 m · to Bishan (NS17)");
+    expect(step0.next?.label).toBe("North South Line");
+
+    const step1 = describeNavState(route, 1)!;
+    expect(step1).toMatchObject({
+      stepIndex: 1,
+      totalSteps: 3,
+      dominantTier: "protected",
+      remainingMinutes: 16,
+      remainingExposedMinutes: 4,
+      remainingCoveredMinutes: 0,
+      progressPercent: 20,
+    });
+
+    const step2 = describeNavState(route, 2)!;
+    expect(step2.next).toBeNull();
+    expect(step2.remainingMinutes).toBe(4);
+    expect(step2.remainingExposedMinutes).toBe(4);
+    expect(step2.progressPercent).toBe(80);
+  });
+
+  it("snaps live GPS coordinates to the nearest collapsed step", () => {
+    const nearStart = nearestStepIndex(route.legs, [1.3502, 103.8481]);
+    expect(nearStart?.stepIndex).toBe(0);
+    expect(nearStart?.distanceMetres).toBeLessThan(40);
+
+    const nearEnd = nearestStepIndex(route.legs, [1.3031, 103.8311]);
+    expect(nearEnd?.stepIndex).toBe(2);
+    expect(nearEnd?.distanceMetres).toBeLessThan(30);
+  });
+});
+
 
 
