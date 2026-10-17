@@ -16,6 +16,7 @@ import { describeNavState, nearestStepIndex } from "./navigation";
 import { mergeItineraries, routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
 import { decodePolyline, encodePolyline } from "./polyline";
 import { rankRoutes, routeTotals, tripBand } from "./ranking";
+import { defaultSgtDateTimeLocal, formatTripUrl, parseDepartureDate, parseTripUrl } from "./tripUrl";
 import type { LatLng, RegionReading, Route } from "./types";
 
 const regions: RegionReading[] = [
@@ -376,6 +377,36 @@ describe("navigation", () => {
     expect(nearEnd?.distanceMetres).toBeLessThan(30);
   });
 });
+
+describe("tripUrl", () => {
+  it("round-trips Starting Point, Destination, minimise toggle, and Singapore departure time", () => {
+    const query = formatTripUrl({
+      start: { name: "Bishan MRT", location: [1.35092, 103.84825] },
+      end: { name: "ION Orchard", location: [1.30398, 103.83191] },
+      minimise: true,
+      departAt: "2026-10-18T09:30",
+    });
+    expect(query).toBe("?from=1.35092%2C103.84825&fromName=Bishan+MRT&to=1.30398%2C103.83191&toName=ION+Orchard&minimise=1&at=2026-10-18T09%3A30");
+    expect(parseTripUrl(query)).toEqual({
+      start: { name: "Bishan MRT", location: [1.35092, 103.84825] },
+      end: { name: "ION Orchard", location: [1.30398, 103.83191] },
+      minimise: true,
+      departAt: "2026-10-18T09:30",
+    });
+  });
+
+  it("rejects out-of-Singapore coordinates and interprets datetime-local strings in SGT (+08:00)", () => {
+    expect(parseTripUrl("?from=35.68,139.76&to=1.30398,103.83191")).toEqual({
+      start: null,
+      end: { name: "Pinned destination", location: [1.30398, 103.83191] },
+      departAt: null,
+    });
+    const d = parseDepartureDate("2026-10-18T09:30");
+    expect(d.toISOString()).toBe("2026-10-18T01:30:00.000Z");
+    expect(defaultSgtDateTimeLocal(d)).toBe("2026-10-18T09:30");
+  });
+});
+
 
 
 

@@ -1,6 +1,7 @@
 import type { CoveredLinkwayIndex } from "../src/domain/coveredLinkways";
 import type { IndoorGraph } from "../src/domain/indoorGraph";
 import { indoorLinksOpen } from "../src/domain/indoorVariants";
+import { parseDepartureDate } from "../src/domain/tripUrl";
 import type { LatLng } from "../src/domain/types";
 import { latestHazeReading } from "./haze";
 import { mockDrive, mockPublicTransport, mockWalk } from "./mock";
@@ -97,7 +98,7 @@ export function createApi(config: ApiConfig) {
         const end = parsePoint(params.get("to"));
         if (!start || !end) return { status: 400, body: { error: "Starting Point and Destination must both be in Singapore." } };
         try {
-          const when = new Date();
+          const when = parseDepartureDate(params.get("at"));
           const open = env.INDOOR_ALWAYS_OPEN === "1" || indoorLinksOpen(when);
           const [reading, linkwayIndex, indoorGraph] = await Promise.all([haze(), linkways(), open ? indoor() : Promise.resolve(null)]);
           const body = await planTrip({ start, end, alwaysMinimise: params.get("minimise") === "1", when }, source, reading, linkwayIndex, mock, indoorGraph);

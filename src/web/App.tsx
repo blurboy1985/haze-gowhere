@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { nearestStepIndex } from "../domain/navigation";
+import { defaultSgtDateTimeLocal, formatTripUrl, parseTripUrl } from "../domain/tripUrl";
 import type { HazeReading, LatLng, RoutesResponse } from "../domain/types";
 import { fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api";
 import { HazeBanner } from "./HazeBanner";
@@ -9,6 +10,7 @@ import { PointPicker } from "./PointPicker";
 import { RouteCard, TaxiCard } from "./RouteCard";
 
 type Which = "start" | "destination";
+type SheetSnap = "peek" | "half" | "full";
 
 const MINIMISE_KEY = "haze-gowhere:always-minimise";
 const readMinimise = () => {
@@ -25,10 +27,14 @@ async function namePoint(p: LatLng, fallback: string): Promise<ChosenPoint> {
 }
 
 export function App() {
-  const [start, setStart] = useState<ChosenPoint | null>(null);
-  const [end, setEnd] = useState<ChosenPoint | null>(null);
+  const initialUrl = parseTripUrl(typeof window !== "undefined" ? window.location.search : "");
+  const [start, setStart] = useState<ChosenPoint | null>(initialUrl.start);
+  const [end, setEnd] = useState<ChosenPoint | null>(initialUrl.end);
   const [picking, setPicking] = useState<Which | null>(null);
-  const [minimise, setMinimise] = useState(readMinimise);
+  const [minimise, setMinimise] = useState<boolean>(initialUrl.minimise ?? readMinimise());
+  const [departAt, setDepartAt] = useState<string | null>(initialUrl.departAt ?? null);
+  const [sheetSnap, setSheetSnap] = useState<SheetSnap>("half");
+  const [copied, setCopied] = useState(false);
   const [haze, setHaze] = useState<HazeReading | null>(null);
   const [hazeError, setHazeError] = useState<string | null>(null);
   const [result, setResult] = useState<RoutesResponse | null>(null);
@@ -69,8 +75,11 @@ export function App() {
     );
   }, []);
 
-  // GPS is the default way to set the Starting Point.
-  useEffect(useMyLocation, [useMyLocation]);
+  // GPS is the default way to set the Starting Point unless a shared URL already set one.
+  useEffect(() => {
+    if (!initialUrl.start) useMyLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [useMyLocation]);
 
   useEffect(() => {
     try {
@@ -79,6 +88,13 @@ export function App() {
       /* per-viewer convenience only */
     }
   }, [minimise]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const query = formatTripUrl({ start, end, minimise, departAt });
+    const nextUrl = `${window.location.pathname}${query}${window.location.hash}`;
+    window.history.replaceState(null, "", nextUrl);
+  }, [start, end, minimise, departAt]);
 
   useEffect(() => {
     if (!start || !end) {
@@ -90,7 +106,7 @@ export function App() {
     const ctrl = new AbortController();
     setLoading(true);
     setRouteError(null);
-    fetchRoutes(start.location, end.location, minimise, ctrl.signal)
+    fetchRoutes(start.location, end.location, minimise, departAt, ctrl.signal)
       .then((r) => {
         setResult(r);
         setHaze(r.haze);
@@ -102,7 +118,7 @@ export function App() {
       .catch((e: Error) => e.name !== "AbortError" && setRouteError(e.message))
       .finally(() => !ctrl.signal.aborted && setLoading(false));
     return () => ctrl.abort();
-  }, [start, end, minimise]);
+  }, [start, end, minimise, departAt]);
 
   const placeAt = async (which: Which, p: LatLng) => {
     const point = await namePoint(p, "Dropped pin");
@@ -119,6 +135,29 @@ export function App() {
   const swap = () => {
     setStart(end);
     setEnd(start);
+  };
+
+  const shareTrip = async () => {
+    const url = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Haze GoWhere Trip", url });
+        return;
+      } catch {
+        /* fall back to clipboard */
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore clipboard error */
+    }
+  };
+
+  const cycleSheet = () => {
+    setSheetSnap((s) => (s === "peek" ? "half" : s === "half" ? "full" : "peek"));
   };
 
   const routes = result?.routes ?? [];
@@ -146,11 +185,42 @@ export function App() {
   }, [navigating, selectedRoute, followGps]);
 
   return (
-    <div className={`app ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}>
+    <div className={`app sheet-${sheetSnap} ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}>
       <aside className="panel">
+        <div className="sheet-grab-bar">
+          <button
+            type="button"
+            className="sheet-grab-handle"
+            onClick={cycleSheet}
+            aria-label={`Resize panel (currently ${sheetSnap})`}
+            title="Tap to resize panel"
+          >
+            <span className="sheet-pill" />
+          </button>
+          <div className="sheet-snap-Group" role="group" aria-label="Sheet size">
+            {(["peek", "half", "full"] as SheetSnap[]).map((snap) => (
+              <button
+                key={snap}
+                type="button"
+                className={`sheet-snap-btn ${sheetSnap === snap ? "active" : ""}`}
+                onClick={() => setSheetSnap(snap)}
+              >
+                {snap === "peek" ? "Map" : snap === "half" ? "Split" : "Full"}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <header className="brand">
-          <h1>Haze GoWhere</h1>
-          <p>Routes that keep you out of the haze</p>
+          <div>
+            <h1>Haze GoWhere</h1>
+            <p>Routes that keep you out of the haze</p>
+          </div>
+          {(start || end) && (
+            <button type="button" className="share-btn" onClick={() => void shareTrip()} title="Copy shareable link to this trip">
+              {copied ? "✓ Link copied" : "🔗 Share"}
+            </button>
+          )}
         </header>
 
         <div className="pickers">
@@ -174,6 +244,33 @@ export function App() {
         </div>
         {locateError && <p className="note">{locateError}</p>}
         {picking && <p className="note pick-note">Tap the map to set the {picking === "start" ? "starting point" : "destination"}.</p>}
+
+        <div className="trip-toolbar">
+          <div className="depart-picker">
+            <label htmlFor="depart-mode" className="sr-only">Departure time</label>
+            <select
+              id="depart-mode"
+              value={departAt ? "scheduled" : "now"}
+              onChange={(e) => setDepartAt(e.target.value === "scheduled" ? defaultSgtDateTimeLocal() : null)}
+            >
+              <option value="now">🕒 Leave now</option>
+              <option value="scheduled">📅 Depart at…</option>
+            </select>
+            {departAt && (
+              <input
+                type="datetime-local"
+                aria-label="Departure date and time (Singapore time)"
+                value={departAt}
+                onChange={(e) => setDepartAt(e.target.value || null)}
+              />
+            )}
+          </div>
+          {(start || end) && (
+            <button type="button" className="share-btn mobile-share" onClick={() => void shareTrip()}>
+              {copied ? "✓ Copied" : "🔗 Share"}
+            </button>
+          )}
+        </div>
 
         <label className="toggle">
           <input type="checkbox" checked={minimise} onChange={(e) => setMinimise(e.target.checked)} />
