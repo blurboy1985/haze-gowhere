@@ -1,4 +1,4 @@
-import { collapseSteps, type RouteStep } from "./directions";
+import { collapseSteps, worstStepTier, type RouteStep } from "./directions";
 import { distanceMetres } from "./geo";
 import type { LatLng, Leg, Route, Tier } from "./types";
 
@@ -14,11 +14,6 @@ export interface NavSummary {
   progressPercent: number;
 }
 
-function worstTier(tiers: Tier[]): Tier {
-  if (tiers.includes("exposed")) return "exposed";
-  if (tiers.includes("covered")) return "covered";
-  return "protected";
-}
 
 /**
  * Compute the live navigation state for a Route at `stepIndex`: current & next step instructions,
@@ -54,7 +49,7 @@ export function describeNavState(route: Pick<Route, "legs">, stepIndex: number):
     totalSteps: steps.length,
     current,
     next,
-    dominantTier: worstTier(current.tiers),
+    dominantTier: worstStepTier(current.tiers),
     remainingMinutes,
     remainingExposedMinutes,
     remainingCoveredMinutes,

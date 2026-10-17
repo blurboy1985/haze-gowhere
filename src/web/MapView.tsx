@@ -1,17 +1,35 @@
 import L from "leaflet";
 import { useEffect, useMemo, useState } from "react";
 import { CircleMarker, MapContainer, Marker, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from "react-leaflet";
-import { collapseSteps, fmtMin, routeCalloutPoint, routeStopMarkers, stepBoundsPoints } from "../domain/directions";
+import {
+  activeStepEndpoints,
+  collapseSteps,
+  fmtMin,
+  routeCalloutPoint,
+  routeStopMarkers,
+  stepBoundsPoints,
+} from "../domain/directions";
+import { distanceMetres } from "../domain/geo";
 import type { LatLng, RankedRoute, TaxiSuggestion, Tier } from "../domain/types";
 
 export const TIER_COLOUR: Record<Tier, string> = {
-  exposed: "#d64545",
-  covered: "#e0a526",
-  protected: "#2f9e6b",
+  exposed: "#dc2626",
+  covered: "#d97706",
+  protected: "#059669",
+};
+
+const TIER_LABEL: Record<Tier, string> = {
+  exposed: "Exposed",
+  covered: "Covered",
+  protected: "Protected",
 };
 
 const SINGAPORE: LatLng = [1.3521, 103.8198];
 const BOUNDS = L.latLngBounds([1.144, 103.535], [1.494, 104.1]);
+
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
 
 const pinIcon = (letter: string, cls: string) =>
   L.divIcon({ className: "", html: `<div class="pin ${cls}"><span>${letter}</span></div>`, iconSize: [30, 38], iconAnchor: [15, 36] });
@@ -32,6 +50,32 @@ const calloutIcon = (route: RankedRoute, isSelected: boolean) => {
     html: `<div class="map-pill ${isSelected ? "selected" : ""}"><strong>${fmtMin(route.totalMinutes)}</strong><span>${expText}</span></div>`,
     iconSize: [96, 26],
     iconAnchor: [48, 13],
+  });
+};
+
+const stepEndpointIcon = (kind: "start" | "end" | "point", tier: Tier, label: string) => {
+  const colour = TIER_COLOUR[tier];
+  const tierName = TIER_LABEL[tier];
+  const badgeText = kind === "start" ? "START" : kind === "end" ? "END" : tierName.toUpperCase();
+  const glyph = kind === "start" ? "▶" : kind === "end" ? "◉" : "⏱";
+  const posClass = kind === "end" ? "step-endpoint-below" : "step-endpoint-above";
+  return L.divIcon({
+    className: "",
+    html: `
+      <div class="step-endpoint ${posClass}">
+        <div class="step-endpoint-node" style="--step-colour:${colour}">
+          <span class="step-endpoint-halo"></span>
+          <span class="step-endpoint-core">${glyph}</span>
+        </div>
+        <div class="step-endpoint-card">
+          <span class="step-endpoint-tag" style="background:${colour}">${badgeText}</span>
+          <span class="step-endpoint-label">${escapeHtml(label)}</span>
+          <span class="step-endpoint-tier" style="color:${colour}">${tierName}</span>
+        </div>
+      </div>
+    `,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
   });
 };
 
@@ -57,12 +101,24 @@ function TapHandler({ onTap }: { onTap: (p: LatLng) => void }) {
   return null;
 }
 
-function FitTo({ points, fitTick }: { points: LatLng[]; fitTick: number }) {
+function FitTo({ points, fitTick, hasActiveStep }: { points: LatLng[]; fitTick: number; hasActiveStep: boolean }) {
   const map = useMap();
-  const key = `${fitTick}:${points.map((p) => p.join()).join("|")}`;
+  const key = `${fitTick}:${hasActiveStep ? "step" : "all"}:${points.map((p) => p.join()).join("|")}`;
   useEffect(() => {
-    if (points.length === 1) map.setView(points[0]!, Math.max(map.getZoom(), 15));
-    else if (points.length > 1) map.fitBounds(L.latLngBounds(points), { padding: [44, 44], maxZoom: 17 });
+    if (points.length === 0) return;
+    const first = points[0]!;
+    const isSinglePoint = points.every((p) => distanceMetres(first, p) < 15);
+    if (isSinglePoint) {
+      map.setView(first, Math.max(map.getZoom(), 16));
+    } else if (hasActiveStep) {
+      map.fitBounds(L.latLngBounds(points), {
+        paddingTopLeft: [64, 148],
+        paddingBottomRight: [64, 118],
+        maxZoom: 17,
+      });
+    } else {
+      map.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: 17 });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   return null;
@@ -146,12 +202,18 @@ export function MapView(props: Props) {
   const [fitTick, setFitTick] = useState(0);
   const selected = routes.find((r) => r.id === selectedId);
   const others = routes.filter((r) => r.id !== selectedId);
+  const hasActiveStep = activeStepIndex !== null;
 
   const activeLegSet = useMemo(() => {
     if (!selected || activeStepIndex === null) return null;
     const step = collapseSteps(selected.legs)[activeStepIndex];
     return step ? new Set(step.legIndices) : null;
   }, [selected, activeStepIndex]);
+
+  const stepEndpoints = useMemo(
+    () => (selected ? activeStepEndpoints(selected.legs, activeStepIndex) : null),
+    [selected, activeStepIndex],
+  );
 
   const stopMarkers = useMemo(() => (selected ? routeStopMarkers(selected.legs) : []), [selected]);
 
@@ -173,7 +235,7 @@ export function MapView(props: Props) {
         attribution='<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;vertical-align:middle"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener">Singapore Land Authority</a>&nbsp;&#124;&nbsp;Indoor links &copy;&nbsp;<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'
       />
       <TapHandler onTap={props.onMapTap} />
-      <FitTo points={fitPoints} fitTick={fitTick} />
+      <FitTo points={fitPoints} fitTick={fitTick} hasActiveStep={hasActiveStep} />
       <MapControls
         hasRoute={Boolean(selected)}
         activeStepIndex={activeStepIndex}
@@ -183,12 +245,12 @@ export function MapView(props: Props) {
       />
 
       {others.map((r) => {
-        const callout = routeCalloutPoint(r.legs);
+        const callout = !hasActiveStep ? routeCalloutPoint(r.legs) : null;
         return (
           <div key={r.id}>
             <Polyline
               positions={r.legs.flatMap((l) => l.path)}
-              pathOptions={{ color: "#6b7280", weight: 5, opacity: 0.45, dashArray: "2 8" }}
+              pathOptions={{ color: "#64748b", weight: 5, opacity: hasActiveStep ? 0.14 : 0.45, dashArray: "2 8" }}
               eventHandlers={{ click: () => props.onSelectRoute(r.id) }}
             />
             {callout && (
@@ -202,60 +264,187 @@ export function MapView(props: Props) {
         );
       })}
       {showTaxi && taxi && <Polyline positions={taxi.path} pathOptions={{ color: "#1f2a37", weight: 4, opacity: 0.6, dashArray: "8 6" }} />}
+
+      {/* Pass 1: Non-highlighted legs (either full route when no step is active, or dimmed context legs when a step is active) */}
       {selected?.legs.map((leg, i) => {
-        const isHighlighted = activeLegSet ? activeLegSet.has(i) : false;
-        const isDimmed = activeLegSet ? !activeLegSet.has(i) : false;
-        return (
-          <div key={`${selected.id}-${i}`}>
-            {isHighlighted && (
+        if (activeLegSet?.has(i)) return null;
+        const isDimmed = Boolean(activeLegSet);
+        if (isDimmed) {
+          return (
+            <div key={`${selected.id}-bg-${i}`}>
               <Polyline
                 positions={leg.path}
-                pathOptions={{ color: "#ffffff", weight: leg.mode === "walk" ? 11 : 12, opacity: 0.95, lineCap: "round" }}
+                pathOptions={{
+                  color: "#0f172a",
+                  weight: 7,
+                  opacity: 0.16,
+                  lineCap: "round",
+                  lineJoin: "round",
+                }}
               />
-            )}
+              <Polyline
+                positions={leg.path}
+                pathOptions={{
+                  color: TIER_COLOUR[leg.tier],
+                  weight: 4.5,
+                  opacity: 0.32,
+                  dashArray: leg.mode === "walk" ? "2 7" : undefined,
+                  lineCap: "round",
+                  lineJoin: "round",
+                }}
+              />
+            </div>
+          );
+        }
+        return (
+          <div key={`${selected.id}-full-${i}`}>
+            <Polyline
+              positions={leg.path}
+              pathOptions={{ color: "#0f172a", weight: 11, opacity: 0.55, lineCap: "round", lineJoin: "round" }}
+            />
+            <Polyline
+              positions={leg.path}
+              pathOptions={{ color: "#ffffff", weight: 8.5, opacity: 0.96, lineCap: "round", lineJoin: "round" }}
+            />
             <Polyline
               positions={leg.path}
               pathOptions={{
                 color: TIER_COLOUR[leg.tier],
-                weight: isHighlighted ? (leg.mode === "walk" ? 7 : 8) : leg.mode === "walk" ? 6 : 7,
-                opacity: isDimmed ? 0.38 : 0.95,
-                dashArray: leg.mode === "walk" ? "1 9" : undefined,
+                weight: 6,
+                opacity: 0.98,
                 lineCap: "round",
+                lineJoin: "round",
               }}
             />
+            {leg.mode === "walk" && (
+              <Polyline
+                positions={leg.path}
+                pathOptions={{
+                  color: "#ffffff",
+                  weight: 2.8,
+                  opacity: 0.95,
+                  dashArray: "1 8",
+                  lineCap: "round",
+                }}
+              />
+            )}
           </div>
         );
       })}
 
-      {selected && (() => {
+      {/* Pass 2: Active/highlighted step legs rendered on top with high-contrast dark + white casing and vivid tier core */}
+      {selected?.legs.map((leg, i) => {
+        if (!activeLegSet?.has(i)) return null;
+        return (
+          <div key={`${selected.id}-active-${i}`}>
+            <Polyline
+              positions={leg.path}
+              pathOptions={{ color: "#0f172a", weight: 16, opacity: 0.92, lineCap: "round", lineJoin: "round" }}
+            />
+            <Polyline
+              positions={leg.path}
+              pathOptions={{ color: "#ffffff", weight: 12, opacity: 1, lineCap: "round", lineJoin: "round" }}
+            />
+            <Polyline
+              positions={leg.path}
+              pathOptions={{
+                color: TIER_COLOUR[leg.tier],
+                weight: 8.5,
+                opacity: 1,
+                lineCap: "round",
+                lineJoin: "round",
+              }}
+            />
+            {leg.mode === "walk" ? (
+              <Polyline
+                positions={leg.path}
+                pathOptions={{
+                  color: "#ffffff",
+                  weight: 4,
+                  opacity: 0.98,
+                  dashArray: "1 10",
+                  lineCap: "round",
+                }}
+              />
+            ) : (
+              <Polyline
+                positions={leg.path}
+                pathOptions={{
+                  color: "#ffffff",
+                  weight: 2.2,
+                  opacity: 0.65,
+                  dashArray: "6 12",
+                  lineCap: "round",
+                }}
+              />
+            )}
+          </div>
+        );
+      })}
+
+      {selected && !hasActiveStep && (() => {
         const callout = routeCalloutPoint(selected.legs);
         return callout ? <Marker position={callout} icon={calloutIcon(selected, true)} interactive={false} /> : null;
       })()}
 
-      {stopMarkers.map((m, i) => (
-        <CircleMarker
-          key={`stop-${i}`}
-          center={m.position}
-          radius={m.kind === "transfer" ? 6 : 5}
-          pathOptions={{
-            color: m.badge?.colour ?? "#1f2a37",
-            weight: 2.5,
-            fillColor: "#ffffff",
-            fillOpacity: 1,
-          }}
-        >
-          <Tooltip direction="top" offset={[0, -6]}>
-            {m.label}
-          </Tooltip>
-        </CircleMarker>
-      ))}
+      {stopMarkers.map((m, i) => {
+        const isNearActiveStep =
+          stepEndpoints &&
+          (distanceMetres(m.position, stepEndpoints.start) < 80 || distanceMetres(m.position, stepEndpoints.end) < 80);
+        const dimStop = hasActiveStep && !isNearActiveStep;
+        return (
+          <CircleMarker
+            key={`stop-${i}`}
+            center={m.position}
+            radius={m.kind === "transfer" ? 7.5 : 6.5}
+            pathOptions={{
+              color: m.badge?.colour ?? "#0f172a",
+              weight: 3,
+              opacity: dimStop ? 0.28 : 1,
+              fillColor: "#ffffff",
+              fillOpacity: dimStop ? 0.28 : 1,
+            }}
+          >
+            <Tooltip direction="top" offset={[0, -8]}>
+              {m.label}
+            </Tooltip>
+          </CircleMarker>
+        );
+      })}
 
-      {userLocation && <Marker position={userLocation} icon={GPS_ICON} interactive={false} />}
+      {/* High-visibility START / END markers with permanent callout labels for the selected step */}
+      {stepEndpoints &&
+        (stepEndpoints.isPointStep ? (
+          <Marker
+            position={stepEndpoints.start}
+            icon={stepEndpointIcon("point", stepEndpoints.tier, stepEndpoints.startLabel)}
+            zIndexOffset={1200}
+            interactive={false}
+          />
+        ) : (
+          <>
+            <Marker
+              position={stepEndpoints.start}
+              icon={stepEndpointIcon("start", stepEndpoints.startTier, stepEndpoints.startLabel)}
+              zIndexOffset={1200}
+              interactive={false}
+            />
+            <Marker
+              position={stepEndpoints.end}
+              icon={stepEndpointIcon("end", stepEndpoints.endTier, stepEndpoints.endLabel)}
+              zIndexOffset={1210}
+              interactive={false}
+            />
+          </>
+        ))}
+
+      {userLocation && <Marker position={userLocation} icon={GPS_ICON} zIndexOffset={1300} interactive={false} />}
 
       {start && (
         <Marker
           position={start}
           icon={START_ICON}
+          opacity={hasActiveStep ? 0.55 : 1}
           draggable
           eventHandlers={{ dragend: (e) => { const ll = (e.target as L.Marker).getLatLng(); props.onDragStart([ll.lat, ll.lng]); } }}
         />
@@ -264,6 +453,7 @@ export function MapView(props: Props) {
         <Marker
           position={end}
           icon={END_ICON}
+          opacity={hasActiveStep ? 0.55 : 1}
           draggable
           eventHandlers={{ dragend: (e) => { const ll = (e.target as L.Marker).getLatLng(); props.onDragEnd([ll.lat, ll.lng]); } }}
         />
@@ -271,3 +461,4 @@ export function MapView(props: Props) {
     </MapContainer>
   );
 }
+
