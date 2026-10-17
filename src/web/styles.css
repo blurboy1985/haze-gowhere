@@ -89,6 +89,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 .route-card { text-align: left; width: 100%; background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 .route-card.selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.route-card-trigger { text-align: left; width: 100%; border: 0; background: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .route-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
 .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--protected); margin-bottom: 2px; }
 .route-summary { font-weight: 600; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -100,8 +101,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .exposure-bar span { display: block; height: 100%; }
 .exposure-legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 0.78rem; color: var(--muted); }
 .exposure-legend i, .step-tiers i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; vertical-align: middle; }
-.steps { list-style: none; margin: 4px 0 0; padding: 8px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; font-size: 0.875rem; }
-.steps li { display: grid; grid-template-columns: 24px 1fr auto auto; gap: 8px; align-items: center; }
+.steps { list-style: none; margin: 4px 0 0; padding: 8px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 4px; font-size: 0.875rem; }
+.step-btn { width: 100%; text-align: left; border: 1px solid transparent; background: none; padding: 6px 8px; border-radius: 8px; display: grid; grid-template-columns: 24px 1fr auto auto; gap: 8px; align-items: center; transition: background 0.12s, border-color 0.12s; }
+.step-btn:hover { background: var(--bg); }
+.step-btn.active { background: #eef4ff; border-color: var(--accent); }
 .step-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .step-title { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .step-label { font-weight: 500; }
@@ -113,13 +116,27 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .taxi-card p { margin: 4px 0 0; font-size: 0.85rem; color: var(--muted); }
 .link-btn { border: 0; background: none; color: var(--accent); font-weight: 600; white-space: nowrap; }
 
-/* Map pins */
-.pin { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: grid; place-items: center; color: #fff; font-weight: 700; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.35); }
+/* Map pins & overlays */
+.pin { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: grid; place-items: center; color: #fff; font-weight: 700; border: 2px solid #fff; box-shadow: 0 2px 6px rgb(0 0 0 / 0.35); font-size: 0.8rem; }
 .pin::first-line { line-height: 1; }
 .pin-start { background: var(--accent); }
 .pin-end { background: var(--ink); }
-.pin { font-size: 0.8rem; }
 .pin > * { transform: rotate(45deg); }
+
+.gps-dot { position: relative; width: 22px; height: 22px; display: grid; place-items: center; }
+.gps-core { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; box-shadow: 0 1px 4px rgb(0 0 0 / 0.35); z-index: 1; }
+.gps-pulse { position: absolute; inset: 0; border-radius: 50%; background: rgb(31 111 235 / 0.25); }
+
+.map-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; background: #fff; color: var(--ink); border: 1px solid var(--line); box-shadow: 0 2px 8px rgb(0 0 0 / 0.18); font-size: 0.72rem; white-space: nowrap; cursor: pointer; }
+.map-pill strong { font-weight: 700; }
+.map-pill span { color: var(--muted); }
+.map-pill.selected { background: var(--ink); color: #fff; border-color: var(--ink); }
+.map-pill.selected span { color: #d1d5db; }
+
+.map-controls { position: absolute; right: 12px; bottom: 28px; z-index: 1000; display: flex; flex-direction: column; gap: 6px; }
+.map-ctrl-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--ink); box-shadow: 0 2px 6px rgb(0 0 0 / 0.16); font-size: 1.1rem; font-weight: 600; display: grid; place-items: center; }
+.map-ctrl-btn:hover { background: var(--bg); }
+.map-ctrl-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 /* Mobile: map on top, panel as a scrolling sheet below. */
 @media (max-width: 760px) {
