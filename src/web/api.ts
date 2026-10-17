@@ -28,5 +28,7 @@ export const searchPlaces = (q: string, signal?: AbortSignal) =>
 export const reverseGeocode = (p: LatLng) =>
   getJson<{ name: string | null }>(`/api/reverse?at=${p.join(",")}`).then((r) => r.name);
 
-export const fetchRoutes = (from: LatLng, to: LatLng, minimise: boolean, signal?: AbortSignal) =>
-  getJson<RoutesResponse>(`/api/routes?from=${from.join(",")}&to=${to.join(",")}&minimise=${minimise ? 1 : 0}`, signal);
+export const fetchRoutes = (from: LatLng, to: LatLng, minimise: boolean, departAt: string | null = null, signal?: AbortSignal) => {
+  const atParam = departAt ? `&at=${encodeURIComponent(departAt)}` : "";
+  return getJson<RoutesResponse>(`/api/routes?from=${from.join(",")}&to=${to.join(",")}&minimise=${minimise ? 1 : 0}${atParam}`, signal);
+};
