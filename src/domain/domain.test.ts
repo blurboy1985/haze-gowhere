@@ -1,6 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { CoveredLinkwayIndex, linesFromGeoJson, splitWalkByCover } from "./coveredLinkways";
-import { collapseSteps, fmtDistance, fmtEtaRange, lineBadge, routeBadges, routeWalkMetres } from "./directions";
+import {
+  collapseSteps,
+  fmtDistance,
+  fmtEtaRange,
+  lineBadge,
+  routeBadges,
+  routeCalloutPoint,
+  routeStopMarkers,
+  routeWalkMetres,
+  stepBoundsPoints,
+} from "./directions";
 import { avoidanceStrength, nearestRegion, pm25Band } from "./haze";
 import { mergeItineraries, routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
 import { decodePolyline, encodePolyline } from "./polyline";
@@ -267,5 +277,48 @@ describe("directions", () => {
     expect(fmtDistance(342)).toBe("340 m");
     expect(fmtDistance(1250)).toBe("1.3 km");
   });
+
+  it("extracts boarding, alighting, and merged interchange stop markers, callout midpoint, and step bounds", () => {
+    const legs = [
+      { mode: "walk" as const, tier: "exposed" as const, minutes: 3, path: [[1.35, 103.84], [1.351, 103.848]] as LatLng[] },
+      {
+        mode: "train" as const,
+        tier: "protected" as const,
+        minutes: 10,
+        label: "North South Line",
+        lineCode: "NS",
+        fromStop: "Bishan (NS17)",
+        toStop: "Dhoby Ghaut (NS24)",
+        path: [[1.351, 103.848], [1.299, 103.845]] as LatLng[],
+      },
+      {
+        mode: "train" as const,
+        tier: "protected" as const,
+        minutes: 5,
+        label: "North East Line",
+        lineCode: "NE",
+        fromStop: "Dhoby Ghaut (NE6)",
+        toStop: "Chinatown (NE4)",
+        path: [[1.2991, 103.8451], [1.284, 103.843]] as LatLng[],
+      },
+    ];
+    const markers = routeStopMarkers(legs);
+    expect(markers).toHaveLength(3);
+    expect(markers[0]).toMatchObject({ kind: "board", label: "Board North South Line at Bishan (NS17)" });
+    expect(markers[1]).toMatchObject({
+      kind: "transfer",
+      label: "Alight at Dhoby Ghaut (NS24) · Board North East Line at Dhoby Ghaut (NE6)",
+    });
+    expect(markers[2]).toMatchObject({ kind: "alight", label: "Alight at Chinatown (NE4)" });
+
+    const mid = routeCalloutPoint(legs);
+    expect(mid).not.toBeNull();
+    expect(mid![0]).toBeGreaterThan(1.284);
+    expect(mid![0]).toBeLessThan(1.351);
+
+    expect(stepBoundsPoints(legs, 0)).toEqual([[1.35, 103.84], [1.351, 103.848]]);
+    expect(stepBoundsPoints(legs, null)).toHaveLength(6);
+  });
 });
+
 

@@ -31,6 +31,8 @@ export function App() {
   const [hazeError, setHazeError] = useState<string | null>(null);
   const [result, setResult] = useState<RoutesResponse | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [activeStepIndex, setActiveStepIndex] = useState<number | null>(null);
+  const [userLocation, setUserLocation] = useState<LatLng | null>(null);
   const [loading, setLoading] = useState(false);
   const [routeError, setRouteError] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
@@ -51,6 +53,7 @@ export function App() {
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const p: LatLng = [pos.coords.latitude, pos.coords.longitude];
+        setUserLocation(p);
         setStart(await namePoint(p, "My location"));
         setLocating(false);
       },
@@ -76,6 +79,7 @@ export function App() {
   useEffect(() => {
     if (!start || !end) {
       setResult(null);
+      setActiveStepIndex(null);
       return;
     }
     const ctrl = new AbortController();
@@ -86,6 +90,7 @@ export function App() {
         setResult(r);
         setHaze(r.haze);
         setSelectedId(r.routes.find((x) => x.recommended)?.id ?? null);
+        setActiveStepIndex(null);
         setShowTaxi(false);
       })
       .catch((e: Error) => e.name !== "AbortError" && setRouteError(e.message))
@@ -166,7 +171,17 @@ export function App() {
               {result?.mock && <p className="mock-note">Demo routes: OneMap routing isn't configured, so these routes are simulated. Haze readings and search are live.</p>}
               {result?.taxi && <TaxiCard taxi={result.taxi} shown={showTaxi} onToggle={() => setShowTaxi((s) => !s)} />}
               {routes.map((r) => (
-                <RouteCard key={r.id} route={r} selected={r.id === selectedId} onSelect={() => setSelectedId(r.id)} />
+                <RouteCard
+                  key={r.id}
+                  route={r}
+                  selected={r.id === selectedId}
+                  onSelect={() => {
+                    setSelectedId(r.id);
+                    setActiveStepIndex(null);
+                  }}
+                  activeStepIndex={r.id === selectedId ? activeStepIndex : null}
+                  onSelectStep={setActiveStepIndex}
+                />
               ))}
               <p className="fineprint">
                 Protected: inside trains, buses and MRT stations. Covered: roofed but open-air (bus stops, covered linkways), so you still breathe the haze. Exposed: open-air walking.
@@ -180,14 +195,21 @@ export function App() {
         <MapView
           start={start?.location ?? null}
           end={end?.location ?? null}
+          userLocation={userLocation}
           routes={routes}
           selectedId={selectedId}
+          activeStepIndex={activeStepIndex}
           taxi={result?.taxi ?? null}
           showTaxi={showTaxi}
           onMapTap={onMapTap}
           onDragStart={(p) => void placeAt("start", p)}
           onDragEnd={(p) => void placeAt("destination", p)}
-          onSelectRoute={setSelectedId}
+          onSelectRoute={(id) => {
+            setSelectedId(id);
+            setActiveStepIndex(null);
+          }}
+          onSelectStep={setActiveStepIndex}
+          onLocateMe={useMyLocation}
         />
       </main>
     </div>

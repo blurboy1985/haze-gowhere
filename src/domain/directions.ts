@@ -1,10 +1,18 @@
-import type { Leg, LegMode, Tier } from "./types";
+import { distanceMetres } from "./geo";
+import type { LatLng, Leg, LegMode, Tier } from "./types";
 
 export interface TransitBadge {
   code: string;
   colour: string;
   textColour: string;
   mode: "bus" | "train";
+}
+
+export interface StopMarker {
+  position: LatLng;
+  label: string;
+  kind: "board" | "alight" | "transfer";
+  badge: TransitBadge | null;
 }
 
 export interface RouteStep {
@@ -195,3 +203,69 @@ export function collapseSteps(legs: Leg[]): RouteStep[] {
   });
   return out;
 }
+
+/** Extract boarding, alighting, and interchange stop markers for a Route's transit Legs. */
+export function routeStopMarkers(legs: Leg[]): StopMarker[] {
+  const markers: StopMarker[] = [];
+  for (const l of legs) {
+    if ((l.mode !== "bus" && l.mode !== "train") || l.path.length === 0) continue;
+    const startPt = l.path[0]!;
+    const endPt = l.path[l.path.length - 1]!;
+    const badge = lineBadge(l);
+    const service = l.label ?? l.mode;
+    const boardLabel = l.fromStop ? `Board ${service} at ${l.fromStop}` : `Board ${service}`;
+    const alightLabel = l.toStop ? `Alight at ${l.toStop}` : `Alight from ${service}`;
+
+    const prev = markers[markers.length - 1];
+    if (prev && distanceMetres(prev.position, startPt) < 80) {
+      prev.label = `${prev.label} · ${boardLabel}`;
+      prev.kind = "transfer";
+      if (badge) prev.badge = badge;
+    } else {
+      markers.push({ position: startPt, label: boardLabel, kind: "board", badge });
+    }
+    markers.push({ position: endPt, label: alightLabel, kind: "alight", badge });
+  }
+  return markers;
+}
+
+/** Geographic midpoint along a Route's polyline for placing a duration/exposure callout pill. */
+export function routeCalloutPoint(legs: Leg[]): LatLng | null {
+  const pts = legs.flatMap((l) => l.path);
+  if (pts.length === 0) return null;
+  if (pts.length === 1) return pts[0]!;
+  let total = 0;
+  const segDist: number[] = [];
+  for (let i = 1; i < pts.length; i++) {
+    const d = distanceMetres(pts[i - 1]!, pts[i]!);
+    segDist.push(d);
+    total += d;
+  }
+  if (total === 0) return pts[Math.floor(pts.length / 2)]!;
+  const half = total / 2;
+  let acc = 0;
+  for (let i = 0; i < segDist.length; i++) {
+    const d = segDist[i]!;
+    if (acc + d >= half && d > 0) {
+      const t = (half - acc) / d;
+      const a = pts[i]!;
+      const b = pts[i + 1]!;
+      return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+    }
+    acc += d;
+  }
+  return pts[Math.floor(pts.length / 2)]!;
+}
+
+/** Coordinates to fit the map to: either an inspected step's Legs or the entire Route. */
+export function stepBoundsPoints(legs: Leg[], activeStepIndex: number | null): LatLng[] {
+  if (activeStepIndex !== null) {
+    const step = collapseSteps(legs)[activeStepIndex];
+    if (step) {
+      const pts = step.legIndices.flatMap((i) => legs[i]?.path ?? []);
+      if (pts.length > 0) return pts;
+    }
+  }
+  return legs.flatMap((l) => l.path);
+}
+
