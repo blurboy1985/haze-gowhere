@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import {
   collapseSteps,
   fmtDistance,
@@ -5,6 +6,7 @@ import {
   fmtMin,
   routeBadges,
   routeWalkMetres,
+  worstStepTier,
   type TransitBadge,
 } from "../domain/directions";
 import type { Leg, RankedRoute, TaxiSuggestion, Tier } from "../domain/types";
@@ -87,11 +89,14 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
           <ol className="steps" aria-label="Route steps">
             {collapseSteps(route.legs).map((s, i) => {
               const isStepActive = activeStepIndex === i;
+              const dominantTier = worstStepTier(s.tiers);
+              const tierColour = TIER_COLOUR[dominantTier];
               return (
                 <li key={i}>
                   <button
                     type="button"
                     className={`step-btn ${isStepActive ? "active" : ""}`}
+                    style={{ "--step-tier-colour": tierColour } as CSSProperties}
                     onClick={() => onSelectStep?.(isStepActive ? null : i)}
                     aria-pressed={isStepActive}
                     title={isStepActive ? "Show full route on map" : "Focus this leg on map"}
@@ -105,7 +110,11 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
                       {s.detail && <div className="step-detail">{s.detail}</div>}
                     </div>
                     <span className="step-tiers">
-                      {s.tiers.map((t) => <i key={t} title={TIER_LABEL[t]} style={{ background: TIER_COLOUR[t] }} />)}
+                      {s.tiers.map((t) => (
+                        <span key={t} className="step-tier-pill" style={{ background: TIER_COLOUR[t] }}>
+                          {TIER_LABEL[t]}
+                        </span>
+                      ))}
                     </span>
                     <span className="step-min">{fmtMin(s.minutes)}</span>
                   </button>

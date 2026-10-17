@@ -29,6 +29,22 @@ export interface RouteStep {
   legIndices: number[];
 }
 
+export interface ActiveStepEndpoints {
+  stepIndex: number;
+  totalSteps: number;
+  mode: LegMode;
+  tier: Tier;
+  startTier: Tier;
+  endTier: Tier;
+  badge: TransitBadge | null;
+  start: LatLng;
+  end: LatLng;
+  isPointStep: boolean;
+  startLabel: string;
+  endLabel: string;
+}
+
+
 const MRT_LINE_COLOURS: Record<string, { colour: string; textColour: string }> = {
   NS: { colour: "#d42e12", textColour: "#ffffff" },
   EW: { colour: "#009645", textColour: "#ffffff" },
@@ -268,4 +284,60 @@ export function stepBoundsPoints(legs: Leg[], activeStepIndex: number | null): L
   }
   return legs.flatMap((l) => l.path);
 }
+
+/** Worst Exposure Tier among a step's sub-legs (Exposed > Covered > Protected). */
+export function worstStepTier(tiers: Tier[]): Tier {
+  if (tiers.includes("exposed")) return "exposed";
+  if (tiers.includes("covered")) return "covered";
+  return "protected";
+}
+
+/** Extract high-visibility start and end markers and labels for a selected step on the map. */
+export function activeStepEndpoints(legs: Leg[], activeStepIndex: number | null): ActiveStepEndpoints | null {
+  if (activeStepIndex === null) return null;
+  const steps = collapseSteps(legs);
+  const step = steps[activeStepIndex];
+  if (!step) return null;
+
+  const stepLegs = step.legIndices.map((i) => legs[i]).filter((l): l is Leg => Boolean(l));
+  const pts = stepLegs.flatMap((l) => l.path);
+  if (pts.length === 0) return null;
+
+  const start = pts[0]!;
+  const end = pts[pts.length - 1]!;
+  const isPointStep = distanceMetres(start, end) < 15;
+  const tier = worstStepTier(step.tiers);
+  const startTier = stepLegs[0]?.tier ?? tier;
+  const endTier = stepLegs[stepLegs.length - 1]?.tier ?? tier;
+
+  let startLabel: string;
+  let endLabel: string;
+  if (step.mode === "bus" || step.mode === "train") {
+    const service = step.badge ? (step.badge.mode === "bus" ? `Bus ${step.badge.code}` : step.badge.code) : step.label;
+    startLabel = step.fromStop ? `Board ${service} · ${step.fromStop}` : `Board ${service}`;
+    endLabel = step.toStop ? `Alight · ${step.toStop}` : `Alight ${service}`;
+  } else if (step.mode === "wait") {
+    startLabel = step.fromStop ? `${step.label} · ${step.fromStop}` : step.label;
+    endLabel = startLabel;
+  } else {
+    startLabel = step.fromStop ? `Walk from ${step.fromStop}` : step.label;
+    endLabel = step.toStop ? `Walk to ${step.toStop}` : isPointStep ? step.label : "End of walk";
+  }
+
+  return {
+    stepIndex: activeStepIndex,
+    totalSteps: steps.length,
+    mode: step.mode,
+    tier,
+    startTier,
+    endTier,
+    badge: step.badge,
+    start,
+    end,
+    isPointStep,
+    startLabel,
+    endLabel,
+  };
+}
+
 

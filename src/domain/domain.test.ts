@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CoveredLinkwayIndex, linesFromGeoJson, splitWalkByCover } from "./coveredLinkways";
 import {
+  activeStepEndpoints,
   collapseSteps,
   fmtDistance,
   fmtEtaRange,
@@ -320,6 +321,57 @@ describe("directions", () => {
 
     expect(stepBoundsPoints(legs, 0)).toEqual([[1.35, 103.84], [1.351, 103.848]]);
     expect(stepBoundsPoints(legs, null)).toHaveLength(6);
+
+    expect(activeStepEndpoints(legs, null)).toBeNull();
+    expect(activeStepEndpoints(legs, 1)).toMatchObject({
+      stepIndex: 1,
+      totalSteps: 3,
+      mode: "train",
+      tier: "protected",
+      startTier: "protected",
+      endTier: "protected",
+      start: [1.351, 103.848],
+      end: [1.299, 103.845],
+      isPointStep: false,
+      startLabel: "Board NS · Bishan (NS17)",
+      endLabel: "Alight · Dhoby Ghaut (NS24)",
+    });
+
+    const waitAndMultiWalkLegs = [
+      { mode: "walk" as const, tier: "exposed" as const, minutes: 2, path: [[1.35, 103.84], [1.3505, 103.844]] as LatLng[] },
+      {
+        mode: "walk" as const,
+        tier: "protected" as const,
+        minutes: 2,
+        label: "Walk via Junction 8 (indoor)",
+        toStop: "Bishan (NS17)",
+        path: [[1.3505, 103.844], [1.351, 103.848]] as LatLng[],
+      },
+      {
+        mode: "wait" as const,
+        tier: "covered" as const,
+        minutes: 3,
+        label: "Wait for Bus 190",
+        fromStop: "Bishan Int",
+        path: [[1.351, 103.848], [1.351, 103.848]] as LatLng[],
+      },
+    ];
+    expect(activeStepEndpoints(waitAndMultiWalkLegs, 0)).toMatchObject({
+      mode: "walk",
+      tier: "exposed",
+      startTier: "exposed",
+      endTier: "protected",
+      isPointStep: false,
+      startLabel: "Walk via Junction 8 (indoor)",
+      endLabel: "Walk to Bishan (NS17)",
+    });
+    expect(activeStepEndpoints(waitAndMultiWalkLegs, 1)).toMatchObject({
+      mode: "wait",
+      tier: "covered",
+      isPointStep: true,
+      startLabel: "Wait for Bus 190 · Bishan Int",
+      endLabel: "Wait for Bus 190 · Bishan Int",
+    });
   });
 });
 

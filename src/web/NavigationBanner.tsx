@@ -26,7 +26,7 @@ export function NavigationBanner({ route, stepIndex, followGps, onChangeStep, on
 
   return (
     <section className="nav-hud" aria-label="Step-by-step navigation">
-      <div className={`nav-top-card tier-${dominantTier}`}>
+      <div className={`nav-top-card tier-${dominantTier}`} style={{ borderColor: TIER_COLOUR[dominantTier] }}>
         <div className="nav-top-strip" style={{ background: TIER_COLOUR[dominantTier] }}>
           <span>
             Step {nav.stepIndex + 1} of {totalSteps} · {TIER_LABEL[dominantTier]}
@@ -36,13 +36,18 @@ export function NavigationBanner({ route, stepIndex, followGps, onChangeStep, on
           </button>
         </div>
         <div className="nav-main-step">
-          <span className="nav-step-icon" aria-hidden>
+          <span className="nav-step-icon" style={{ background: TIER_COLOUR[dominantTier] }} aria-hidden>
             {MODE_ICON[current.mode]}
           </span>
           <div className="nav-step-body">
             <div className="nav-step-title">
               {current.badge && <LinePill badge={current.badge} />}
               <strong>{current.label}</strong>
+              {current.tiers.map((t) => (
+                <span key={t} className="step-tier-pill" style={{ background: TIER_COLOUR[t] }}>
+                  {TIER_LABEL[t]}
+                </span>
+              ))}
             </div>
             {current.detail && <div className="nav-step-detail">{current.detail}</div>}
           </div>
