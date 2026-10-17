@@ -12,6 +12,16 @@ export interface Leg {
   path: LatLng[];
   /** e.g. "Bus 7", "NS Line", "Wait for bus 7" */
   label?: string;
+  /** Walking distance in metres when known. */
+  distanceMetres?: number;
+  /** Boarding station/stop name with optional code, e.g. "Bishan (NS17)". */
+  fromStop?: string;
+  /** Alighting station/stop name with optional code, e.g. "Orchard (NS22)". */
+  toStop?: string;
+  /** Number of stops ridden on a bus or train Leg. */
+  stopCount?: number;
+  /** Short transit line or service code for badge styling, e.g. "NS", "EW", "190". */
+  lineCode?: string;
 }
 
 export interface Route {
@@ -21,6 +31,10 @@ export interface Route {
   legs: Leg[];
   /** For an Indoor Variant: the named Indoor Links it uses, e.g. "CityLink Mall". */
   indoorLinks?: string[];
+  /** Epoch ms when the Route departs, if known. */
+  departureTime?: number;
+  /** Epoch ms when the Route arrives, if known. */
+  arrivalTime?: number;
 }
 
 export interface RouteTotals {

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CoveredLinkwayIndex, linesFromGeoJson, splitWalkByCover } from "./coveredLinkways";
+import { collapseSteps, fmtDistance, fmtEtaRange, lineBadge, routeBadges, routeWalkMetres } from "./directions";
 import { avoidanceStrength, nearestRegion, pm25Band } from "./haze";
 import { mergeItineraries, routeFromPtItinerary, routeFromWalk, type OneMapPtItinerary } from "./onemapRoutes";
 import { decodePolyline, encodePolyline } from "./polyline";
@@ -178,3 +179,93 @@ describe("ranking", () => {
     expect(tripBand([viaCentral], woodlands, woodlands, regions)).toBe(3);
   });
 });
+
+describe("directions", () => {
+  const t0 = Date.UTC(2026, 9, 16, 2, 15); // 10:15 am SGT
+  const min = 60_000;
+  const geom = { points: encodePolyline([[1.35092, 103.84825], [1.3515, 103.849]]) };
+
+  it("extracts boarding/alighting stops, stop counts, walking distance, and Singapore ETA from OneMap itineraries", () => {
+    const it: OneMapPtItinerary = {
+      duration: 25 * 60,
+      legs: [
+        {
+          mode: "WALK",
+          startTime: t0,
+          endTime: t0 + 4 * min,
+          distance: 320,
+          from: { name: "ORIGIN" },
+          to: { name: "BISHAN MRT STATION", stopCode: "NS17" },
+          legGeometry: geom,
+        },
+        {
+          mode: "SUBWAY",
+          route: "NS",
+          routeLongName: "NORTH SOUTH LINE",
+          startTime: t0 + 7 * min,
+          endTime: t0 + 22 * min,
+          from: { name: "BISHAN MRT STATION", stopCode: "NS17" },
+          to: { name: "ORCHARD MRT STATION", stopCode: "NS22" },
+          intermediateStops: [{ name: "BRADDELL" }, { name: "TOA PAYOH" }, { name: "NOVENA" }, { name: "NEWTON" }],
+          legGeometry: geom,
+        },
+        {
+          mode: "WALK",
+          startTime: t0 + 22 * min,
+          endTime: t0 + 25 * min,
+          distance: 180,
+          from: { name: "ORCHARD MRT STATION", stopCode: "NS22" },
+          to: { name: "DESTINATION" },
+          legGeometry: geom,
+        },
+      ],
+    };
+    const route = routeFromPtItinerary(it, "pt-0", CoveredLinkwayIndex.empty());
+    expect(route.departureTime).toBe(t0);
+    expect(route.arrivalTime).toBe(t0 + 25 * min);
+    expect(fmtEtaRange(route.departureTime, route.arrivalTime)).toBe("10:15 – 10:40 am");
+    expect(routeWalkMetres(route.legs)).toBe(500);
+    expect(routeBadges(route.legs)).toEqual([
+      { code: "NS", colour: "#d42e12", textColour: "#ffffff", mode: "train" },
+    ]);
+
+    const steps = collapseSteps(route.legs);
+    expect(steps.map((s) => ({ mode: s.mode, label: s.label, detail: s.detail }))).toEqual([
+      { mode: "walk", label: "Walk", detail: "320 m · to Bishan (NS17)" },
+      { mode: "wait", label: "Wait for North South Line", detail: "At Bishan (NS17) · open-air stop" },
+      { mode: "train", label: "North South Line", detail: "Bishan (NS17) → Orchard (NS22) · 5 stops" },
+      { mode: "walk", label: "Walk", detail: "180 m · from Orchard (NS22)" },
+    ]);
+  });
+
+  it("collapses contiguous walk sub-legs while summing distance and preserving indoor labels and destination stop", () => {
+    const steps = collapseSteps([
+      { mode: "walk", tier: "exposed", minutes: 2, distanceMetres: 140, path: [[1.3, 103.8]] },
+      { mode: "walk", tier: "protected", minutes: 3, distanceMetres: 210, path: [[1.3, 103.8]], label: "Walk via CityLink Mall (indoor)", toStop: "City Hall (EW13)" },
+    ]);
+    expect(steps).toHaveLength(1);
+    expect(steps[0]).toMatchObject({
+      mode: "walk",
+      label: "Walk via CityLink Mall (indoor)",
+      minutes: 5,
+      distanceMetres: 350,
+      tiers: ["exposed", "protected"],
+      detail: "350 m · to City Hall (EW13)",
+      legIndices: [0, 1],
+    });
+  });
+
+  it("assigns official LTA colours to MRT, LRT, and bus badges and formats distances", () => {
+    expect(lineBadge({ mode: "train", label: "Circle Line" })?.colour).toBe("#fa9e0d");
+    expect(lineBadge({ mode: "train", label: "Downtown Line" })?.colour).toBe("#005ec4");
+    expect(lineBadge({ mode: "bus", label: "Bus 190" })).toEqual({
+      code: "190",
+      colour: "#538d22",
+      textColour: "#ffffff",
+      mode: "bus",
+    });
+    expect(fmtDistance(342)).toBe("340 m");
+    expect(fmtDistance(1250)).toBe("1.3 km");
+  });
+});
+

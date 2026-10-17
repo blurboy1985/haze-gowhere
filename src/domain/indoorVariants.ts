@@ -42,9 +42,9 @@ function indoorWalk(
   const legs: Leg[] = [];
   const names: string[] = [];
   const stationHop: Leg = enclosedStop
-    ? { mode: "walk", tier: "protected", minutes: minutesFor(s.metres), path: [station, graph.nodes[s.node]!], label: "Walk inside station" }
-    : { mode: "walk", tier: "exposed", minutes: minutesFor(s.metres), path: [station, graph.nodes[s.node]!], label: "Walk" };
-  const placeHop: Leg = { mode: "walk", tier: "exposed", minutes: minutesFor(p.metres), path: [place, graph.nodes[p.node]!], label: "Walk" };
+    ? { mode: "walk", tier: "protected", minutes: minutesFor(s.metres), distanceMetres: Math.max(1, Math.round(s.metres)), path: [station, graph.nodes[s.node]!], label: "Walk inside station" }
+    : { mode: "walk", tier: "exposed", minutes: minutesFor(s.metres), distanceMetres: Math.max(1, Math.round(s.metres)), path: [station, graph.nodes[s.node]!], label: "Walk" };
+  const placeHop: Leg = { mode: "walk", tier: "exposed", minutes: minutesFor(p.metres), distanceMetres: Math.max(1, Math.round(p.metres)), path: [place, graph.nodes[p.node]!], label: "Walk" };
   // Hops are built station→node and place→node; flip whichever one walks toward its end point.
   if (stationAtEnd) stationHop.path.reverse(); // ... → node → station
   else placeHop.path.reverse(); // ... → node → place
@@ -55,18 +55,29 @@ function indoorWalk(
     if (r.tier === "protected") {
       const shown = r.names.filter((n) => !n.endsWith("(connector)")).slice(0, 3);
       const label = shown.length ? `Walk via ${shown.join(", ")} (indoor)` : "Walk (indoor)";
-      legs.push({ mode: "walk", tier: "protected", minutes: minutesFor(r.metres), path: r.path, label });
+      legs.push({ mode: "walk", tier: "protected", minutes: minutesFor(r.metres), distanceMetres: Math.max(1, Math.round(r.metres)), path: r.path, label });
       for (const n of r.names) if (!names.includes(n)) names.push(n);
     } else if (r.tier === "covered") {
-      legs.push({ mode: "walk", tier: "covered", minutes: minutesFor(r.metres), path: r.path, label: "Walk (covered)" });
+      legs.push({ mode: "walk", tier: "covered", minutes: minutesFor(r.metres), distanceMetres: Math.max(1, Math.round(r.metres)), path: r.path, label: "Walk (covered)" });
     } else {
       // OSM marks it open; the LTA linkway layer may still put a roof over parts of it.
       for (const piece of splitWalkByCover(r.path, linkways))
-        legs.push({ mode: "walk", tier: piece.covered ? "covered" : "exposed", minutes: minutesFor(piece.metres), path: piece.path, label: piece.covered ? "Walk (covered linkway)" : "Walk" });
+        legs.push({
+          mode: "walk",
+          tier: piece.covered ? "covered" : "exposed",
+          minutes: minutesFor(piece.metres),
+          distanceMetres: Math.max(1, Math.round(piece.metres)),
+          path: piece.path,
+          label: piece.covered ? "Walk (covered linkway)" : "Walk",
+        });
     }
   }
   if (stationAtEnd && s.metres > 0) legs.push(stationHop);
   if (!stationAtEnd && p.metres > 0) legs.push(placeHop);
+  const fromStop = run[0]?.fromStop;
+  const toStop = run[run.length - 1]?.toStop;
+  if (fromStop && legs[0]) legs[0].fromStop = fromStop;
+  if (toStop && legs[legs.length - 1]) legs[legs.length - 1]!.toStop = toStop;
   return { legs, names };
 }
 
@@ -100,7 +111,19 @@ export function indoorVariants(routes: Route[], graph: IndoorGraph, linkways: Co
       return alt.legs;
     };
     const legs = [...pick(lead, true), ...middle, ...pick(trail, false)];
-    if (changed) variants.push({ id: `${route.id}-indoor`, summary: `${route.summary} · indoor link`, legs, indoorLinks });
+    if (changed) {
+      const origMin = route.legs.reduce((s, l) => s + l.minutes, 0);
+      const newMin = legs.reduce((s, l) => s + l.minutes, 0);
+      const deltaMs = Math.round((newMin - origMin) * 60_000);
+      variants.push({
+        id: `${route.id}-indoor`,
+        summary: `${route.summary} · indoor link`,
+        legs,
+        indoorLinks,
+        ...(route.departureTime ? { departureTime: route.departureTime } : {}),
+        ...(route.arrivalTime ? { arrivalTime: route.arrivalTime + deltaMs } : {}),
+      });
+    }
   }
   return variants;
 }
