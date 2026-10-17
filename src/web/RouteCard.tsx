@@ -29,9 +29,10 @@ interface Props {
   onSelect: () => void;
   activeStepIndex?: number | null;
   onSelectStep?: (index: number | null) => void;
+  onStartNavigation?: () => void;
 }
 
-export function RouteCard({ route, selected, onSelect, activeStepIndex = null, onSelectStep }: Props) {
+export function RouteCard({ route, selected, onSelect, activeStepIndex = null, onSelectStep, onStartNavigation }: Props) {
   const total = route.totalMinutes || 1;
   const badges = routeBadges(route.legs);
   const eta = fmtEtaRange(route.departureTime, route.arrivalTime);
@@ -82,35 +83,44 @@ export function RouteCard({ route, selected, onSelect, activeStepIndex = null, o
         </div>
       </button>
       {selected && (
-        <ol className="steps" aria-label="Route steps">
-          {collapseSteps(route.legs).map((s, i) => {
-            const isStepActive = activeStepIndex === i;
-            return (
-              <li key={i}>
-                <button
-                  type="button"
-                  className={`step-btn ${isStepActive ? "active" : ""}`}
-                  onClick={() => onSelectStep?.(isStepActive ? null : i)}
-                  aria-pressed={isStepActive}
-                  title={isStepActive ? "Show full route on map" : "Focus this leg on map"}
-                >
-                  <span className="step-icon" aria-hidden>{MODE_ICON[s.mode]}</span>
-                  <div className="step-body">
-                    <div className="step-title">
-                      {s.badge && <LinePill badge={s.badge} />}
-                      <span className="step-label">{s.label}</span>
+        <>
+          <ol className="steps" aria-label="Route steps">
+            {collapseSteps(route.legs).map((s, i) => {
+              const isStepActive = activeStepIndex === i;
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    className={`step-btn ${isStepActive ? "active" : ""}`}
+                    onClick={() => onSelectStep?.(isStepActive ? null : i)}
+                    aria-pressed={isStepActive}
+                    title={isStepActive ? "Show full route on map" : "Focus this leg on map"}
+                  >
+                    <span className="step-icon" aria-hidden>{MODE_ICON[s.mode]}</span>
+                    <div className="step-body">
+                      <div className="step-title">
+                        {s.badge && <LinePill badge={s.badge} />}
+                        <span className="step-label">{s.label}</span>
+                      </div>
+                      {s.detail && <div className="step-detail">{s.detail}</div>}
                     </div>
-                    {s.detail && <div className="step-detail">{s.detail}</div>}
-                  </div>
-                  <span className="step-tiers">
-                    {s.tiers.map((t) => <i key={t} title={TIER_LABEL[t]} style={{ background: TIER_COLOUR[t] }} />)}
-                  </span>
-                  <span className="step-min">{fmtMin(s.minutes)}</span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
+                    <span className="step-tiers">
+                      {s.tiers.map((t) => <i key={t} title={TIER_LABEL[t]} style={{ background: TIER_COLOUR[t] }} />)}
+                    </span>
+                    <span className="step-min">{fmtMin(s.minutes)}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          {onStartNavigation && (
+            <div className="route-actions">
+              <button type="button" className="start-nav-btn" onClick={onStartNavigation}>
+                ▶ Start navigation
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
