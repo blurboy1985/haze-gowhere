@@ -26,7 +26,15 @@ export function mockDrive(start: LatLng, end: LatLng): OneMapDirectResponse {
   return { route_geometry: encodePolyline(line(start, end, 20)), route_summary: { total_time: (m / DRIVE_M_PER_MIN) * 60 + 180, total_distance: m } };
 }
 
-type Stage = { mode: "WALK" | "BUS" | "SUBWAY"; to: number; name?: string; waitMin?: number };
+type Stage = {
+  mode: "WALK" | "BUS" | "SUBWAY";
+  to: number;
+  name?: string;
+  waitMin?: number;
+  from?: { name?: string; stopCode?: string };
+  toStop?: { name?: string; stopCode?: string };
+  stops?: number;
+};
 
 function itinerary(start: LatLng, end: LatLng, when: Date, stages: Stage[]): OneMapPtItinerary {
   let t = when.getTime();
@@ -35,14 +43,19 @@ function itinerary(start: LatLng, end: LatLng, when: Date, stages: Stage[]): One
     t += (s.waitMin ?? 0) * MIN;
     const a = lerp(start, end, from);
     const b = lerp(start, end, s.to);
+    const dist = Math.round(distanceMetres(a, b));
     const speed = s.mode === "WALK" ? WALK_M_PER_MIN : s.mode === "BUS" ? BUS_M_PER_MIN : TRAIN_M_PER_MIN;
-    const minutes = Math.max(1, distanceMetres(a, b) / speed);
+    const minutes = Math.max(1, dist / speed);
     const leg = {
       mode: s.mode,
       startTime: t,
       endTime: t + minutes * MIN,
+      distance: dist,
       routeShortName: s.mode === "BUS" ? s.name : undefined,
       routeLongName: s.mode === "SUBWAY" ? s.name : undefined,
+      ...(s.from ? { from: s.from } : {}),
+      ...(s.toStop ? { to: s.toStop } : {}),
+      ...(s.stops !== undefined ? { numIntermediateStops: Math.max(0, s.stops - 1) } : {}),
       legGeometry: { points: encodePolyline(line(a, b)) },
     };
     t = leg.endTime;
@@ -58,18 +71,42 @@ export function mockPublicTransport(start: LatLng, end: LatLng, when: Date): One
     plan: {
       itineraries: [
         itinerary(start, end, when, [
-          { mode: "WALK", to: 0.06 },
-          { mode: "SUBWAY", to: 0.92, name: "North South Line", waitMin: 3 },
-          { mode: "WALK", to: 1 },
+          { mode: "WALK", to: 0.06, toStop: { name: "BISHAN MRT STATION", stopCode: "NS17" } },
+          {
+            mode: "SUBWAY",
+            to: 0.92,
+            name: "North South Line",
+            waitMin: 3,
+            from: { name: "BISHAN MRT STATION", stopCode: "NS17" },
+            toStop: { name: "ORCHARD MRT STATION", stopCode: "NS22" },
+            stops: 5,
+          },
+          { mode: "WALK", to: 1, from: { name: "ORCHARD MRT STATION", stopCode: "NS22" } },
         ]),
         itinerary(start, end, when, [
-          { mode: "WALK", to: 0.03 },
-          { mode: "BUS", to: 0.97, name: "190", waitMin: 7 },
-          { mode: "WALK", to: 1 },
+          { mode: "WALK", to: 0.03, toStop: { name: "OPP BISHAN STN", stopCode: "53239" } },
+          {
+            mode: "BUS",
+            to: 0.97,
+            name: "190",
+            waitMin: 7,
+            from: { name: "OPP BISHAN STN", stopCode: "53239" },
+            toStop: { name: "ROYAL THAI EMBASSY", stopCode: "09179" },
+            stops: 9,
+          },
+          { mode: "WALK", to: 1, from: { name: "ROYAL THAI EMBASSY", stopCode: "09179" } },
         ]),
         itinerary(start, end, when, [
-          { mode: "WALK", to: 0.25 },
-          { mode: "SUBWAY", to: 1, name: "Circle Line", waitMin: 2 },
+          { mode: "WALK", to: 0.25, toStop: { name: "CALDECOTT MRT STATION", stopCode: "CC17" } },
+          {
+            mode: "SUBWAY",
+            to: 1,
+            name: "Circle Line",
+            waitMin: 2,
+            from: { name: "CALDECOTT MRT STATION", stopCode: "CC17" },
+            toStop: { name: "BOTANIC GARDENS MRT STATION", stopCode: "CC19" },
+            stops: 2,
+          },
         ]),
       ],
     },
