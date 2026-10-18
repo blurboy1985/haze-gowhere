@@ -8,6 +8,7 @@ import { LogoMark } from "./Logo";
 import { MapView } from "./MapView";
 import { NavigationBanner } from "./NavigationBanner";
 import { PointPicker } from "./PointPicker";
+import { PlannerNavigation, type PlannerPanel } from "./PlannerNavigation";
 import { RouteCard, TaxiCard } from "./RouteCard";
 
 type Which = "start" | "destination";
@@ -63,6 +64,7 @@ export function App() {
   const [minimise, setMinimise] = useState<boolean>(initialUrl.minimise ?? readMinimise());
   const [departAt, setDepartAt] = useState<string | null>(initialUrl.departAt ?? null);
   const [sheetSnap, setSheetSnap] = useState<SheetSnap>("half");
+  const [activePanel, setActivePanel] = useState<PlannerPanel>("routes");
   const [copied, setCopied] = useState(false);
   const [haze, setHaze] = useState<HazeReading | null>(null);
   const [hazeError, setHazeError] = useState<string | null>(null);
@@ -343,9 +345,13 @@ export function App() {
           </label>
         </section>
 
-        <HazeBanner haze={haze} tripBand={result?.tripBand ?? null} minimise={minimise} error={hazeError} />
+        <PlannerNavigation active={activePanel} haze={haze} error={hazeError} onChange={setActivePanel} />
 
-        <section className="results" aria-live="polite">
+        <section id="air-quality-panel" role="tabpanel" aria-labelledby="air-quality-tab" hidden={activePanel !== "air-quality"}>
+          <HazeBanner haze={haze} tripBand={result?.tripBand ?? null} minimise={minimise} error={hazeError} />
+        </section>
+
+        <section id="routes-panel" role="tabpanel" aria-labelledby="routes-tab" className="results" aria-live="polite" hidden={activePanel !== "routes"}>
           {!start || !end ? (
             <div className="empty-state">
               <div className="empty-state-head">
