@@ -14,34 +14,6 @@ import { RouteCard, TaxiCard } from "./RouteCard";
 
 type Which = "start" | "destination";
 
-interface SampleTrip {
-  label: string;
-  tag: string;
-  start: ChosenPoint;
-  end: ChosenPoint;
-}
-
-const SAMPLE_TRIPS: SampleTrip[] = [
-  {
-    label: "Raffles Place → Marina Bay Sands",
-    tag: "CBD Indoor Links",
-    start: { name: "Raffles Place MRT", location: [1.2839, 103.8515] },
-    end: { name: "Marina Bay Sands", location: [1.2834, 103.8607] },
-  },
-  {
-    label: "Bishan MRT → ION Orchard",
-    tag: "North–South corridor",
-    start: { name: "Bishan MRT", location: [1.35092, 103.84825] },
-    end: { name: "ION Orchard", location: [1.30398, 103.83191] },
-  },
-  {
-    label: "Tampines MRT → Bedok Mall",
-    tag: "East Heartlands",
-    start: { name: "Tampines MRT", location: [1.3533, 103.9452] },
-    end: { name: "Bedok Mall", location: [1.3248, 103.9293] },
-  },
-];
-
 const MINIMISE_KEY = "haze-gowhere:always-minimise";
 const readMinimise = () => {
   try {
@@ -102,8 +74,8 @@ export function App() {
         setLocating(false);
         setLocateError(
           err.code === err.PERMISSION_DENIED
-            ? "Location permission was denied. Search, tap the map, or try a sample trip below."
-            : "Couldn't get your location. Search, tap the map, or try a sample trip below.",
+            ? "Location permission was denied. Search or tap the map to choose a starting point."
+            : "Couldn't get your location. Search or tap the map to choose a starting point.",
         );
       },
       { enableHighAccuracy: true, timeout: 10_000 },
@@ -328,28 +300,6 @@ export function App() {
         <section id="routes-panel" role="tabpanel" aria-labelledby="routes-tab" className="results" aria-live="polite" hidden={activePanel !== "routes"}>
           {!start || !end ? (
             <div className="empty-state">
-              <div className="empty-state-head">
-                <strong>Breathe less outdoor air on your commute</strong>
-                <p className="empty">
-                  Set a <strong>Starting Point</strong> and <strong>Destination</strong> above, or try a sample Singapore trip:
-                </p>
-              </div>
-              <div className="sample-trips">
-                {SAMPLE_TRIPS.map((sample) => (
-                  <button
-                    key={sample.label}
-                    type="button"
-                    className="sample-trip-btn"
-                    onClick={() => {
-                      setStart(sample.start);
-                      setEnd(sample.end);
-                    }}
-                  >
-                    <span className="sample-trip-main">{sample.label}</span>
-                    <span className="sample-trip-tag">{sample.tag}</span>
-                  </button>
-                ))}
-              </div>
               <div className="tier-explainer">
                 <div className="tier-explainer-row">
                   <span className="tier-dot protected" />
