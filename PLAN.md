@@ -129,3 +129,11 @@ Feedback: the characters should be designed rather than plain figures, the phone
 - Verified: 44.0 s, −15.3 LUFS, voice 10–13 dB above the music, and frames checked at every scene. Tests (42), typecheck and build pass.
 - Known UI issue in the video, not fixed here: at phone width, the "Walk (indoor)" leg row lets its three tier badges overlap the distance text.
 
+
+## Phase 7: close issue #13 (2026-10-18)
+[#13](https://github.com/blurboy1985/haze-gowhere/issues/13) has two parts:
+1. The haze banner collapses when `.panel` overflows. **Already fixed in PR #14** (`.panel > * { flex-shrink: 0; }`). Also add `min-height: 0` to `.panel`, so the grid item always scrolls instead of growing.
+2. The autocomplete stacking. Each `.picker` is its own `z-index: 1` stacking context, so the destination row paints over the start field's `.suggestions`. Reproduced at 390 px: the first suggestion is hidden. Fix: `.picker:focus-within { z-index: 20 }` and give `.planner-card` its own stacking level (`position: relative; z-index: 10`) above `.haze` and the results.
+
+Verify: hit-test (`elementFromPoint`) shows each suggestion on top for both pickers, at mobile and desktop widths. Check the banner with results loaded and the regional table expanded. Run tests, typecheck and build. Then open a PR that closes #13.
+- Result: both parts are fixed. Hit-tests show every visible suggestion on top for both pickers at 587 px and 1280 px. A control run with the new rule neutralised reproduces the block (the destination row covers the first start suggestion). The banner keeps its full height (222 px, or 407 px with regions expanded) with nothing clipped at 1280×800 and in all three mobile sheet states (Map/Split/Full). The panel scrolls. Tests (42), typecheck and build pass.
