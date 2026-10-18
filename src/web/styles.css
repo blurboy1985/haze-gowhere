@@ -96,6 +96,11 @@ button {
   box-shadow: 4px 0 24px rgb(26 35 43 / 0.06);
 }
 
+/* The panel scrolls; without this, overflowing content squashes its children (e.g. the haze banner to one line). */
+.panel > * {
+  flex-shrink: 0;
+}
+
 .map-wrap {
   position: relative;
   background: #dfe3e6;

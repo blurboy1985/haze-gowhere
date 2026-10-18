@@ -1,0 +1,7 @@
+node_modules
+out/frames
+out/stills
+out/app
+out/stem-*.wav
+out/*.png
+out/music.wav
