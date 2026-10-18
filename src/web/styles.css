@@ -87,6 +87,7 @@ button {
     radial-gradient(120% 260px at 50% 0%, var(--ambient-tint), transparent 72%),
     var(--panel);
   overflow-y: auto;
+  min-height: 0; /* as a grid item, scroll instead of growing past its row */
   padding: 18px 16px 24px;
   border-right: 1px solid var(--line);
   display: flex;
@@ -199,6 +200,9 @@ button {
 
 /* Unified Trip Planner Card */
 .planner-card {
+  /* own stacking level so open suggestions paint above the haze banner and results */
+  position: relative;
+  z-index: 10;
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -241,6 +245,11 @@ button {
   gap: 8px;
   position: relative;
   z-index: 1;
+}
+
+/* Each picker is its own stacking context; lift the one being typed in so its suggestions cover the other row. */
+.picker:focus-within {
+  z-index: 20;
 }
 
 .picker-dot {
