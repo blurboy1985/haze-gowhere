@@ -405,7 +405,7 @@ describe("directions", () => {
       ],
     };
     const winBoth = rankRoutes([fastAndProtected, walkRoute], 3, false);
-    expect(describeRouteTradeoff(winBoth[0]!, winBoth)).toBe("Fastest & lowest exposure");
+    expect(describeRouteTradeoff(winBoth[0]!, winBoth)).toBe("Fastest & lower exposure");
   });
 });
 

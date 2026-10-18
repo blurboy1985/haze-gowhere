@@ -1,4 +1,5 @@
 import { distanceMetres } from "./geo";
+import { timeToArrival } from "./ranking";
 import type { LatLng, Leg, LegMode, RankedRoute, Tier } from "./types";
 
 export interface TransitBadge {
@@ -346,27 +347,29 @@ export function activeStepEndpoints(legs: Leg[], activeStepIndex: number | null)
  */
 export function describeRouteTradeoff(route: RankedRoute, allRoutes: RankedRoute[]): string | null {
   if (allRoutes.length === 0) return null;
-  const minTotal = Math.min(...allRoutes.map((r) => Math.round(r.totalMinutes)));
-  const fastest = allRoutes.reduce((a, b) => (a.totalMinutes <= b.totalMinutes ? a : b));
+  const minTotal = Math.min(...allRoutes.map((r) => Math.round(timeToArrival(r))));
+  const fastest = allRoutes.reduce((a, b) => (timeToArrival(a) <= timeToArrival(b) ? a : b));
+  const fastestLabel = route.departureWaitMinutes !== undefined ? "Earliest arrival" : "Fastest";
+  const baseline = route.departureWaitMinutes !== undefined ? "earliest arrival" : "fastest";
 
   if (route.recommended) {
-    if (Math.round(route.totalMinutes) <= minTotal) {
+    if (Math.round(timeToArrival(route)) <= minTotal) {
       const beatsExposure = allRoutes.some(
         (r) => r.id !== route.id && Math.round(r.exposedMinutes) > Math.round(route.exposedMinutes),
       );
-      return beatsExposure ? "Fastest & lowest exposure" : "Fastest";
+      return beatsExposure ? `${fastestLabel} & lower exposure` : fastestLabel;
     }
     const savedExposed = Math.round(fastest.exposedMinutes) - Math.round(route.exposedMinutes);
-    if (savedExposed >= 1) return `−${savedExposed} min Exposed vs fastest`;
+    if (savedExposed >= 1) return `−${savedExposed} min Exposed vs ${baseline}`;
     const savedCovered = Math.round(fastest.coveredMinutes) - Math.round(route.coveredMinutes);
-    if (savedCovered >= 1) return `−${savedCovered} min Covered vs fastest`;
+    if (savedCovered >= 1) return `−${savedCovered} min Covered vs ${baseline}`;
     return "Lowest exposure";
   }
 
   const rec = allRoutes.find((r) => r.recommended);
-  if (Math.round(route.totalMinutes) === minTotal && rec && Math.round(rec.totalMinutes) > minTotal) {
+  if (Math.round(timeToArrival(route)) === minTotal && rec && Math.round(timeToArrival(rec)) > minTotal) {
     const extraExposed = Math.round(route.exposedMinutes) - Math.round(rec.exposedMinutes);
-    return extraExposed >= 1 ? `Fastest (+${extraExposed} min Exposed)` : "Fastest";
+    return extraExposed >= 1 ? `${fastestLabel} (+${extraExposed} min Exposed)` : fastestLabel;
   }
   return null;
 }

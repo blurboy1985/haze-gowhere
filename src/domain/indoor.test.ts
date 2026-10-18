@@ -111,6 +111,38 @@ describe("indoorLinksOpen", () => {
   });
 });
 
+describe("indoorVariants timetable", () => {
+  const departure = Date.parse("2026-10-19T09:10+08:00");
+  const approach: Route = {
+    id: "scheduled", summary: "Circle Line", departureTime: departure, arrivalTime: departure + 13 * 60_000,
+    legs: [
+      { mode: "walk", tier: "exposed", minutes: 3, path: [M, S] },
+      { mode: "train", tier: "protected", minutes: 10, path: [S, [1.28, 103.85]] },
+    ],
+  };
+
+  it("moves departure earlier for a longer indoor approach while retaining scheduled boarding and arrival", () => {
+    const [variant] = indoorVariants([approach], graph, noLinkways, departure - 10 * 60_000);
+    expect(variant).toBeDefined();
+    expect(variant!.departureTime).toBeLessThan(departure);
+    expect(variant!.arrivalTime).toBe(approach.arrivalTime);
+    const approachMinutes = variant!.legs.filter((l) => l.mode === "walk").reduce((sum, l) => sum + l.minutes, 0);
+    expect(variant!.departureTime! + approachMinutes * 60_000).toBeCloseTo(departure + 3 * 60_000, -1);
+    expect((variant!.arrivalTime! - variant!.departureTime!) / 60_000).toBeCloseTo(routeTotals(variant!).totalMinutes, 4);
+  });
+
+  it("rejects an indoor approach requiring departure before the user's requested time", () => {
+    expect(indoorVariants([approach], graph, noLinkways, departure)).toEqual([]);
+  });
+
+  it("moves departure later for a shorter approach without claiming an earlier train arrival", () => {
+    const longer: Route = { ...approach, arrivalTime: departure + 20 * 60_000, legs: [{ ...approach.legs[0]!, minutes: 10 }, approach.legs[1]!] };
+    const [variant] = indoorVariants([longer], graph, noLinkways, departure);
+    expect(variant!.departureTime).toBeGreaterThan(departure);
+    expect(variant!.arrivalTime).toBe(longer.arrivalTime);
+  });
+});
+
 describe("indoorVariants stop enclosure", () => {
   // Stop 60 m off the indoor network, which then runs to the mall.
   const stop: LatLng = [1.2905, 103.8504];

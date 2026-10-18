@@ -35,6 +35,8 @@ export interface Route {
   departureTime?: number;
   /** Epoch ms when the Route arrives, if known. */
   arrivalTime?: number;
+  /** Time before leaving the origin, relative to the requested departure. Not outdoor exposure. */
+  departureWaitMinutes?: number;
 }
 
 export interface RouteTotals {

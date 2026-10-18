@@ -88,6 +88,7 @@ export function RouteCard({
             {(eta || walkMetres > 0) && (
               <div className="route-meta">
                 {eta && <span className="num">{eta}</span>}
+                {(route.departureWaitMinutes ?? 0) >= 1 && <span>Leaves {fmtMin(route.departureWaitMinutes!)} after requested time</span>}
                 {eta && walkMetres > 0 && <span aria-hidden>·</span>}
                 {walkMetres > 0 && <span>🚶 {fmtDistance(walkMetres)} walk</span>}
               </div>

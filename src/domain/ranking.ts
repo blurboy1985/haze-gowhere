@@ -7,6 +7,10 @@ const COVERED_WEIGHT = 0.25;
 const MAX_SLOWDOWN = 2;
 const MAX_ROUTES = 3;
 
+/** Compare arrivals from the same requested start, including time before departure. */
+export const timeToArrival = (r: RouteTotals & Pick<Route, "departureWaitMinutes">): number =>
+  Math.round((r.totalMinutes + (r.departureWaitMinutes ?? 0)) * 60_000) / 60_000;
+
 export function routeTotals(route: Route): RouteTotals {
   const t: RouteTotals = { totalMinutes: 0, exposedMinutes: 0, coveredMinutes: 0, protectedMinutes: 0 };
   for (const leg of route.legs) {
@@ -43,11 +47,15 @@ export function rankRoutes(routes: Route[], band: Pm25Band, alwaysMinimise: bool
   if (routes.length === 0) return [];
   const strength = avoidanceStrength(band, alwaysMinimise);
   const withTotals = routes.map((r) => ({ ...r, ...routeTotals(r) }));
-  const fastest = Math.min(...withTotals.map((r) => r.totalMinutes));
-  return withTotals
-    .filter((r) => r.totalMinutes <= fastest * MAX_SLOWDOWN)
-    .map((r) => ({ ...r, exposureCost: exposureCost(r, strength), recommended: false }))
-    .sort((a, b) => a.exposureCost - b.exposureCost || a.totalMinutes - b.totalMinutes)
-    .slice(0, MAX_ROUTES)
-    .map((r, i) => ({ ...r, recommended: i === 0 }));
+  const fastest = Math.min(...withTotals.map(timeToArrival));
+  const ranked = withTotals
+    .filter((r) => timeToArrival(r) <= fastest * MAX_SLOWDOWN)
+    .map((r) => ({ ...r, exposureCost: exposureCost(r, strength) + (r.departureWaitMinutes ?? 0), recommended: false }))
+    .sort((a, b) => Math.round((a.exposureCost - b.exposureCost) * 60_000) ||
+      timeToArrival(a) - timeToArrival(b) || a.exposedMinutes - b.exposedMinutes || a.coveredMinutes - b.coveredMinutes);
+  const shown = ranked.slice(0, MAX_ROUTES);
+  // Keep the earliest-arriving option visible even when haze favours other routes.
+  const earliest = ranked.reduce((a, b) => timeToArrival(a) <= timeToArrival(b) ? a : b);
+  if (!shown.includes(earliest)) shown[shown.length - 1] = earliest;
+  return shown.map((r, i) => ({ ...r, recommended: i === 0 }));
 }

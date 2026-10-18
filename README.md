@@ -24,8 +24,14 @@ Pick a starting point and destination in Singapore and get the route that keeps 
    | 4 | 6 |
 
    If "Always minimise exposure" is on, K = 6.
-5. Score each route as **minutes + K × Exposed min + K/4 × Covered min**, drop any route taking more than twice as long as the fastest, and recommend the lowest score.
+5. Score each route as **minutes until arrival + K × Exposed min + K/4 × Covered min**, including any delay before leaving relative to the requested departure time. Time before leaving is not counted as outdoor exposure. Drop routes arriving more than twice as late as the earliest option and recommend the lowest score. Always retain the earliest-arriving option among the three results so users can compare it with the haze recommendation. Cards show journey duration and the departure/arrival window separately.
 6. At Trip Band 3 or higher, also show a taxi suggestion with the drive time.
+
+Mode results are merged by service and boarding/alighting stops. Later or more walking-heavy copies are discarded only when another equivalent itinerary is no worse on arrival, walking time, and journey duration. Walks between platforms in the same station are Protected underground and Covered at open-air interchanges. Short boarding waits are included rather than rounded out of the route totals.
+
+Indoor variants retain scheduled boarding times: changing the first walk changes when the user must leave, while changing the last walk changes arrival time. A variant is not offered if its approach requires leaving before the requested time.
+
+The app uses OneMap estimates, not Google's routing data. Google Maps can use different station entrances, walking connections, schedules and recommendations. Use **Compare in Google Maps** above the results to check the same coordinates; set the same departure time there for a scheduled trip. Exact Google Maps parity is not guaranteed.
 
 ## Running locally
 
