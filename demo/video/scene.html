@@ -1,0 +1,526 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Haze GoWhere demo scene</title>
+<style>
+  html, body { margin: 0; width: 1280px; height: 720px; overflow: hidden; background: #000; font-family: "Segoe UI", system-ui, sans-serif; }
+  canvas { display: block; }
+  .ov { position: absolute; pointer-events: none; }
+  #caption { left: 50%; bottom: 34px; transform: translateX(-50%); max-width: 1000px; padding: 10px 22px; border-radius: 14px;
+    background: rgb(12 16 20 / 0.62); color: #fff; font-size: 27px; line-height: 1.3; text-align: center; font-weight: 500; }
+  #hud { left: 28px; top: 26px; display: flex; align-items: center; gap: 10px; padding: 9px 16px 9px 12px; border-radius: 999px;
+    background: rgb(255 255 255 / 0.9); color: #1a232b; font-size: 21px; font-weight: 600; box-shadow: 0 6px 20px rgb(0 0 0 / 0.25); }
+  #hud i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+  #mark { right: 26px; top: 22px; display: flex; align-items: center; gap: 10px; color: #fff; font-size: 20px; font-weight: 700;
+    text-shadow: 0 2px 8px rgb(0 0 0 / 0.5); }
+  #mark img { width: 38px; height: 38px; }
+  #endcard { inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+    background: radial-gradient(circle at 50% 42%, rgb(38 50 59 / 0.94), rgb(14 19 23 / 0.98)); color: #f8fafc; }
+  #endcard img { width: 150px; height: 150px; }
+  #endcard h1 { margin: 6px 0 0; font-size: 68px; letter-spacing: -1px; }
+  #endcard p { margin: 0; font-size: 30px; color: #cbd5e1; }
+  #endcard .url { font-family: Consolas, monospace; font-size: 24px; color: #34d399; margin-top: 8px; }
+  #endcard .src { font-size: 16px; color: #8a97a3; margin-top: 18px; }
+  #note { left: 28px; bottom: 12px; color: rgb(255 255 255 / 0.85); font-size: 14px; text-shadow: 0 1px 4px rgb(0 0 0 / 0.7); transition: none; }
+  #fade { inset: 0; background: #000; }
+</style>
+<script type="importmap">{ "imports": { "three": "./node_modules/three/build/three.module.js" } }</script>
+</head>
+<body>
+<div id="caption" class="ov"></div>
+<div id="hud" class="ov"><i></i><span></span></div>
+<div id="mark" class="ov"><img src="../../public/favicon.svg" alt="" />Haze GoWhere</div>
+<div id="endcard" class="ov">
+  <img src="../../public/favicon.svg" alt="" />
+  <h1>Haze GoWhere</h1>
+  <p>Breathe easier, every trip.</p>
+  <div class="url">haze.danielquek.com</div>
+  <div class="src">Live haze readings: NEA · Routing: OneMap</div>
+</div>
+<div id="note" class="ov">Real Haze GoWhere screens · live NEA data, 18 Oct 2026, 9:00 am</div>
+<div id="fade" class="ov"></div>
+<script type="module">
+import * as THREE from "three";
+import { makeFamily } from "./characters.js";
+
+const W = 1280, H = 720;
+const timeline = await (await fetch("./timeline.json")).json();
+
+// ---------- helpers ----------
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
+const smooth = (x) => { x = clamp01(x); return x * x * (3 - 2 * x); };
+const range = (t, a, b) => clamp01((t - a) / (b - a));
+const lerp = (a, b, u) => a + (b - a) * u;
+const v3 = (x, y, z) => new THREE.Vector3(x, y, z);
+const window_ = (t, a, b, f = 0.4) => smooth(range(t, a, a + f)) * (1 - smooth(range(t, b - f, b)));
+let seed = 7;
+const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+
+// ---------- renderer / scene ----------
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(W, H);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 1000);
+scene.add(camera);
+const fog = new THREE.FogExp2(0xa9c8dc, 0.004);
+scene.fog = fog;
+
+const hemi = new THREE.HemisphereLight(0xdfefff, 0x4a5a3a, 1.4);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffffff, 2.4);
+sun.position.set(-60, 110, 50);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -130, right: 130, top: 130, bottom: -130, near: 10, far: 320 });
+sun.shadow.bias = -0.0006;
+scene.add(sun);
+
+const mat = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, flatShading: true, ...extra });
+function box(w, h, d, color, x, z, y = h / 2, extra) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), typeof color === "object" ? color : mat(color, extra));
+  m.position.set(x, y, z);
+  m.castShadow = m.receiveShadow = true;
+  scene.add(m);
+  return m;
+}
+
+// ---------- key places ----------
+const A = v3(-56, 0, 44);               // home, Bishan
+const DOOR = v3(-56.5, 0, 52.5);
+const PLAZA = v3(-54.5, 0, 46.5);       // where the family stops to check the PSI
+const B = v3(53, 0, -39);               // end of the indoor link, Gardens by the Bay
+const GROVE = v3(61, 0, -46);           // Supertree Grove (the real destination)
+
+const trainCurve = new THREE.CatmullRomCurve3([
+  v3(-52, 6.4, 46), v3(-42, 6.4, 38), v3(-30, 6.4, 29), v3(-12, 6.4, 14), v3(8, 6.4, -2), v3(24, 6.4, -18), v3(38, 6.4, -30), v3(48, 6.4, -36),
+]);
+const trainLen = trainCurve.getLength();
+const uOf = (p) => { // nearest param on the train curve to p (coarse)
+  let best = 0, bd = Infinity;
+  for (let i = 0; i <= 400; i++) { const d = trainCurve.getPointAt(i / 400).distanceToSquared(p); if (d < bd) { bd = d; best = i / 400; } }
+  return best;
+};
+const U_S1 = uOf(v3(-42, 6.4, 38)), U_S2 = uOf(v3(38, 6.4, -30));
+function stationBase(u) { // ground entrance beside the station box (local +x side)
+  const p = trainCurve.getPointAt(u), tg = trainCurve.getTangentAt(u);
+  return v3(p.x + tg.z * 3.1, 0, p.z - tg.x * 3.1);
+}
+const S1_BASE = stationBase(U_S1), S2_BASE = stationBase(U_S2);
+const S1_TOP = trainCurve.getPointAt(U_S1), S2_TOP = trainCurve.getPointAt(U_S2);
+// camera sightlines that must stay free of buildings and trees
+const clearLines = [[v3(-44, 0, 64), v3(-56, 0, 50)], [v3(-44, 0, 60), PLAZA], [PLAZA.clone().add(v3(5, 0, 8.5)), PLAZA]];
+function nearClearLine(p, r) {
+  return clearLines.some(([a, b]) => { const ab = b.clone().sub(a), u = clamp01(p.clone().sub(a).dot(ab) / ab.lengthSq()); const q = a.clone().addScaledVector(ab, u); return Math.hypot(q.x - p.x, q.z - p.z) < r; });
+}
+
+function polyPath(pts) {
+  const path = new THREE.CurvePath();
+  for (let i = 0; i < pts.length - 1; i++) path.add(new THREE.LineCurve3(pts[i], pts[i + 1]));
+  return path;
+}
+const redPts = [v3(-54.5, 0.7, 46.5), v3(-55, 0.7, 10), v3(-10, 0.7, 10), v3(-10, 0.7, -20), v3(30, 0.7, -20), v3(30, 0.7, -40), v3(53, 0.7, -39)];
+const redPath = polyPath(redPts);
+// the recommended route's legs, as the app reports them
+const legPaths = {
+  walk: polyPath([PLAZA.clone().setY(0.9), S1_BASE.clone().setY(0.9)]),
+  rail: (() => { const c = new THREE.CurvePath(); c.add(new THREE.LineCurve3(S1_BASE.clone().setY(0.9), S1_TOP.clone().setY(7.4)));
+    c.add(new THREE.CatmullRomCurve3(Array.from({ length: 41 }, (_, i) => trainCurve.getPointAt(lerp(U_S1, U_S2, i / 40)).add(v3(0, 1, 0)))));
+    c.add(new THREE.LineCurve3(S2_TOP.clone().setY(7.4), S2_BASE.clone().setY(0.9))); return c; })(),
+  indoor: polyPath([S2_BASE.clone().setY(0.9), B.clone().setY(0.9)]),
+  last: polyPath([B.clone().setY(0.9), GROVE.clone().setY(0.9)]),
+};
+
+// ---------- ground, water, roads ----------
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), mat(0x9bb07e));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const waterMat = mat(0x3f86a8, { roughness: 0.25, metalness: 0.1 });
+[[40, 140, -160, -68], [88, 160, -68, 20]].forEach(([x0, x1, z0, z1]) => {
+  const w = new THREE.Mesh(new THREE.PlaneGeometry(x1 - x0, z1 - z0), waterMat);
+  w.rotation.x = -Math.PI / 2; w.position.set((x0 + x1) / 2, 0.03, (z0 + z1) / 2); w.receiveShadow = true; scene.add(w);
+});
+const roadMat = mat(0x5d636a);
+function road(a, b, wid = 4) {
+  const len = Math.hypot(b.x - a.x, b.z - a.z);
+  const m = new THREE.Mesh(new THREE.BoxGeometry(wid, 0.08, len + wid), roadMat);
+  m.position.set((a.x + b.x) / 2, 0.05, (a.z + b.z) / 2);
+  m.rotation.y = Math.atan2(b.x - a.x, b.z - a.z);
+  m.receiveShadow = true; scene.add(m);
+}
+for (let i = 0; i < redPts.length - 1; i++) road(redPts[i], redPts[i + 1]);
+road(v3(-120, 0, 10), v3(120, 0, 10)); road(v3(-10, 0, -120), v3(-10, 0, 120)); road(v3(-120, 0, -20), v3(40, 0, -20));
+
+// ---------- texture for HDB windows ----------
+function stripeTex(base, line) {
+  const c = document.createElement("canvas"); c.width = 64; c.height = 256;
+  const g = c.getContext("2d"); g.fillStyle = base; g.fillRect(0, 0, 64, 256);
+  g.fillStyle = line; for (let y = 6; y < 256; y += 16) g.fillRect(0, y, 64, 5);
+  const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function hdb(x, z, w, h, d, rotY, base, accent) {
+  const tex = stripeTex(base, "#56606a"); tex.repeat.set(w / 4, h / 16);
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), [mat(base), mat(base), mat(accent), mat(base), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 }), new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9 })]);
+  m.position.set(x, h / 2, z); m.rotation.y = rotY; m.castShadow = m.receiveShadow = true; scene.add(m);
+}
+hdb(-66, 52, 16, 30, 6, 0, "#f1e6d2", "#d9734e");
+hdb(-79, 33, 16, 26, 6, Math.PI / 2, "#e3eef0", "#4e8fb0");
+hdb(-80, 56, 14, 22, 6, 0.3, "#f3e1e1", "#b75c6a");
+
+// ---------- city blocks ----------
+function distToPath(p, path, n = 120) {
+  let bd = Infinity;
+  for (let i = 0; i <= n; i++) { const q = path.getPointAt(i / n); bd = Math.min(bd, Math.hypot(q.x - p.x, q.z - p.z)); }
+  return bd;
+}
+const palette = [0xe9e2d0, 0xd6dde3, 0xf0d9c4, 0xc9d8cf, 0xe6cfd4, 0xd9d2e9, 0xf2ecdf];
+for (let gx = -112; gx <= 112; gx += 10) for (let gz = -112; gz <= 112; gz += 10) {
+  const p = v3(gx + (rnd() - 0.5) * 4, 0, gz + (rnd() - 0.5) * 4);
+  const r1 = rnd(), r2 = rnd(), r3 = rnd();
+  if ((p.x > 38 && p.z < -60) || (p.x > 84 && p.z < 24)) continue;               // water
+  if (p.distanceTo(A) < 26 || p.distanceTo(B) < 28 || p.distanceTo(GROVE) < 22 || nearClearLine(p, 9)) continue;
+  const dRed = distToPath(p, redPath, 60), dRail = distToPath(p, trainCurve, 60);
+  if (dRed < 6 || dRail < 8 || Math.abs(p.x + 10) < 5 || Math.abs(p.z - 10) < 5 || (Math.abs(p.z + 20) < 5 && p.x < 42)) continue;
+  const cbd = Math.max(0, 1 - v3(20, 0, -45).distanceTo(p) / 45);
+  let h = 4 + r1 * 10 + cbd * (18 + r2 * 26);
+  if (dRail < 26) h = Math.min(h, 6);                                              // keep train shots clear
+  const w = 5 + r2 * 3, d = 5 + r3 * 3;
+  box(w, h, d, cbd > 0.3 ? 0xb9c9d6 : palette[Math.floor(r3 * palette.length)], p.x, p.z);
+  if (r1 > 0.55 && h < 12) {                                                       // a few lollipop trees
+    const tx = p.x + 5, tz = p.z + 4;
+    box(0.5, 2, 0.5, 0x6b4f35, tx, tz);
+    const crown = new THREE.Mesh(new THREE.IcosahedronGeometry(1.8, 0), mat(0x4f8a46));
+    crown.position.set(tx, 3, tz); crown.castShadow = true; scene.add(crown);
+  }
+}
+for (let i = 0; i < 14; i++) { // trees around the home plaza
+  const a = (i / 14) * Math.PI * 2, r = 10 + (i % 3) * 3, tx = A.x + 4 + Math.cos(a) * r, tz = A.z - 2 + Math.sin(a) * r;
+  if (Math.hypot(tx - (-66), tz - 52) < 10 || nearClearLine(v3(tx, 0, tz), 3.5) || trainCurve.getPointAt(uOf(v3(tx, 6.4, tz))).setY(0).distanceTo(v3(tx, 0, tz)) < 4) continue;
+  box(0.4, 1.8, 0.4, 0x6b4f35, tx, tz);
+  const crown = new THREE.Mesh(new THREE.IcosahedronGeometry(1.5, 0), mat(0x5b9a4f)); crown.position.set(tx, 2.7, tz); crown.castShadow = true; scene.add(crown);
+}
+
+// ---------- Gardens by the Bay + MBS ----------
+const superMat = mat(0x8a3f8f, { emissive: 0x3a0f3f, emissiveIntensity: 0.6 });
+[[60, -46, 14], [66, -42, 11], [64, -52, 16], [71, -49, 12], [57, -54, 10], [74, -56, 15]].forEach(([x, z, h]) => {
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 1.1, h, 7), mat(0x6b5c74)); trunk.position.set(x, h / 2, z); trunk.castShadow = true; scene.add(trunk);
+  const cup = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 0.6, 2.4, 10, 1, true), superMat); cup.position.set(x, h + 1, z); cup.material.side = THREE.DoubleSide; cup.castShadow = true; scene.add(cup);
+});
+[[76, 30], [83, 32], [90, 34]].forEach(([x, h]) => box(4.5, h, 7, 0xdfe4e8, x, -63, h / 2, { roughness: 0.4 }));
+box(22, 1.4, 6, 0xc8cdd2, 83, -63, 35);
+const dome = new THREE.Mesh(new THREE.SphereGeometry(7, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), mat(0xcfe6ef, { roughness: 0.2, transparent: true, opacity: 0.85 }));
+dome.position.set(78, 0, -28); dome.scale.set(1.4, 0.7, 1); scene.add(dome);
+
+// ---------- MRT viaduct, stations, train ----------
+const deckMat = mat(0xb8bcc0);
+for (let s = 0; s <= trainLen; s += 3.5) {
+  const u = s / trainLen, p = trainCurve.getPointAt(u), tg = trainCurve.getTangentAt(u);
+  const deck = new THREE.Mesh(new THREE.BoxGeometry(3.6, 0.7, 3.8), deckMat);
+  deck.position.set(p.x, 5.3, p.z); deck.rotation.y = Math.atan2(tg.x, tg.z); deck.castShadow = deck.receiveShadow = true; scene.add(deck);
+  const nearWalk = (() => { const ab = S1_BASE.clone().sub(PLAZA), u = clamp01(p.clone().setY(0).sub(PLAZA).dot(ab) / ab.lengthSq()); return PLAZA.clone().addScaledVector(ab, u).distanceTo(p.clone().setY(0)) < 7; })();
+  if (Math.round(s / 3.5) % 3 === 0 && !nearWalk) box(1, 5, 1, 0xa9adb1, p.x, p.z);
+}
+function station(u) {
+  const p = trainCurve.getPointAt(u), tg = trainCurve.getTangentAt(u), rot = Math.atan2(tg.x, tg.z);
+  const g = new THREE.Group(); g.position.set(p.x, 0, p.z); g.rotation.y = rot;
+  const parts = [[8, 0.8, 14, 0xd8d2c4, 0, 5.4, 0], [9, 0.4, 15, 0x0f766e, 0, 10.4, 0], [0.6, 5, 0.6, 0x777777, 4, 7.9, 6], [0.6, 5, 0.6, 0x777777, -4, 7.9, 6], [0.6, 5, 0.6, 0x777777, 4, 7.9, -6], [0.6, 5, 0.6, 0x777777, -4, 7.9, -6], [4, 5.4, 4, 0xcfc8b8, 5, 2.7, 0]];
+  for (const [w, h, d, c, x, y, z] of parts) { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat(c)); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; g.add(m); }
+  scene.add(g);
+}
+station(U_S1); station(U_S2);
+
+const cars = [];
+for (let i = 0; i < 3; i++) {
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(2.7, 2.6, 6.8), mat(0xf4f6f7, { roughness: 0.4 })); body.position.y = 1.3; body.castShadow = true; g.add(body);
+  const stripe = new THREE.Mesh(new THREE.BoxGeometry(2.75, 0.35, 6.7), mat(0xf59e0b)); stripe.position.y = 2.45; g.add(stripe); // Circle Line orange
+  const win = new THREE.Mesh(new THREE.BoxGeometry(2.76, 0.8, 5.6), mat(0x23313b, { roughness: 0.2 })); win.position.y = 1.75; g.add(win);
+  scene.add(g); cars.push(g);
+}
+const CAR_GAP = 7.1 / trainLen;
+
+// ---------- covered linkway + indoor glass link ----------
+function canopy(a, b) {
+  const len = a.distanceTo(b), rot = Math.atan2(b.x - a.x, b.z - a.z), mid = a.clone().add(b).multiplyScalar(0.5);
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.25, len + 1), mat(0x0f766e)); roof.position.set(mid.x, 3.1, mid.z); roof.rotation.y = rot; roof.castShadow = true; scene.add(roof);
+  for (let s = 0; s <= len; s += 3) {
+    const p = a.clone().lerp(b, s / len), off = v3(Math.cos(rot) * 1.5, 0, -Math.sin(rot) * 1.5);
+    box(0.18, 3, 0.18, 0x8a8f94, p.x + off.x, p.z + off.z); box(0.18, 3, 0.18, 0x8a8f94, p.x - off.x, p.z - off.z);
+  }
+}
+{
+  const a = S2_BASE, b = B, len = a.distanceTo(b), mid = a.clone().add(b).multiplyScalar(0.5);
+  const glass = new THREE.Mesh(new THREE.BoxGeometry(3.4, 3.2, len + 1), new THREE.MeshStandardMaterial({ color: 0xbfe3f2, transparent: true, opacity: 0.32, roughness: 0.1, metalness: 0.2 }));
+  glass.position.set(mid.x, 1.6, mid.z); glass.rotation.y = Math.atan2(b.x - a.x, b.z - a.z); scene.add(glass);
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(3.5, 0.25, len + 1), mat(0x6c7a86)); frame.position.set(mid.x, 3.25, mid.z); frame.rotation.y = glass.rotation.y; scene.add(frame);
+}
+
+// ---------- family (characters.js) ----------
+const fam = makeFamily();
+const family = new THREE.Group();
+const members = [[fam.dad, -1.25, 0], [fam.girl, -0.42, 0.3], [fam.boy, 0.25, 0.45], [fam.mum, 1.05, 0]];
+for (const [p, x, z] of members) { p.position.set(x, 0, z); family.add(p); }
+scene.add(family);
+
+// Walking speed: ~2.3 units/s, so legs move with distance covered.
+const STRIDE = 1.5;
+function famState(t) {
+  const seg = (a, b, t0, t1) => {
+    const u = range(t, t0, t1);
+    return { pos: a.clone().lerp(b, u), dir: b.clone().sub(a), walking: t > t0 && t < t1, dist: a.distanceTo(b) * u };
+  };
+  const toS1 = PLAZA.clone().add(S1_BASE.clone().sub(PLAZA).setLength(4.2));
+  const inLink = S2_BASE.clone().add(B.clone().sub(S2_BASE).setLength(5.5));
+  if (t < 0.6) return { pos: DOOR.clone(), dir: PLAZA.clone().sub(DOOR), walking: false, dist: 0 };
+  if (t < 3.2) return seg(DOOR, PLAZA, 0.6, 3.2);
+  if (t < 32.9) return { pos: PLAZA.clone(), dir: v3(0.53, 0, 0.85), walking: false, dist: 0 };
+  if (t < 34.6) return seg(PLAZA, toS1, 32.9, 34.6);
+  if (t < 37.0) return { pos: S1_BASE.clone(), dir: v3(1, 0, 0), walking: false, hidden: true, dist: 0 };
+  if (t < 39.5) return seg(S2_BASE, inLink, 37.0, 39.4);
+  return { pos: GROVE.clone().add(v3(-5, 0, 3.5)), dir: v3(0.7, 0, 0.7), walking: false, dist: 0 };
+}
+
+// ---------- pins and labels ----------
+function label(text, bg, fg = "#fff", scale = 1) {
+  const c = document.createElement("canvas"), g = c.getContext("2d");
+  g.font = "600 44px Segoe UI"; const w = g.measureText(text).width + 56; c.width = w; c.height = 76;
+  g.font = "600 44px Segoe UI"; g.fillStyle = bg; g.beginPath(); g.roundRect(0, 0, w, 76, 38); g.fill();
+  g.fillStyle = fg; g.textBaseline = "middle"; g.fillText(text, 28, 40);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false, transparent: true, fog: false, sizeAttenuation: false }));
+  s.scale.set((w / 76) * 0.045 * scale, 0.045 * scale, 1); // ~5% of frame height regardless of distance
+  s.renderOrder = 10; scene.add(s); return s;
+}
+function pin(color) {
+  const g = new THREE.Group();
+  const head = new THREE.Mesh(new THREE.SphereGeometry(2.2, 18, 12), mat(color, { flatShading: false, emissive: color, emissiveIntensity: 0.35 }));
+  head.position.y = 4.2; g.add(head);
+  const tip = new THREE.Mesh(new THREE.ConeGeometry(1.5, 3.4, 16), mat(color, { flatShading: false })); tip.rotation.x = Math.PI; tip.position.y = 1.6; g.add(tip);
+  scene.add(g); return g;
+}
+const pinA = pin(0x0f766e), pinB = pin(0x1a232b);
+pinA.position.set(-66, 30, 52); pinB.position.set(GROVE.x, 20, GROVE.z);
+const labA = label("A · Bishan Place", "#0f766e"), labB = label("B · Supertree Grove", "#1a232b");
+labA.position.set(-66, 40, 52); labB.position.set(GROVE.x, 32, GROVE.z);
+const legLabels = [
+  [label("Walk 1 min · Exposed", "#dc2626"), v3(-38, 12, 30), 27.4],
+  [label("Circle Line 24 min · Protected", "#059669"), v3(-6, 16, 8), 28.2],
+  [label("Indoor link + walk 9 min", "#0f766e"), v3(44, 9, -44), 29.0],
+];
+
+// ---------- route legs (overview) ----------
+function tube(path, color, radius, segs) {
+  const geo = new THREE.TubeGeometry(path, segs, radius, 8, false);
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.55, roughness: 0.5 }));
+  m.userData.total = geo.index.count; geo.setDrawRange(0, 0); scene.add(m); return m;
+}
+const legTubes = [
+  [tube(legPaths.walk, 0xdc2626, 1.1, 40), 26.9, 27.4],
+  [tube(legPaths.rail, 0x10b981, 1.15, 500), 27.4, 28.8],
+  [tube(legPaths.indoor, 0x10b981, 1.15, 40), 28.8, 29.2],
+  [tube(legPaths.last, 0xdc2626, 1.1, 40), 29.2, 29.6],
+];
+
+// ---------- haze particles ----------
+const HN = 900, hazeGeo = new THREE.BufferGeometry(), hazeBase = new Float32Array(HN * 3), hazePos = new Float32Array(HN * 3);
+for (let i = 0; i < HN; i++) { hazeBase[i * 3] = rnd() * 240 - 120; hazeBase[i * 3 + 1] = 1 + rnd() * 30; hazeBase[i * 3 + 2] = rnd() * 240 - 120; }
+hazeGeo.setAttribute("position", new THREE.BufferAttribute(hazePos, 3));
+const puff = (() => { const c = document.createElement("canvas"); c.width = c.height = 128; const g = c.getContext("2d");
+  const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+const hazeMat = new THREE.PointsMaterial({ size: 22, map: puff, color: 0xc9a27a, transparent: true, opacity: 0, depthWrite: false, fog: false });
+const haze = new THREE.Points(hazeGeo, hazeMat); haze.frustumCulled = false; scene.add(haze);
+
+// ---------- the real app, recorded by capture-app.mjs ----------
+const manifest = await (await fetch("./out/app/manifest.json")).json();
+const appImgs = await Promise.all(manifest.frames.map(async (f) => { const im = new Image(); im.src = `./out/app/${f.file}`; await im.decode(); return im; }));
+const screenCanvas = document.createElement("canvas"); [screenCanvas.width, screenCanvas.height] = manifest.size;
+const screenTex = new THREE.CanvasTexture(screenCanvas); screenTex.colorSpace = THREE.SRGBColorSpace; screenTex.anisotropy = 8;
+let shownFrame = -1;
+function showAppFrame(i) {
+  if (i === shownFrame) return;
+  screenCanvas.getContext("2d").drawImage(appImgs[i], 0, 0, screenCanvas.width, screenCanvas.height);
+  screenTex.needsUpdate = true; shownFrame = i;
+}
+// When each part of the recording plays: [start, end, frame-name prefix]. Frames inside a part share its time by their recorded hold.
+const appCues = [
+  [7.9, 8.9, "open"], [8.9, 9.8, "to-haze"], [9.8, 13.4, "haze"],
+  [16.5, 17.1, "back-up"], [17.1, 17.5, "dest-focus"], [17.5, 19.0, "type"], [19.0, 20.3, "suggestions"], [20.3, 21.3, "loading"], [21.3, 23.4, "results"],
+  [23.4, 24.3, "to-rec"], [24.3, 26.6, "recommended"],
+  [31.0, 33.2, "navigation"],
+];
+function appFrameAt(t) {
+  const cue = appCues.find(([a, b]) => t >= a && t < b) ?? appCues.reduce((best, c) => (c[0] <= t ? c : best), appCues[0]);
+  const [a, b, name] = cue;
+  const idx = manifest.frames.map((f, i) => [f, i]).filter(([f]) => f.name === name || new RegExp(`^${name}\\d+$`).test(f.name));
+  const total = idx.reduce((s, [f]) => s + f.hold, 0);
+  let acc = 0, u = clamp01((t - a) / (b - a)) * total;
+  for (const [f, i] of idx) { acc += f.hold; if (u <= acc) return i; }
+  return idx[idx.length - 1][1];
+}
+fam.mum.userData.phoneScreen.material.map = screenTex;
+fam.mum.userData.phoneScreen.material.needsUpdate = true;
+
+// camera-attached phone: over the shoulder, or full screen with the scene dimmed behind it
+const phone = new THREE.Group();
+const PW = 0.262, PH = PW * (844 / 390) + 0.02;
+// transparent (opacity 1) so they sort after the dim layer and stay bright
+const phoneBody = new THREE.Mesh(new THREE.BoxGeometry(PW, PH, 0.016), new THREE.MeshStandardMaterial({ color: 0x14181c, roughness: 0.3, metalness: 0.6, fog: false, transparent: true, depthTest: false }));
+phone.add(phoneBody);
+const screen = new THREE.Mesh(new THREE.PlaneGeometry(PW - 0.014, (PW - 0.014) * (844 / 390)), new THREE.MeshBasicMaterial({ map: screenTex, fog: false, toneMapped: false, transparent: true, depthTest: false }));
+screen.position.z = 0.0085; phone.add(screen);
+camera.add(phone);
+const phoneLight = new THREE.PointLight(0xffffff, 1.5, 3); phoneLight.position.set(0.3, 0.3, 0.2); camera.add(phoneLight);
+const dim = new THREE.Mesh(new THREE.PlaneGeometry(4, 3), new THREE.MeshBasicMaterial({ color: 0x0b1015, transparent: true, opacity: 0, fog: false, depthTest: false }));
+dim.position.z = -1.2; dim.renderOrder = 5; camera.add(dim);
+phoneBody.renderOrder = 6; screen.renderOrder = 7;
+
+// ---------- camera script ----------
+const famAt = (t) => famState(t).pos;
+function trainU(t) { const u0 = U_S1 + CAR_GAP * 1.2, u1 = U_S2 + CAR_GAP * 1.2; return lerp(u0, u1, smooth(range(t, 34.7, 36.9))); }
+const trainMid = (t) => trainCurve.getPointAt(Math.max(0, trainU(t) - CAR_GAP));
+const P = (x, y, z) => PLAZA.clone().add(v3(x, y, z));
+const ARRIVE = GROVE.clone().add(v3(-5, 0, 3.5));
+const keys = [
+  { t: 0.0, pos: v3(-44, 6, 64), tgt: v3(-56, 2.2, 50) },
+  { t: 2.8, pos: v3(-47.5, 3.6, 57.5), tgt: (t) => famAt(t).add(v3(0, 1.1, 0)) },
+  { t: 4.7, pos: v3(-110, 62, 92), tgt: v3(5, 0, -12) },
+  { t: 6.0, pos: v3(-100, 50, 84), tgt: v3(0, 0, -8) },
+  { t: 7.0, pos: P(4.6, 2.3, 7.8), tgt: P(1.6, 1.15, -1.0) },
+  { t: 12.9, pos: P(4.0, 2.1, 7.0), tgt: P(1.6, 1.15, -1.0) },
+  { t: 13.7, pos: P(0.9, 1.45, 3.6), tgt: P(-0.05, 1.12, 0) },
+  { t: 26.2, pos: P(0.6, 1.4, 3.0), tgt: P(-0.05, 1.15, 0) },
+  { t: 27.4, pos: v3(-16, 150, 112), tgt: v3(-6, 0, 6) },
+  { t: 30.4, pos: v3(-8, 142, 106), tgt: v3(-4, 0, 4) },
+  { t: 31.2, pos: P(4.6, 2.3, 7.8), tgt: P(1.6, 1.15, -1.0) },
+  { t: 32.8, pos: P(4.4, 2.3, 7.6), tgt: P(1.6, 1.15, -1.0) },
+  { t: 33.3, pos: (t) => famAt(t).add(v3(4.5, 3.2, 7)), tgt: (t) => famAt(t).add(v3(0, 1.1, 0)) },
+  { t: 34.5, pos: (t) => famAt(t).add(v3(4.5, 3.2, 7)), tgt: (t) => famAt(t).add(v3(0, 1.1, 0)) },
+  { t: 34.9, pos: (t) => trainMid(t).add(v3(12, 10, 16)), tgt: (t) => trainMid(t).add(v3(0, 0.5, 0)) },
+  { t: 36.8, pos: (t) => trainMid(t).add(v3(12, 10, 16)), tgt: (t) => trainMid(t).add(v3(0, 0.5, 0)) },
+  { t: 37.1, pos: (t) => famAt(t).add(v3(4.7, 2.6, -6)), tgt: (t) => famAt(t).add(v3(0, 1.0, 0)) },
+  { t: 39.4, pos: (t) => famAt(t).add(v3(4.7, 2.6, -6)), tgt: (t) => famAt(t).add(v3(0, 1.0, 0)) },
+  { t: 39.5, pos: ARRIVE.clone().add(v3(5, 1.7, 5)), tgt: ARRIVE.clone().add(v3(-0.6, 3.0, -4)) },
+  { t: 44.0, pos: ARRIVE.clone().add(v3(8, 5, 9)), tgt: GROVE.clone().add(v3(0, 9, -3)) },
+];
+const evalK = (k, t) => (typeof k === "function" ? k(t) : k.clone());
+function placeCamera(t) {
+  let i = 0; while (i < keys.length - 2 && t >= keys[i + 1].t) i++;
+  const a = keys[i], b = keys[i + 1], u = smooth((t - a.t) / (b.t - a.t));
+  camera.position.copy(evalK(a.pos, t).lerp(evalK(b.pos, t), u));
+  camera.lookAt(evalK(a.tgt, t).lerp(evalK(b.tgt, t), u));
+}
+
+// ---------- overlays ----------
+const $ = (id) => document.getElementById(id);
+const capEl = $("caption"), hudEl = $("hud"), hudDot = hudEl.querySelector("i"), hudTxt = hudEl.querySelector("span");
+const hudStates = [
+  [9.9, 16.2, "#9e1c1c", "24-hr PSI 229 · Very Unhealthy"],
+  [27.0, 30.8, "#059669", "Protected 26 min · Exposed 8 min"],
+  [33.0, 34.7, "#dc2626", "Walk 1 min · Exposed"],
+  [34.7, 37.0, "#059669", "Circle Line 24 min · Protected"],
+  [37.0, 39.5, "#0f766e", "Indoor link to Gardens by the Bay"],
+  [39.5, 40.4, "#059669", "Arrived · 35 min, only 8 exposed"],
+];
+function hud(t) {
+  const s = hudStates.find(([a, b]) => t >= a && t < b);
+  hudEl.style.opacity = s ? window_(t, s[0], s[1], 0.3) : 0;
+  if (s) { hudDot.style.background = s[2]; hudTxt.textContent = s[3]; }
+}
+
+// ---------- frame ----------
+const skyClear = new THREE.Color(0x9fc9e6), skyHaze = new THREE.Color(0xc4a27e), tmp = new THREE.Color();
+window.renderAt = (t) => {
+  const h = smooth(range(t, 4.6, 6.6)) * 0.95 + 0.08;
+  tmp.copy(skyClear).lerp(skyHaze, h); scene.background = tmp.clone(); fog.color.copy(tmp);
+  sun.color.set(0xffffff).lerp(new THREE.Color(0xffb36b), h); sun.intensity = lerp(2.6, 1.6, h); hemi.intensity = lerp(1.5, 1.15, h);
+
+  // family
+  const fs = famState(t);
+  family.position.copy(fs.pos);
+  family.rotation.y = Math.atan2(fs.dir.x, fs.dir.z);
+  family.visible = !fs.hidden;
+  const worried = t > 10.2 && t < 24.8;
+  members.forEach(([p], i) => {
+    p.userData.setMood(worried ? "worried" : "happy");
+    const phase = fs.walking ? (fs.dist / STRIDE) * Math.PI * 2 * (p === fam.boy ? 1.5 : p === fam.girl ? 1.2 : 1) + i : t * 4 + i;
+    const cough = p === fam.boy ? Math.max(0, Math.sin(range(t, 14.0, 14.5) * Math.PI), Math.sin(range(t, 14.9, 15.4) * Math.PI)) : 0;
+    p.userData.pose(phase, fs.walking, {
+      holdPhone: p === fam.mum && ((t > 7.2 && t < 26.8) || (t > 30.8 && t < 33.0)),
+      wave: p === fam.girl && t > 39.7,
+      lookUp: t > 39.5 && p !== fam.girl,
+      cough,
+    });
+  });
+
+  // train
+  const u = trainU(t);
+  cars.forEach((c, i) => { const uu = Math.max(0, u - i * CAR_GAP), p = trainCurve.getPointAt(uu), tg = trainCurve.getTangentAt(uu); c.position.set(p.x, 5.65, p.z); c.rotation.y = Math.atan2(tg.x, tg.z); });
+
+  // pins / labels / legs
+  const bob = Math.sin(t * 2.4) * 0.6;
+  pinA.position.y = 30 + bob; pinB.position.y = 20 + bob;
+  const showAB = window_(t, 3.2, 6.4, 0.5) + window_(t, 27.2, 31.0, 0.4);
+  labA.material.opacity = labB.material.opacity = showAB; labA.visible = labB.visible = showAB > 0.01;
+  const showLegs = t > 26.6 && t < 31.2;
+  for (const [m, a, b] of legTubes) { m.visible = showLegs; m.geometry.setDrawRange(0, Math.floor(m.userData.total * smooth(range(t, a, b)) / 3) * 3); }
+  for (const [l, pos, t0] of legLabels) { l.position.copy(pos); l.material.opacity = window_(t, t0, 31.0, 0.35); l.visible = l.material.opacity > 0.01; }
+
+  // camera, then fog density scaled by camera distance so wide shots stay readable
+  placeCamera(t);
+  fog.density = lerp(0.0035, 0.016, h) * (40 / Math.max(40, Math.min(camera.position.length(), camera.position.y * 1.4 + 20)));
+  hazeMat.opacity = 0.42 * smooth(range(t, 4.6, 6.4)) * (t > 39.5 ? 0.6 : 1);
+  for (let i = 0; i < HN; i++) {
+    hazePos[i * 3] = ((hazeBase[i * 3] + t * 2.2 + 120) % 240 + 240) % 240 - 120;
+    hazePos[i * 3 + 1] = hazeBase[i * 3 + 1] + Math.sin(t * 0.6 + i) * 0.6;
+    hazePos[i * 3 + 2] = hazeBase[i * 3 + 2];
+  }
+  hazeGeo.attributes.position.needsUpdate = true;
+
+  // phone: over the shoulder (PSI check, navigation) or full screen (search and results)
+  const shoulder = window_(t, 7.5, 13.5, 0.6) + window_(t, 30.9, 33.2, 0.4);
+  const full = window_(t, 16.2, 26.7, 0.5);
+  phone.visible = shoulder > 0.001 || full > 0.001;
+  // zoom so the screen is readable: point at fraction f (from the top) of the screen is brought to frame centre
+  const focus = (f, k) => -(PH / 2 - f * PH) * k;
+  if (full > 0.001) {
+    const z = smooth(range(t, 24.1, 24.8)) * (1 - smooth(range(t, 26.1, 26.5))), k = 1 + 0.75 * z;
+    phone.scale.setScalar(k);
+    phone.position.set(0, lerp(-0.9, 0, full) + focus(0.66, k) * z, -0.72);
+    phone.rotation.set(0, 0, lerp(0.2, 0, full));
+  } else {
+    const z = smooth(range(t, 9.9, 10.6)) * (1 - smooth(range(t, 12.8, 13.3)));
+    phone.scale.setScalar(1);
+    phone.position.set(lerp(0.37, 0.2, z), lerp(-0.8, -0.02, shoulder) + focus(0.55, 1) * z * 0.9, lerp(-0.95, -0.55, z));
+    phone.rotation.set(-0.06, lerp(-0.22, -0.08, z), lerp(0.35, 0.04, shoulder));
+  }
+  dim.material.opacity = 0.55 * full;
+  showAppFrame(appFrameAt(t));
+
+  // DOM overlays
+  const line = timeline.lines.find((l) => t >= l.start - 0.05 && t < l.end + 0.35 && l.id !== "s6");
+  capEl.textContent = line ? line.text : ""; capEl.style.opacity = line ? 1 : 0;
+  hud(t);
+  $("note").style.opacity = Math.max(shoulder, full) > 0.5 ? 1 : 0;
+  $("mark").style.opacity = (1 - smooth(range(t, 39.8, 40.4))) * (1 - window_(t, 26.8, 31.0, 0.4));
+  const end = smooth(range(t, 40.0, 40.9));
+  $("endcard").style.opacity = end; $("endcard").style.transform = `scale(${lerp(1.06, 1, end)})`;
+  $("fade").style.opacity = 1 - smooth(range(t, 0, 0.6)) + smooth(range(t, timeline.duration - 0.6, timeline.duration));
+
+  renderer.render(scene, camera);
+};
+
+window.ready = true;
+if (!new URLSearchParams(location.search).has("capture")) {
+  const t0 = performance.now(), q = new URLSearchParams(location.search), start = Number(q.get("t") ?? 0);
+  const loop = () => { window.renderAt((start + (performance.now() - t0) / 1000) % timeline.duration); requestAnimationFrame(loop); };
+  if (q.has("still")) window.renderAt(start); else loop();
+}
+</script>
+</body>
+</html>

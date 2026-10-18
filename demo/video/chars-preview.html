@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;background:#cfd8dc}</style>
+<script type="importmap">{ "imports": { "three": "./node_modules/three/build/three.module.js" } }</script></head><body>
+<script type="module">
+import * as THREE from "three"; import { makeFamily } from "./characters.js";
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true }); r.setSize(1280, 720); r.shadowMap.enabled = true; r.toneMapping = THREE.ACESFilmicToneMapping; document.body.appendChild(r.domElement);
+const s = new THREE.Scene(); s.background = new THREE.Color(0xdbe7ee);
+s.add(new THREE.HemisphereLight(0xffffff, 0x667755, 1.6)); const d = new THREE.DirectionalLight(0xffffff, 2.2); d.position.set(3, 6, 5); d.castShadow = true; s.add(d);
+const g = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.MeshStandardMaterial({ color: 0xa3b18a })); g.rotation.x = -Math.PI / 2; g.receiveShadow = true; s.add(g);
+const f = makeFamily(); const list = [f.dad, f.mum, f.girl, f.boy]; list.forEach((p) => s.add(p));
+const cam = new THREE.PerspectiveCamera(35, 16 / 9, 0.1, 100);
+window.renderAt = (mode) => {
+  list.forEach((p, i) => { p.position.set((i - 1.5) * 0.9, 0, 0); p.rotation.y = mode === "back" ? Math.PI : mode === "side" ? Math.PI / 2 : 0; p.userData.setMood(mode === "worried" ? "worried" : "happy"); p.userData.pose(mode === "side" ? 1.2 : 0, mode === "side", { holdPhone: i === 1 && mode === "worried" }); });
+  if (mode === "face") { cam.position.set(-0.45, 1.5, 1.4); cam.lookAt(-0.45, 1.35, 0); } else { cam.position.set(0, 1.1, 5.2); cam.lookAt(0, 0.8, 0); }
+  r.render(s, cam);
+};
+window.ready = true;
+</script></body></html>

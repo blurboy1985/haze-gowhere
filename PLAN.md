@@ -95,3 +95,37 @@ Decisions: a Cloudflare Worker plus static assets (no containers) on the Workers
 2. ✅ **Warm Atmospheric Mist Theme & Muted Basemap (`src/web/styles.css`)**: Smoky stone and warm mist surfaces (`Plus Jakarta Sans` + tabular `JetBrains Mono`), Band-reactive ambient panel & map vignette (`Trip Band` fallback to worst regional `PM2.5 Band`), and a haze-toned OneMap tile filter so **Protected**, **Covered**, and **Exposed** route polylines pop.
 3. ✅ **Unified Trip Planner & Atmospheric Haze Banner (`src/web/App.tsx`, `src/web/PointPicker.tsx`, `src/web/HazeBanner.tsx`)**: Connected A→B planner card with quick-clear (`✕`) buttons, rotating swap button, active `Max protection` pill for **Always minimise exposure**, and a 4-stage `PM2.5 Band` severity gauge with peak `µg/m³` readout.
 4. ✅ **Route Trade-Off Callouts & Empty/Loading UX (`src/domain/directions.ts`, `src/web/RouteCard.tsx`)**: Dynamic comparison badges (`describeRouteTradeoff`: `−X min Exposed vs fastest`, `Fastest & lowest exposure`), styled `🏢 Indoor Link` pills, shimmer loading skeletons, and 3 one-tap sample Singapore trips in the empty state.
+
+## Phase 6: 30s 3D demo video (user-story, 2026-10-18)
+Goal: `demo/video/out/haze-gowhere-demo.mp4`, 1280×720 at 30 fps and about 30 s long, with ElevenLabs narration and background music.
+Assumptions: "PSI" means the haze Pollutant Standards Index, which is the problem the app solves. Music is synthesized in code, so there is no licensing issue. Video tooling lives in `demo/video/` with its own package.json, and the app's dependencies are not touched.
+
+Storyboard (low-poly 3D, Three.js):
+1. 0–6 s **Point A**: a family of four leaves an HDB block in Bishan. The camera flies over the city to **Point B** (Gardens by the Bay).
+2. 6–12 s **The problem**: an orange haze rolls in. Mum's phone shows 24-hr PSI 168, UNHEALTHY.
+3. 12–19 s **The app**: Haze GoWhere draws two routes over the 3D city. A red exposed walk-and-bus route has 14 Exposed min. A green protected route (MRT, covered linkway, indoor link) has 3 Exposed min.
+4. 19–26 s **The trip**: the family rides the green route under cover and arrives at B.
+5. 26–30 s **Logo** and the tagline.
+
+Steps:
+1. `tts.mjs`: ElevenLabs TTS for each scene line (key from `.env`), saved to `out/vo/*.mp3`, with durations measured.
+2. `scene.html`: a deterministic Three.js scene exposing `renderAt(t)`.
+3. `render.mjs`: headless Chromium (playwright-core) steps time frame by frame and writes PNG frames.
+4. `music.py`: an ambient pad plus a soft pulse, 30 s, written as WAV (numpy).
+5. ffmpeg: frames + narration + music (ducked under the voice) to MP4.
+6. Verify: ffprobe duration and streams, inspect sampled frames, and check audio levels.
+
+Result (2026-10-18): `demo/video/out/haze-gowhere-demo.mp4` (30.0 s, 1280×720, 30 fps, 12.5 MB).
+- Verified: ffprobe streams and duration. Integrated loudness is −15.2 LUFS. Voice sits about 9–10 dB above the ducked music during narration. Frames were checked at every scene, and the PSI hits 168 at 8.6 s, right on the spoken "one sixty-eight".
+- Where reality differed from the plan: free ElevenLabs keys can't use library voices (402 error), so the narration uses the premade "Bella" voice instead of a Singaporean accent. The 29.3 s of narration is played at 1.05× to fit. The Bishan layout and camera were reworked after the first stills had blocked sightlines.
+
+### Phase 6b: v2 of the video (2026-10-18)
+Feedback: the characters should be designed rather than plain figures, the phone should show the real app interface, and the video may run longer.
+- `characters.js`: a stylized family (Dad, Mum, daughter, toddler) with faces that switch between happy and worried, four hairstyles, patterned clothes, accessories and a walk cycle.
+- `capture-app.mjs` drives the real app (GPS → haze banner → search → results → recommended → navigation) and records its screens for the 3D phone.
+- It uses live NEA data, with no override: 24-hr PSI up to 229 and PM2.5 Band 2. Real OneMap routing gives Bishan Place → Gardens by the Bay (Supertree Grove): Circle Line + indoor link, 35 min, Protected 26 / Exposed 8. The narration uses these numbers.
+- Now 44 s. Narration plays at 1.0× (39.4 s of speech), and the music is re-timed to the new scenes.
+- App fix found while capturing: on mobile the haze banner was squashed to one line once results loaded, because `.panel` is a scrolling flex column. Fixed with `.panel > * { flex-shrink: 0; }`.
+- Verified: 44.0 s, −15.3 LUFS, voice 10–13 dB above the music, and frames checked at every scene. Tests (42), typecheck and build pass.
+- Known UI issue in the video, not fixed here: at phone width, the "Walk (indoor)" leg row lets its three tier badges overlap the distance text.
+

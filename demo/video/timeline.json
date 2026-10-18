@@ -1,0 +1,43 @@
+{
+  "duration": 44,
+  "fps": 30,
+  "atempo": 1,
+  "lines": [
+    {
+      "id": "s1",
+      "text": "Sunday morning in Bishan. The Lim family is off to Gardens by the Bay.",
+      "start": 0.4,
+      "end": 4.49
+    },
+    {
+      "id": "s2",
+      "text": "But the haze is back. Mum opens Haze GoWhere. Live NEA readings put the PSI at two hundred and twenty-nine. Very unhealthy, and they have a toddler in tow.",
+      "start": 5.3,
+      "end": 16.03
+    },
+    {
+      "id": "s3",
+      "text": "She searches for Gardens by the Bay. The app scores every route by how many minutes you'd spend breathing outside air.",
+      "start": 16.5,
+      "end": 23.28
+    },
+    {
+      "id": "s4",
+      "text": "Its pick: the Circle Line, plus an indoor link. Twenty-six minutes protected, only eight exposed.",
+      "start": 23.6,
+      "end": 30.61
+    },
+    {
+      "id": "s5",
+      "text": "They tap Start navigation. A one-minute walk to Bishan station, the train to Bayfront, then the indoor link toward the Supertrees.",
+      "start": 31.2,
+      "end": 39.42
+    },
+    {
+      "id": "s6",
+      "text": "Haze GoWhere. Breathe easier, every trip.",
+      "start": 40.2,
+      "end": 42.75
+    }
+  ]
+}
