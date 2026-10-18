@@ -102,6 +102,24 @@ function TapHandler({ onTap }: { onTap: (p: LatLng) => void }) {
   return null;
 }
 
+/** Leaflet must be notified when the bottom sheet changes the map's available space. */
+function ObserveMapSize() {
+  const map = useMap();
+  useEffect(() => {
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    });
+    observer.observe(map.getContainer());
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [map]);
+  return null;
+}
+
 function FitTo({ points, fitTick, hasActiveStep }: { points: LatLng[]; fitTick: number; hasActiveStep: boolean }) {
   const map = useMap();
   const key = `${fitTick}:${hasActiveStep ? "step" : "all"}:${points.map((p) => p.join()).join("|")}`;
@@ -237,6 +255,7 @@ export function MapView(props: Props) {
       />
       <MapDataCredits />
       <TapHandler onTap={props.onMapTap} />
+      <ObserveMapSize />
       <FitTo points={fitPoints} fitTick={fitTick} hasActiveStep={hasActiveStep} />
       <MapControls
         hasRoute={Boolean(selected)}

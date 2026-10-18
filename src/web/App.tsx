@@ -6,13 +6,13 @@ import { fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api"
 import { HazeBanner } from "./HazeBanner";
 import { LogoMark } from "./Logo";
 import { MapView } from "./MapView";
+import { MobileSheetControls, type SheetSnap } from "./MobileSheetControls";
 import { NavigationBanner } from "./NavigationBanner";
 import { PointPicker } from "./PointPicker";
 import { PlannerNavigation, type PlannerPanel } from "./PlannerNavigation";
 import { RouteCard, TaxiCard } from "./RouteCard";
 
 type Which = "start" | "destination";
-type SheetSnap = "peek" | "half" | "full";
 
 interface SampleTrip {
   label: string;
@@ -191,10 +191,6 @@ export function App() {
     }
   };
 
-  const cycleSheet = () => {
-    setSheetSnap((s) => (s === "peek" ? "half" : s === "half" ? "full" : "peek"));
-  };
-
   const routes = result?.routes ?? [];
   const selectedRoute = routes.find((r) => r.id === selectedId) ?? null;
   const activeBand: Pm25Band =
@@ -226,29 +222,7 @@ export function App() {
       className={`app ambient-band-${activeBand} sheet-${sheetSnap} ${picking ? "is-picking" : ""} ${navigating ? "is-navigating" : ""}`}
     >
       <aside className="panel">
-        <div className="sheet-grab-bar">
-          <button
-            type="button"
-            className="sheet-grab-handle"
-            onClick={cycleSheet}
-            aria-label={`Resize panel (currently ${sheetSnap})`}
-            title="Tap to resize panel"
-          >
-            <span className="sheet-pill" />
-          </button>
-          <div className="sheet-snap-Group" role="group" aria-label="Sheet size">
-            {(["peek", "half", "full"] as SheetSnap[]).map((snap) => (
-              <button
-                key={snap}
-                type="button"
-                className={`sheet-snap-btn ${sheetSnap === snap ? "active" : ""}`}
-                onClick={() => setSheetSnap(snap)}
-              >
-                {snap === "peek" ? "Map" : snap === "half" ? "Split" : "Full"}
-              </button>
-            ))}
-          </div>
-        </div>
+        <MobileSheetControls value={sheetSnap} onChange={setSheetSnap} />
 
         <header className="brand">
           <div className="brand-identity">
@@ -434,6 +408,8 @@ export function App() {
                     if (idx === null) setNavigating(false);
                   }}
                   onStartNavigation={() => {
+                    setSheetSnap("peek");
+                    document.querySelector(".panel")?.scrollTo({ top: 0 });
                     setNavigating(true);
                     setActiveStepIndex(activeStepIndex ?? 0);
                   }}
