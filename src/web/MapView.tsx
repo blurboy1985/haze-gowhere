@@ -101,6 +101,24 @@ function TapHandler({ onTap }: { onTap: (p: LatLng) => void }) {
   return null;
 }
 
+/** Leaflet must be notified when the bottom sheet changes the map's available space. */
+function ObserveMapSize() {
+  const map = useMap();
+  useEffect(() => {
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => map.invalidateSize({ pan: false }));
+    });
+    observer.observe(map.getContainer());
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, [map]);
+  return null;
+}
+
 function FitTo({ points, fitTick, hasActiveStep }: { points: LatLng[]; fitTick: number; hasActiveStep: boolean }) {
   const map = useMap();
   const key = `${fitTick}:${hasActiveStep ? "step" : "all"}:${points.map((p) => p.join()).join("|")}`;
@@ -235,6 +253,7 @@ export function MapView(props: Props) {
         attribution='<img src="https://www.onemap.gov.sg/web-assets/images/logo/om_logo.png" style="height:20px;width:20px;vertical-align:middle"/>&nbsp;<a href="https://www.onemap.gov.sg/" target="_blank" rel="noopener">OneMap</a>&nbsp;&copy;&nbsp;contributors&nbsp;&#124;&nbsp;<a href="https://www.sla.gov.sg/" target="_blank" rel="noopener">Singapore Land Authority</a>&nbsp;&#124;&nbsp;Indoor links &copy;&nbsp;<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'
       />
       <TapHandler onTap={props.onMapTap} />
+      <ObserveMapSize />
       <FitTo points={fitPoints} fitTick={fitTick} hasActiveStep={hasActiveStep} />
       <MapControls
         hasRoute={Boolean(selected)}
