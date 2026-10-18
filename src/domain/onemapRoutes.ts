@@ -113,7 +113,7 @@ export function routeFromPtItinerary(it: OneMapPtItinerary, id: string, index: C
     // underground stations are enclosed (Protected).
     if (ride && prevEnd !== null && l.startTime > prevEnd) {
       const waitMin = minutesBetween(prevEnd, l.startTime);
-      if (waitMin >= 0.5) {
+      if (waitMin > 0) {
         const openAir = ride === "bus" || isOpenAirStation(l.from?.stopCode);
         legs.push({
           mode: "wait",
@@ -148,6 +148,16 @@ export function routeFromPtItinerary(it: OneMapPtItinerary, id: string, index: C
       rides.push(lineName(l));
     } else {
       const wLegs = walkLegs(path, minutes, index, l.distance);
+      // An interchange passage between platforms in the same station is not a street walk.
+      const stationCode = (s?: OneMapPtStop) => /^[A-Z]{2,3}\d+$/.test(s?.stopCode ?? "");
+      const stationName = (s?: OneMapPtStop) => s?.name?.trim().toUpperCase().replace(/\s+(MRT|LRT)\s+STATION$/, "");
+      if (stationCode(l.from) && stationCode(l.to) && stationName(l.from) && stationName(l.from) === stationName(l.to)) {
+        const tier = isOpenAirStation(l.from?.stopCode) || isOpenAirStation(l.to?.stopCode) ? "covered" : "protected";
+        for (const walk of wLegs) {
+          walk.tier = tier;
+          walk.label = "Walk inside station";
+        }
+      }
       if (fromStop && wLegs[0]) wLegs[0].fromStop = fromStop;
       if (toStop && wLegs[wLegs.length - 1]) wLegs[wLegs.length - 1]!.toStop = toStop;
       legs.push(...wLegs);
@@ -176,16 +186,26 @@ export function routeFromWalk(res: OneMapDirectResponse, id: string, index: Cove
 }
 
 /**
- * Merge itineraries from several OneMap mode queries, keeping the first of any that ride the
- * same sequence of services (walking differences alone don't make a distinct Route).
+ * Merge mode queries without discarding different boarding/alighting stops or useful
+ * arrival/walking trade-offs. Drop only dominated copies of the same transit journey.
  */
 export function mergeItineraries(groups: OneMapPtItinerary[][]): OneMapPtItinerary[] {
-  const seen = new Set<string>();
   const out: OneMapPtItinerary[] = [];
+  const key = (it: OneMapPtItinerary) => JSON.stringify(it.legs.filter((l) => l.mode !== "WALK").map((l) => [
+    l.mode, l.routeShortName ?? l.route ?? l.routeLongName ?? "",
+    l.from?.stopCode ?? l.from?.name ?? "", l.to?.stopCode ?? l.to?.name ?? "",
+  ]));
+  const arrival = (it: OneMapPtItinerary) => it.legs.at(-1)?.endTime ?? Infinity;
+  const walking = (it: OneMapPtItinerary) => it.legs.reduce((sum, l) => sum + (l.mode === "WALK" ? l.endTime - l.startTime : 0), 0);
+  const duration = (it: OneMapPtItinerary) => arrival(it) - (it.legs[0]?.startTime ?? 0);
+  const dominates = (a: OneMapPtItinerary, b: OneMapPtItinerary) =>
+    arrival(a) <= arrival(b) && walking(a) <= walking(b) && duration(a) <= duration(b);
   for (const it of groups.flat()) {
-    const key = it.legs.filter((l) => l.mode !== "WALK").map((l) => `${l.mode}:${l.route ?? ""}`).join(">") || "WALK";
-    if (seen.has(key)) continue;
-    seen.add(key);
+    if (it.legs.length === 0) continue;
+    if (out.some((prev) => key(prev) === key(it) && dominates(prev, it))) continue;
+    for (let i = out.length - 1; i >= 0; i--) {
+      if (key(out[i]!) === key(it) && dominates(it, out[i]!)) out.splice(i, 1);
+    }
     out.push(it);
   }
   return out;

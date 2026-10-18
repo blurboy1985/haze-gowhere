@@ -1,5 +1,6 @@
 import { splitWalkByCover, type CoveredLinkwayIndex } from "./coveredLinkways";
 import { INDOOR_WALK_M_PER_MIN, inIndoorBbox, type IndoorGraph } from "./indoorGraph";
+import { isOpenAirStation } from "./openAirStations";
 import type { Leg, Route } from "./types";
 
 /** The stop end snaps to an Indoor Link this close (inside the station for trains; an open-air walk from a bus stop). */
@@ -85,7 +86,7 @@ function indoorWalk(
  * Indoor Variants (ADR 0002): for each public-transport Route, a copy whose first and/or last walk goes through
  * CBD Indoor Links, when that saves Exposed time. Walk-only Routes are left alone.
  */
-export function indoorVariants(routes: Route[], graph: IndoorGraph, linkways: CoveredLinkwayIndex): Route[] {
+export function indoorVariants(routes: Route[], graph: IndoorGraph, linkways: CoveredLinkwayIndex, earliestDeparture?: number): Route[] {
   const variants: Route[] = [];
   for (const route of routes) {
     const rideIdx = route.legs.map((l, i) => (l.mode === "walk" ? -1 : i)).filter((i) => i >= 0);
@@ -104,24 +105,32 @@ export function indoorVariants(routes: Route[], graph: IndoorGraph, linkways: Co
     const pick = (run: Leg[], stationAtEnd: boolean): Leg[] => {
       if (run.length === 0) return run;
       const ride = stationAtEnd ? boardRide : alightRide;
-      const alt = indoorWalk(run, stationAtEnd, ride?.mode === "train", graph, linkways);
+      const stop = stationAtEnd ? ride?.fromStop : ride?.toStop;
+      const code = stop?.match(/\(([A-Z]{2,3}\d+)\)/)?.[1];
+      const alt = indoorWalk(run, stationAtEnd, ride?.mode === "train" && !isOpenAirStation(code), graph, linkways);
       if (!alt || exposedMinutes(alt.legs) > exposedMinutes(run) - MIN_EXPOSED_SAVING_MIN) return run;
+      // Keep the booked boarding time: a longer approach must begin earlier.
+      const extraMs = (alt.legs.reduce((s, l) => s + l.minutes, 0) - run.reduce((s, l) => s + l.minutes, 0)) * 60_000;
+      if (stationAtEnd && route.departureTime !== undefined && earliestDeparture !== undefined &&
+          route.departureTime - extraMs < earliestDeparture) return run;
       changed = true;
       for (const n of alt.names) if (!indoorLinks.includes(n)) indoorLinks.push(n);
       return alt.legs;
     };
-    const legs = [...pick(lead, true), ...middle, ...pick(trail, false)];
+    const newLead = pick(lead, true);
+    const newTrail = pick(trail, false);
+    const legs = [...newLead, ...middle, ...newTrail];
     if (changed) {
-      const origMin = route.legs.reduce((s, l) => s + l.minutes, 0);
-      const newMin = legs.reduce((s, l) => s + l.minutes, 0);
-      const deltaMs = Math.round((newMin - origMin) * 60_000);
+      const minutes = (run: Leg[]) => run.reduce((s, l) => s + l.minutes, 0);
+      const leadDeltaMs = Math.round((minutes(newLead) - minutes(lead)) * 60_000);
+      const trailDeltaMs = Math.round((minutes(newTrail) - minutes(trail)) * 60_000);
       variants.push({
         id: `${route.id}-indoor`,
         summary: `${route.summary} · indoor link`,
         legs,
         indoorLinks,
-        ...(route.departureTime ? { departureTime: route.departureTime } : {}),
-        ...(route.arrivalTime ? { arrivalTime: route.arrivalTime + deltaMs } : {}),
+        ...(route.departureTime !== undefined ? { departureTime: route.departureTime - leadDeltaMs } : {}),
+        ...(route.arrivalTime !== undefined ? { arrivalTime: route.arrivalTime + trailDeltaMs } : {}),
       });
     }
   }

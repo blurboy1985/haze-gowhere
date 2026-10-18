@@ -1915,6 +1915,15 @@ button {
   }
 }
 
+.route-source-note {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+.route-source-note a { color: var(--accent); }
+
 @media (prefers-reduced-motion: reduce) {
   .nav-progress-track span {
     transition: none;

@@ -391,6 +391,11 @@ export function App() {
               {result?.taxi && (
                 <TaxiCard taxi={result.taxi} shown={showTaxi} onToggle={() => setShowTaxi((s) => !s)} />
               )}
+              <p className="route-source-note">
+                OneMap travel estimates. Recommendations balance arrival time and haze exposure.
+                {" "}<a href={`https://www.google.com/maps/dir/?${new URLSearchParams({ api: "1", origin: start.location.join(","), destination: end.location.join(","), travelmode: "transit" })}`} target="_blank" rel="noopener noreferrer">Compare in Google Maps ↗</a>
+                {departAt && " Set the same departure time there."}
+              </p>
               {routes.map((r) => (
                 <RouteCard
                   key={r.id}

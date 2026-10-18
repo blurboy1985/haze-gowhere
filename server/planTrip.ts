@@ -61,7 +61,12 @@ export async function fetchCandidates(
   itineraries
     .filter((it) => !hasWalk || it.legs.some((l) => l.mode !== "WALK"))
     .forEach((it, i) => candidates.push(routeFromPtItinerary(it, `pt-${i}`, linkways)));
-  if (indoor) candidates.push(...indoorVariants(candidates, indoor, linkways));
+  if (indoor) candidates.push(...indoorVariants(candidates, indoor, linkways, req.when.getTime()));
+  for (const route of candidates) {
+    if (route.departureTime !== undefined) {
+      route.departureWaitMinutes = Math.max(0, (route.departureTime - req.when.getTime()) / 60_000);
+    }
+  }
   return candidates;
 }
 
