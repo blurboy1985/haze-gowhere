@@ -33,6 +33,8 @@ Indoor variants retain scheduled boarding times: changing the first walk changes
 
 The app uses OneMap estimates, not Google's routing data. Google Maps can use different station entrances, walking connections, schedules and recommendations. Use **Compare in Google Maps** above the results to check the same coordinates; set the same departure time there for a scheduled trip. Exact Google Maps parity is not guaranteed.
 
+If any regional PM2.5 or PSI reading is missing or invalid, the app reports that haze readings are unavailable and does not recommend routes. Missing data is never treated as zero. Only complete readings are cached (for up to five minutes); an incomplete refresh does not reuse an expired reading.
+
 ## Running locally
 
 ```bash

@@ -36,6 +36,7 @@
     "@types/shapefile": "^0.6.4",
     "@vitejs/plugin-react": "^4.7.0",
     "concurrently": "^9.2.5",
+    "jsdom": "^26.1.0",
     "proj4": "^2.22.0",
     "shapefile": "^0.6.6",
     "typescript": "^5.9.3",

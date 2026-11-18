@@ -13,10 +13,19 @@ export interface ChosenPoint {
   location: LatLng;
 }
 
+export class ApiError extends Error {
+  constructor(message: string, public readonly code?: string) {
+    super(message);
+  }
+}
+
 async function getJson<T>(url: string, signal?: AbortSignal): Promise<T> {
   const res = await fetch(url, { signal });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error((body as { error?: string }).error ?? `Request failed (${res.status})`);
+  if (!res.ok) {
+    const failure = body as { error?: string; code?: string };
+    throw new ApiError(failure.error ?? `Request failed (${res.status})`, failure.code);
+  }
   return body as T;
 }
 
