@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { nearestStepIndex } from "../domain/navigation";
 import { defaultSgtDateTimeLocal, formatTripUrl, parseTripUrl } from "../domain/tripUrl";
 import type { HazeReading, LatLng, Pm25Band, RoutesResponse } from "../domain/types";
-import { fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api";
+import { ApiError, fetchHaze, fetchRoutes, reverseGeocode, type ChosenPoint } from "./api";
 import { HazeBanner } from "./HazeBanner";
 import { LogoMark } from "./Logo";
 import { MapView } from "./MapView";
@@ -115,14 +115,26 @@ export function App() {
     setRouteError(null);
     fetchRoutes(start.location, end.location, minimise, departAt, ctrl.signal)
       .then((r) => {
+        if (ctrl.signal.aborted) return;
         setResult(r);
         setHaze(r.haze);
+        setHazeError(null);
         setSelectedId(r.routes.find((x) => x.recommended)?.id ?? null);
         setActiveStepIndex(null);
         setNavigating(false);
         setShowTaxi(false);
       })
-      .catch((e: Error) => e.name !== "AbortError" && setRouteError(e.message))
+      .catch((e: Error) => {
+        if (ctrl.signal.aborted || e.name === "AbortError") return;
+        setRouteError(e.message);
+        setResult(null);
+        setActiveStepIndex(null);
+        setNavigating(false);
+        if (e instanceof ApiError && e.code === "HAZE_UNAVAILABLE") {
+          setHaze(null);
+          setHazeError(e.message);
+        }
+      })
       .finally(() => !ctrl.signal.aborted && setLoading(false));
     return () => ctrl.abort();
   }, [start, end, minimise, departAt]);

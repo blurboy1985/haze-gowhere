@@ -3,7 +3,7 @@ import type { IndoorGraph } from "../src/domain/indoorGraph";
 import { indoorLinksOpen } from "../src/domain/indoorVariants";
 import { parseDepartureDate } from "../src/domain/tripUrl";
 import type { LatLng } from "../src/domain/types";
-import { latestHazeReading } from "./haze";
+import { HazeReadingsUnavailableError, latestHazeReading } from "./haze";
 import { mockDrive, mockPublicTransport, mockWalk } from "./mock";
 import { OneMapClient } from "./onemap";
 import { planTrip, type RouteSource } from "./planTrip";
@@ -104,6 +104,12 @@ export function createApi(config: ApiConfig) {
           const body = await planTrip({ start, end, alwaysMinimise: params.get("minimise") === "1", when }, source, reading, linkwayIndex, mock, indoorGraph);
           return { status: 200, body };
         } catch (err) {
+          if (err instanceof HazeReadingsUnavailableError) {
+            return {
+              status: 502,
+              body: { error: "Haze readings are unavailable right now. Routes cannot be recommended safely.", code: "HAZE_UNAVAILABLE" },
+            };
+          }
           return fail(err, 502, "Could not plan routes right now. Please try again.");
         }
       }

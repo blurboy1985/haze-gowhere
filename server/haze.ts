@@ -12,8 +12,17 @@ const REGIONS: RegionName[] = ["north", "south", "east", "west", "central"];
 interface DataGovResponse {
   data: {
     regionMetadata: { name: string; labelLocation: { latitude: number; longitude: number } }[];
-    items: { timestamp: string; readings: Record<string, Record<string, number>> }[];
+    items: { timestamp: string; readings: Record<string, Record<string, unknown>> }[];
   };
+}
+
+export class HazeReadingsUnavailableError extends Error {}
+
+function requiredReading(value: unknown, metric: string, region: RegionName): number {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+    throw new HazeReadingsUnavailableError(`data.gov.sg returned an unavailable ${metric} reading for ${region}`);
+  }
+  return value;
 }
 
 let cache: { at: number; reading: HazeReading } | null = null;
@@ -37,7 +46,12 @@ function applyOverride(reading: HazeReading, raw: string | undefined): HazeReadi
 
 /** `overridePm25`: the HAZE_OVERRIDE_PM25 setting, if any (dev/test only). */
 export async function latestHazeReading(overridePm25?: string): Promise<HazeReading> {
-  return applyOverride(await liveHazeReading(), overridePm25);
+  try {
+    return applyOverride(await liveHazeReading(), overridePm25);
+  } catch (err) {
+    if (err instanceof HazeReadingsUnavailableError) throw err;
+    throw new HazeReadingsUnavailableError("Haze readings are unavailable", { cause: err });
+  }
 }
 
 async function liveHazeReading(): Promise<HazeReading> {
@@ -50,11 +64,13 @@ async function liveHazeReading(): Promise<HazeReading> {
     psi.data.regionMetadata.map((m) => [m.name, [m.labelLocation.latitude, m.labelLocation.longitude]]),
   );
   const regions: RegionReading[] = REGIONS.map((region) => {
-    const pm = pmItem.readings.pm25_one_hourly?.[region] ?? 0;
+    // Never interpret missing upstream data as clean air. Cache only complete, valid readings.
+    const pm = requiredReading(pmItem.readings.pm25_one_hourly?.[region], "PM2.5", region);
+    const psi24 = requiredReading(psiItem.readings.psi_twenty_four_hourly?.[region], "PSI", region);
     return {
       region,
       label: labels.get(region) ?? [1.35735, 103.82],
-      psi24: psiItem.readings.psi_twenty_four_hourly?.[region] ?? 0,
+      psi24,
       pm25: pm,
       band: pm25Band(pm),
     };
